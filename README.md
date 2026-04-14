@@ -17,6 +17,10 @@
 - 支持复制分享文案与结果链接，含 GitHub Star 引导按钮。
 - GitHub Actions 自动构建并部署到 GitHub Pages。
 
+## Star 趋势
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Bainianzzz/RBTI&type=Date)](https://www.star-history.com/#Bainianzzz/RBTI&Date)
+
 ## 技术栈
 
 - Vue 3（`<script setup>`）
@@ -28,48 +32,6 @@
 - Lucide Vue Next
 - VueUse
 
-## 本地开发
-
-### 安装依赖
-
-```sh
-npm install
-```
-
-### 启动开发环境
-
-```sh
-npm run dev
-```
-
-### 类型检查
-
-```sh
-npm run type-check
-```
-
-### 代码检查
-
-```sh
-npm run lint
-```
-
-### 生产构建
-
-```sh
-npm run build
-```
-
-## 自动部署（GitHub Actions）
-
-本项目已包含工作流：`/.github/workflows/deploy.yml`  
-推送到 `main` 分支后将自动部署到 GitHub Pages。
-
-首次启用请在仓库设置中确认：
-
-- `Settings -> Pages -> Source` 选择 `GitHub Actions`
-- 分支使用 `main`
-
 ## 项目结构
 
 - `src/types/`：核心类型定义（题目、维度、精灵）
@@ -78,7 +40,3 @@ npm run build
 - `src/views/Quiz.vue`：答题页
 - `src/views/Result.vue`：结果页
 - `src/router/`：路由及结果页访问守卫
-
-## Star 趋势
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Bainianzzz/RBTI&type=Date)](https://www.star-history.com/#Bainianzzz/RBTI&Date)
