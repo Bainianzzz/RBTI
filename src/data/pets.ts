@@ -1,186 +1,122 @@
 import type { RocoPet } from '@/types'
 
-const getWikiPortraitUrl = (petName: string): string =>
-  `https://wiki.biligame.com/rocom/index.php?title=Special:FilePath/${encodeURIComponent(`页面_宠物_立绘_${petName}_1.png`)}`
+import imageAbu from '@/assets/pets/esfp.webp'
+import imageDimo from '@/assets/pets/enfj.webp'
+import imageEnchanterCat from '@/assets/pets/infp.webp'
+import imageEvilDing from '@/assets/pets/entp.webp'
+import imageFireGod from '@/assets/pets/entj.webp'
+import imageFrostDoll from '@/assets/pets/isfp.webp'
+import imageGranBall from '@/assets/pets/esfj.webp'
+import imageGuardDog from '@/assets/pets/isfj.webp'
+import imageHolyWater from '@/assets/pets/infj.webp'
+import imageKula from '@/assets/pets/istp.webp'
+import imageLuoYin from '@/assets/pets/istj.webp'
+import imageMechaCube from '@/assets/pets/intp.webp'
+import imagePalsas from '@/assets/pets/intj.webp'
+import imageRoyalGryphon from '@/assets/pets/estj.webp'
+import imageSonicDog from '@/assets/pets/estp.webp'
+import imageSpringFlower from '@/assets/pets/enfp.webp'
 
-export const pets: RocoPet[] = [
-  {
-    id: 'pet-intj',
-    name: '迪莫',
-    mbti: 'INTJ',
-    title: '永远的伙伴',
-    stats: { hp: 82, atk: 88, def: 92, spAtk: 110, spDef: 96, speed: 85 },
-    description: '图鉴编号 NO001，光系代表精灵，适合作为沉稳策略型人格映射。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/迪莫',
-    habitat: '叽叽喳喳台地',
-    imageUrl: getWikiPortraitUrl('迪莫'),
-  },
-  {
-    id: 'pet-intp',
-    name: '菊花梨',
-    mbti: 'INTP',
-    title: '图鉴研究者',
-    stats: { hp: 76, atk: 70, def: 78, spAtk: 116, spDef: 101, speed: 99 },
-    description: '来自精灵图鉴的真实词条，用于表现探索中的分析与推演倾向。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/菊花梨',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('菊花梨'),
-  },
-  {
-    id: 'pet-entj',
-    name: '立方人',
-    mbti: 'ENTJ',
-    title: '几何指挥官',
-    stats: { hp: 95, atk: 112, def: 85, spAtk: 96, spDef: 82, speed: 90 },
-    description: '图鉴中的经典精灵形象，映射强组织与高执行的队伍领袖风格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/立方人',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('立方人'),
-  },
-  {
-    id: 'pet-entp',
-    name: '龙鱼',
-    mbti: 'ENTP',
-    title: '灵感破局者',
-    stats: { hp: 80, atk: 92, def: 74, spAtk: 108, spDef: 76, speed: 118 },
-    description: '精灵图鉴词条中高人气宠物，适配灵活应变和创意驱动人格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/龙鱼',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('龙鱼'),
-  },
-  {
-    id: 'pet-infj',
-    name: '多灵主',
-    mbti: 'INFJ',
-    title: '灵魂共鸣',
-    stats: { hp: 92, atk: 72, def: 88, spAtk: 99, spDef: 114, speed: 79 },
-    description: '图鉴收录精灵，多重人格融合感强，适配洞察与共情型人格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/多灵主',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('多灵主'),
-  },
-  {
-    id: 'pet-infp',
-    name: '小皮球',
-    mbti: 'INFP',
-    title: '柔韧旅者',
-    stats: { hp: 84, atk: 64, def: 77, spAtk: 106, spDef: 112, speed: 87 },
-    description: '来自精灵图鉴的宠物名称，呈现温和而富有想象力的探索方式。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/小皮球',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('小皮球'),
-  },
-  {
-    id: 'pet-enfj',
-    name: '健猫教练',
-    mbti: 'ENFJ',
-    title: '团队教练',
-    stats: { hp: 90, atk: 86, def: 83, spAtk: 104, spDef: 100, speed: 98 },
-    description: '图鉴中具备鲜明协作氛围的精灵名，映射高同理与引导能力。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/健猫教练',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('健猫教练'),
-  },
-  {
-    id: 'pet-enfp',
-    name: '酷拉',
-    mbti: 'ENFP',
-    title: '节奏点燃者',
-    stats: { hp: 78, atk: 84, def: 70, spAtk: 96, spDef: 74, speed: 122 },
-    description: '来自图鉴词条，风格张扬灵活，适配高外向与高创造型人格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/酷拉',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('酷拉'),
-  },
-  {
-    id: 'pet-istj',
-    name: '鳗尾兽',
-    mbti: 'ISTJ',
-    title: '秩序守线',
-    stats: { hp: 102, atk: 95, def: 118, spAtk: 62, spDef: 101, speed: 54 },
-    description: '图鉴精灵名，用于表现流程优先、稳定推进的执行人格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/鳗尾兽',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('鳗尾兽'),
-  },
-  {
-    id: 'pet-isfj',
-    name: '闪电鳗鱼',
-    mbti: 'ISFJ',
-    title: '守护支援',
-    stats: { hp: 96, atk: 68, def: 104, spAtk: 82, spDef: 112, speed: 66 },
-    description: '引用精灵图鉴中的命名，强调稳定、谨慎与持续辅助能力。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/闪电鳗鱼',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('闪电鳗鱼'),
-  },
-  {
-    id: 'pet-estj',
-    name: '彩蝶鲨',
-    mbti: 'ESTJ',
-    title: '阵地统筹',
-    stats: { hp: 108, atk: 116, def: 109, spAtk: 55, spDef: 88, speed: 60 },
-    description: '图鉴真实精灵名，映射重目标和高纪律性的决策风格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/彩蝶鲨',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('彩蝶鲨'),
-  },
-  {
-    id: 'pet-esfj',
-    name: '卷毛鸭',
-    mbti: 'ESFJ',
-    title: '协同应援',
-    stats: { hp: 88, atk: 72, def: 84, spAtk: 94, spDef: 102, speed: 92 },
-    description: '取自精灵图鉴的角色，用于表达高社交和团队情绪连接。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/卷毛鸭',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('卷毛鸭'),
-  },
-  {
-    id: 'pet-istp',
-    name: '熔岩布丁',
-    mbti: 'ISTP',
-    title: '冷静操作手',
-    stats: { hp: 83, atk: 120, def: 86, spAtk: 68, spDef: 79, speed: 111 },
-    description: '图鉴中常见的实战派精灵名，适配快速判断和极简执行。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/熔岩布丁',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('熔岩布丁'),
-  },
-  {
-    id: 'pet-isfp',
-    name: '怒目怂猫',
-    mbti: 'ISFP',
-    title: '感性漫游',
-    stats: { hp: 86, atk: 89, def: 75, spAtk: 91, spDef: 84, speed: 108 },
-    description: '来自精灵图鉴，映射自由探索与审美驱动的行动偏好。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/怒目怂猫',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('怒目怂猫'),
-  },
-  {
-    id: 'pet-estp',
-    name: '海豹船长',
-    mbti: 'ESTP',
-    title: '前线破局',
-    stats: { hp: 91, atk: 124, def: 78, spAtk: 72, spDef: 73, speed: 119 },
-    description: '精灵图鉴命名中的高机动角色，适配强行动和临场突破风格。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/海豹船长',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('海豹船长'),
-  },
-  {
-    id: 'pet-esfp',
-    name: '绅士鸡',
-    mbti: 'ESFP',
-    title: '舞台焦点',
-    stats: { hp: 82, atk: 98, def: 71, spAtk: 102, spDef: 77, speed: 124 },
-    description: '来自精灵图鉴的代表形象，强调表现力和氛围带动能力。',
-    wikiUrl: 'https://wiki.biligame.com/rocom/绅士鸡',
-    habitat: '图鉴记录区域',
-    imageUrl: getWikiPortraitUrl('绅士鸡'),
-  },
-]
+const PET_NAME = {
+  'pets.INTJ.name': '帕尔萨斯',
+  'pets.INTP.name': '机械方方',
+  'pets.ENTJ.name': '烈火战神',
+  'pets.ENTP.name': '恶魔叮',
+  'pets.INFJ.name': '圣水守护',
+  'pets.INFP.name': '魔力猫',
+  'pets.ENFJ.name': '迪莫',
+  'pets.ENFP.name': '蹦蹦花',
+  'pets.ISTJ.name': '罗隐',
+  'pets.ISFJ.name': '护主犬',
+  'pets.ESTJ.name': '皇家狮鹫',
+  'pets.ESFJ.name': '格兰球',
+  'pets.ISTP.name': '酷拉',
+  'pets.ISFP.name': '雪影娃娃',
+  'pets.ESTP.name': '音速犬',
+  'pets.ESFP.name': '阿布',
+} as const
+
+const MBTI_LIST = [
+  'INTJ',
+  'INTP',
+  'ENTJ',
+  'ENTP',
+  'INFJ',
+  'INFP',
+  'ENFJ',
+  'ENFP',
+  'ISTJ',
+  'ISFJ',
+  'ESTJ',
+  'ESFJ',
+  'ISTP',
+  'ISFP',
+  'ESTP',
+  'ESFP',
+] as const
+
+type MbtiType = (typeof MBTI_LIST)[number]
+type PetNameKey = keyof typeof PET_NAME
+
+const MBTI_TO_NAME_KEY: Record<MbtiType, PetNameKey> = {
+  INTJ: 'pets.INTJ.name',
+  INTP: 'pets.INTP.name',
+  ENTJ: 'pets.ENTJ.name',
+  ENTP: 'pets.ENTP.name',
+  INFJ: 'pets.INFJ.name',
+  INFP: 'pets.INFP.name',
+  ENFJ: 'pets.ENFJ.name',
+  ENFP: 'pets.ENFP.name',
+  ISTJ: 'pets.ISTJ.name',
+  ISFJ: 'pets.ISFJ.name',
+  ESTJ: 'pets.ESTJ.name',
+  ESFJ: 'pets.ESFJ.name',
+  ISTP: 'pets.ISTP.name',
+  ISFP: 'pets.ISFP.name',
+  ESTP: 'pets.ESTP.name',
+  ESFP: 'pets.ESFP.name',
+}
+
+const PET_IMAGE_URL: Record<PetNameKey, string> = {
+  'pets.INTJ.name': imagePalsas,
+  'pets.INTP.name': imageMechaCube,
+  'pets.ENTJ.name': imageFireGod,
+  'pets.ENTP.name': imageEvilDing,
+  'pets.INFJ.name': imageHolyWater,
+  'pets.INFP.name': imageEnchanterCat,
+  'pets.ENFJ.name': imageDimo,
+  'pets.ENFP.name': imageSpringFlower,
+  'pets.ISTJ.name': imageLuoYin,
+  'pets.ISFJ.name': imageGuardDog,
+  'pets.ESTJ.name': imageRoyalGryphon,
+  'pets.ESFJ.name': imageGranBall,
+  'pets.ISTP.name': imageKula,
+  'pets.ISFP.name': imageFrostDoll,
+  'pets.ESTP.name': imageSonicDog,
+  'pets.ESFP.name': imageAbu,
+}
+
+const getWikiNameByNameKey = (nameKey: PetNameKey): string => PET_NAME[nameKey]
+
+const getWikiPageUrlByNameKey = (nameKey: PetNameKey): string =>
+  `https://wiki.biligame.com/rocom/${encodeURIComponent(getWikiNameByNameKey(nameKey))}`
+
+const getLocalPortraitUrlByNameKey = (nameKey: PetNameKey): string => PET_IMAGE_URL[nameKey]
+
+export const pets: RocoPet[] = MBTI_LIST.map((mbti) => {
+  const nameKey = MBTI_TO_NAME_KEY[mbti]
+
+  return {
+    id: `pet-${mbti.toLowerCase()}`,
+    nameKey,
+    mbti,
+    titleKey: `pets.${mbti}.title`,
+    descriptionKey: `pets.${mbti}.description`,
+    habitatKey: `pets.${mbti}.habitat`,
+    wikiUrl: getWikiPageUrlByNameKey(nameKey),
+    imageUrl: getLocalPortraitUrlByNameKey(nameKey),
+  }
+})
 
 export const petByMbti = pets.reduce<Record<string, RocoPet>>((accumulator, pet) => {
   accumulator[pet.mbti] = pet

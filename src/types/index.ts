@@ -11,21 +11,20 @@ export interface PetStats {
 
 export interface RocoPet {
   id: string
-  name: string
+  nameKey: string
   mbti: string
-  title: string
-  stats: PetStats
-  description: string
+  titleKey: string
+  descriptionKey: string
+  habitatKey: string
   wikiUrl: string
-  habitat: string
   imageUrl: string
 }
 
 export interface Question {
   id: number
-  text: string
+  textKey: string
   options: {
-    text: string
+    textKey: string
     weights: Partial<Record<Dimension, number>>
   }[]
 }

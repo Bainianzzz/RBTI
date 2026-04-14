@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTransition } from '@vueuse/core'
 import { Sparkles } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 
 import { useQuizStore } from '@/stores/quiz'
 
@@ -12,6 +13,7 @@ defineOptions({
 
 const quizStore = useQuizStore()
 const router = useRouter()
+const { t } = useI18n()
 
 const direction = ref<'next' | 'prev'>('next')
 const progressSource = computed<number>(() => quizStore.progress)
@@ -38,19 +40,19 @@ const transitionName = computed<string>(() =>
 
 <template>
   <main
-    class="tw-page-bg min-h-dvh overflow-hidden px-3 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-4 md:flex md:items-center md:px-8 md:py-8"
+    class="tw-page-bg flex min-h-dvh items-center overflow-hidden px-3 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-4 md:px-8 md:py-8"
   >
-    <div class="mx-auto flex min-h-[calc(100dvh-2rem)] max-w-5xl flex-col justify-start md:min-h-0 md:w-full md:justify-center">
+    <div class="mx-auto flex w-full max-w-5xl flex-col justify-center">
       <section
-        class="relative rounded-3xl border border-[#d8d1c3] bg-[rgba(243,239,227,0.95)] p-4 shadow-[0_14px_35px_rgba(112,95,67,0.14)] backdrop-blur-xl sm:p-5 md:p-10"
+        class="relative rounded-3xl border border-transparent bg-[rgba(243,239,227,0.95)] p-4 shadow-none backdrop-blur-xl sm:p-5 md:border-[#d8d1c3] md:p-10 md:shadow-[0_14px_35px_rgba(112,95,67,0.14)]"
       >
-        <div class="pointer-events-none absolute inset-0 rounded-3xl border border-[#ece6d9]" />
+        <div class="pointer-events-none absolute inset-0 hidden rounded-3xl border border-[#ece6d9] md:block" />
         <header class="mb-5 md:mb-6">
           <p
             class="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f2df9f] bg-[#f7e9b8] px-3 py-1 text-xs font-semibold tracking-[0.08em] text-[#8c7232]"
           >
             <Sparkles class="h-4 w-4" />
-            洛克世界人格镜像
+            {{ t('quiz.badgeTitle') }}
           </p>
           <div class="mb-3 h-2 rounded-full bg-[#ddd8cd]">
             <div
@@ -59,25 +61,25 @@ const transitionName = computed<string>(() =>
             />
           </div>
           <p class="text-sm text-[#6a6670]">
-            第 {{ quizStore.currentIndex + 1 }} / {{ quizStore.totalQuestions }} 题
+            {{ t('quiz.progressLabel', { current: quizStore.currentIndex + 1, total: quizStore.totalQuestions }) }}
           </p>
         </header>
 
         <Transition :name="transitionName" mode="out-in">
           <article v-if="quizStore.currentQuestion" :key="quizStore.currentQuestion.id" class="space-y-6">
             <h1 class="text-xl font-bold leading-relaxed text-[#8c7232] sm:text-2xl md:text-3xl">
-              {{ quizStore.currentQuestion.text }}
+              {{ t(quizStore.currentQuestion.textKey) }}
             </h1>
 
             <div class="space-y-3">
               <button
                 v-for="(option, optionIndex) in quizStore.currentQuestion.options"
-                :key="option.text"
+                :key="option.textKey"
                 type="button"
                 class="answer-option group w-full rounded-2xl border border-[#d8d1c3] bg-[rgba(243,239,227,0.95)] px-4 py-3.5 text-left text-[0.95rem] text-[#2f2f2f] transition duration-150 hover:border-[#f0cc61] hover:bg-[#f7f2e7] active:scale-[0.98] active:shadow-[0_0_14px_rgba(240,204,97,0.3)] sm:px-5 sm:py-4 sm:text-base"
                 @click="answer(optionIndex)"
               >
-                <span class="answer-option-label block font-medium tracking-wide">{{ option.text }}</span>
+                <span class="answer-option-label block font-medium tracking-wide">{{ t(option.textKey) }}</span>
               </button>
             </div>
           </article>
