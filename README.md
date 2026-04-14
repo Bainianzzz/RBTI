@@ -1,54 +1,84 @@
-# RBTI-WEB
+# 洛克世界人格镜像（RBTI）
 
-This template should help get you started developing with Vue 3 in Vite.
+一个基于 MBTI 维度加权题目的网页测试项目。  
+用户完成测试后，会得到对应的精灵人格镜像结果，并可一键分享结果链接。
 
-## Recommended IDE Setup
+## 在线地址
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- GitHub Pages: [https://bainianzzz.github.io/RBTI/](https://bainianzzz.github.io/RBTI/)
+- 项目仓库: [https://github.com/Bainianzzz/RBTI](https://github.com/Bainianzzz/RBTI)
 
-## Recommended Browser Setup
+## 功能特性
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- 12 道探索场景题，按 MBTI 维度权重实时累积分数。
+- Pinia 管理答题状态，自动计算最终 MBTI 结果。
+- 结果页根据 MBTI 映射精灵信息、性格标签与 Wiki 跳转。
+- 移动端与桌面端适配，桌面端支持垂直居中展示。
+- 支持复制分享文案与结果链接，含 GitHub Star 引导按钮。
+- GitHub Actions 自动构建并部署到 GitHub Pages。
 
-## Type Support for `.vue` Imports in TS
+## 技术栈
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- Vue 3（`<script setup>`）
+- TypeScript（严格模式）
+- Vite
+- Tailwind CSS
+- Pinia
+- Vue Router
+- Lucide Vue Next
+- VueUse
 
-## Customize configuration
+## 本地开发
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+### 安装依赖
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 启动开发环境
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 类型检查
+
+```sh
+npm run type-check
+```
+
+### 代码检查
+
+```sh
+npm run lint
+```
+
+### 生产构建
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## 自动部署（GitHub Actions）
 
-```sh
-npm run test:unit
-```
+本项目已包含工作流：`/.github/workflows/deploy.yml`  
+推送到 `main` 分支后将自动部署到 GitHub Pages。
 
-### Lint with [ESLint](https://eslint.org/)
+首次启用请在仓库设置中确认：
 
-```sh
-npm run lint
-```
+- `Settings -> Pages -> Source` 选择 `GitHub Actions`
+- 分支使用 `main`
+
+## 项目结构
+
+- `src/types/`：核心类型定义（题目、维度、精灵）
+- `src/data/`：题库与精灵数据
+- `src/stores/`：答题状态管理
+- `src/views/Quiz.vue`：答题页
+- `src/views/Result.vue`：结果页
+- `src/router/`：路由及结果页访问守卫
+
+## Star 趋势
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Bainianzzz/RBTI&type=Date)](https://www.star-history.com/#Bainianzzz/RBTI&Date)
