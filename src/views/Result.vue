@@ -42,7 +42,7 @@ const shareText = computed<string>(
 const shareToMoments = async (): Promise<void> => {
   try {
     const shareUrl = `${window.location.origin}`
-    await navigator.clipboard.writeText(`${shareText.value} ${shareUrl}`)
+    await navigator.clipboard.writeText(`${shareText.value} ${shareUrl}/RBTI`)
     toast.success(t('result.copySuccess'))
   } catch {
     toast.error(t('result.copyFailed'))
