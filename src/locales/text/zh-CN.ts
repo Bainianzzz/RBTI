@@ -14,7 +14,8 @@ const zhCNText = {
     githubStar: '觉得不错？来 GitHub 点个 Star',
     copySuccess: '已复制分享文案与链接',
     copyFailed: '复制失败，请手动复制地址栏链接',
-    shareText: '我在洛克世界人格镜像测出了 {mbti}，本命精灵是 {petName}！',
+    entertainmentNotice: '题目与人格分析皆由AI生成，测试结果仅供娱乐。',
+    shareText: '我在洛克世界人格镜像测出了 {mbti}，本命精灵是 {petName}！你也快来试试吧：',
     personalities: ['固执', '大胆', '冷静', '开朗', '悠闲', '慎重', '勇敢', '温和'],
   },
   fallbackPet: {
@@ -25,9 +26,10 @@ const zhCNText = {
   },
   pets: {
     INTJ: {
-      name: '冥暗幽王',
+      name: '帕尔萨斯',
       title: '建筑师',
-      description: '幽暗空间的统御者。深谋远虑，极其独立，拥有强大的全局掌控力与冷静的头脑。',
+      description:
+        '威廉古堡的绝对核心，德古拉伯爵的得力助手。冷酷神秘且高度理性，独立而富有战略眼光，拥有极强的掌控力。',
       habitat: '叽叽喳喳台地',
     },
     INTP: {
@@ -43,9 +45,10 @@ const zhCNText = {
       habitat: '图鉴记录区域',
     },
     ENTP: {
-      name: '瓦斯叮当',
+      name: '恶魔叮',
       title: '辩论家',
-      description: '永远在漂浮摇摆。思维极度跳跃，灵活多变，不按常理出牌，总有让人意想不到的点子。',
+      description:
+        '早期经典恶魔系宠物，恩佐与黑衣人的招牌跟班。天生好奇又调皮，不按套路出牌，常用小聪明打破常规。',
       habitat: '图鉴记录区域',
     },
     INFJ: {
@@ -115,9 +118,10 @@ const zhCNText = {
       habitat: '图鉴记录区域',
     },
     ESFP: {
-      name: '呱呱',
+      name: '阿布',
       title: '表演者',
-      description: '逍遥的武术家。天生的乐天派，喜欢展现自我（比如挖宝、修行），总能给周围带来欢乐。',
+      description:
+        '精力充沛、贪吃且情绪外露，极具表现力。总能在冒险中凭直觉行动，是宠物群体里的开心果和焦点。',
       habitat: '图鉴记录区域',
     },
   },

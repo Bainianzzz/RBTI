@@ -1,13 +1,27 @@
 import type { RocoPet } from '@/types'
 
-const getWikiPortraitUrl = (petName: string): string =>
-  `https://wiki.biligame.com/rocom/index.php?title=Special:FilePath/${encodeURIComponent(`页面_宠物_立绘_${petName}_1.png`)}`
+import imageAbu from '@/assets/pets/esfp.webp'
+import imageDimo from '@/assets/pets/enfj.webp'
+import imageEnchanterCat from '@/assets/pets/infp.webp'
+import imageEvilDing from '@/assets/pets/entp.webp'
+import imageFireGod from '@/assets/pets/entj.webp'
+import imageFrostDoll from '@/assets/pets/isfp.webp'
+import imageGranBall from '@/assets/pets/esfj.webp'
+import imageGuardDog from '@/assets/pets/isfj.webp'
+import imageHolyWater from '@/assets/pets/infj.webp'
+import imageKula from '@/assets/pets/istp.webp'
+import imageLuoYin from '@/assets/pets/istj.webp'
+import imageMechaCube from '@/assets/pets/intp.webp'
+import imagePalsas from '@/assets/pets/intj.webp'
+import imageRoyalGryphon from '@/assets/pets/estj.webp'
+import imageSonicDog from '@/assets/pets/estp.webp'
+import imageSpringFlower from '@/assets/pets/enfp.webp'
 
 const PET_NAME = {
-  'pets.INTJ.name': '冥暗幽王',
+  'pets.INTJ.name': '帕尔萨斯',
   'pets.INTP.name': '机械方方',
   'pets.ENTJ.name': '烈火战神',
-  'pets.ENTP.name': '瓦斯叮当',
+  'pets.ENTP.name': '恶魔叮',
   'pets.INFJ.name': '圣水守护',
   'pets.INFP.name': '魔力猫',
   'pets.ENFJ.name': '迪莫',
@@ -19,197 +33,90 @@ const PET_NAME = {
   'pets.ISTP.name': '酷拉',
   'pets.ISFP.name': '雪影娃娃',
   'pets.ESTP.name': '音速犬',
-  'pets.ESFP.name': '呱呱',
+  'pets.ESFP.name': '阿布',
+} as const
+
+const MBTI_LIST = [
+  'INTJ',
+  'INTP',
+  'ENTJ',
+  'ENTP',
+  'INFJ',
+  'INFP',
+  'ENFJ',
+  'ENFP',
+  'ISTJ',
+  'ISFJ',
+  'ESTJ',
+  'ESFJ',
+  'ISTP',
+  'ISFP',
+  'ESTP',
+  'ESFP',
+] as const
+
+type MbtiType = (typeof MBTI_LIST)[number]
+type PetNameKey = keyof typeof PET_NAME
+
+const MBTI_TO_NAME_KEY: Record<MbtiType, PetNameKey> = {
+  INTJ: 'pets.INTJ.name',
+  INTP: 'pets.INTP.name',
+  ENTJ: 'pets.ENTJ.name',
+  ENTP: 'pets.ENTP.name',
+  INFJ: 'pets.INFJ.name',
+  INFP: 'pets.INFP.name',
+  ENFJ: 'pets.ENFJ.name',
+  ENFP: 'pets.ENFP.name',
+  ISTJ: 'pets.ISTJ.name',
+  ISFJ: 'pets.ISFJ.name',
+  ESTJ: 'pets.ESTJ.name',
+  ESFJ: 'pets.ESFJ.name',
+  ISTP: 'pets.ISTP.name',
+  ISFP: 'pets.ISFP.name',
+  ESTP: 'pets.ESTP.name',
+  ESFP: 'pets.ESFP.name',
 }
 
-const isPetNameKey = (nameKey: string) => nameKey in PET_NAME
+const PET_IMAGE_URL: Record<PetNameKey, string> = {
+  'pets.INTJ.name': imagePalsas,
+  'pets.INTP.name': imageMechaCube,
+  'pets.ENTJ.name': imageFireGod,
+  'pets.ENTP.name': imageEvilDing,
+  'pets.INFJ.name': imageHolyWater,
+  'pets.INFP.name': imageEnchanterCat,
+  'pets.ENFJ.name': imageDimo,
+  'pets.ENFP.name': imageSpringFlower,
+  'pets.ISTJ.name': imageLuoYin,
+  'pets.ISFJ.name': imageGuardDog,
+  'pets.ESTJ.name': imageRoyalGryphon,
+  'pets.ESFJ.name': imageGranBall,
+  'pets.ISTP.name': imageKula,
+  'pets.ISFP.name': imageFrostDoll,
+  'pets.ESTP.name': imageSonicDog,
+  'pets.ESFP.name': imageAbu,
+}
 
-const getWikiNameByNameKey = (nameKey: keyof typeof PET_NAME): string =>
-  isPetNameKey(nameKey) ? PET_NAME[nameKey] : ''
+const getWikiNameByNameKey = (nameKey: PetNameKey): string => PET_NAME[nameKey]
 
-const getWikiPageUrlByNameKey = (nameKey: keyof typeof PET_NAME): string =>
+const getWikiPageUrlByNameKey = (nameKey: PetNameKey): string =>
   `https://wiki.biligame.com/rocom/${encodeURIComponent(getWikiNameByNameKey(nameKey))}`
 
-const getWikiPortraitUrlByNameKey = (nameKey: keyof typeof PET_NAME): string => getWikiPortraitUrl(getWikiNameByNameKey(nameKey))
+const getLocalPortraitUrlByNameKey = (nameKey: PetNameKey): string => PET_IMAGE_URL[nameKey]
 
-export const pets: RocoPet[] = [
-  {
-    id: 'pet-intj',
-    nameKey: 'pets.INTJ.name',
-    mbti: 'INTJ',
-    titleKey: 'pets.INTJ.title',
-    descriptionKey: 'pets.INTJ.description',
-    habitatKey: 'pets.INTJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.INTJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.INTJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.INTJ.name'),
-  },
-  {
-    id: 'pet-intp',
-    nameKey: 'pets.INTP.name',
-    mbti: 'INTP',
-    titleKey: 'pets.INTP.title',
-    descriptionKey: 'pets.INTP.description',
-    habitatKey: 'pets.INTP.habitat',
-    wikiName: getWikiNameByNameKey('pets.INTP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.INTP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.INTP.name'),
-  },
-  {
-    id: 'pet-entj',
-    nameKey: 'pets.ENTJ.name',
-    mbti: 'ENTJ',
-    titleKey: 'pets.ENTJ.title',
-    descriptionKey: 'pets.ENTJ.description',
-    habitatKey: 'pets.ENTJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.ENTJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ENTJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ENTJ.name'),
-  },
-  {
-    id: 'pet-entp',
-    nameKey: 'pets.ENTP.name',
-    mbti: 'ENTP',
-    titleKey: 'pets.ENTP.title',
-    descriptionKey: 'pets.ENTP.description',
-    habitatKey: 'pets.ENTP.habitat',
-    wikiName: getWikiNameByNameKey('pets.ENTP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ENTP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ENTP.name'),
-  },
-  {
-    id: 'pet-infj',
-    nameKey: 'pets.INFJ.name',
-    mbti: 'INFJ',
-    titleKey: 'pets.INFJ.title',
-    descriptionKey: 'pets.INFJ.description',
-    habitatKey: 'pets.INFJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.INFJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.INFJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.INFJ.name'),
-  },
-  {
-    id: 'pet-infp',
-    nameKey: 'pets.INFP.name',
-    mbti: 'INFP',
-    titleKey: 'pets.INFP.title',
-    descriptionKey: 'pets.INFP.description',
-    habitatKey: 'pets.INFP.habitat',
-    wikiName: getWikiNameByNameKey('pets.INFP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.INFP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.INFP.name'),
-  },
-  {
-    id: 'pet-enfj',
-    nameKey: 'pets.ENFJ.name',
-    mbti: 'ENFJ',
-    titleKey: 'pets.ENFJ.title',
-    descriptionKey: 'pets.ENFJ.description',
-    habitatKey: 'pets.ENFJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.ENFJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ENFJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ENFJ.name'),
-  },
-  {
-    id: 'pet-enfp',
-    nameKey: 'pets.ENFP.name',
-    mbti: 'ENFP',
-    titleKey: 'pets.ENFP.title',
-    descriptionKey: 'pets.ENFP.description',
-    habitatKey: 'pets.ENFP.habitat',
-    wikiName: getWikiNameByNameKey('pets.ENFP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ENFP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ENFP.name'),
-  },
-  {
-    id: 'pet-istj',
-    nameKey: 'pets.ISTJ.name',
-    mbti: 'ISTJ',
-    titleKey: 'pets.ISTJ.title',
-    descriptionKey: 'pets.ISTJ.description',
-    habitatKey: 'pets.ISTJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.ISTJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ISTJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ISTJ.name'),
-  },
-  {
-    id: 'pet-isfj',
-    nameKey: 'pets.ISFJ.name',
-    mbti: 'ISFJ',
-    titleKey: 'pets.ISFJ.title',
-    descriptionKey: 'pets.ISFJ.description',
-    habitatKey: 'pets.ISFJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.ISFJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ISFJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ISFJ.name'),
-  },
-  {
-    id: 'pet-estj',
-    nameKey: 'pets.ESTJ.name',
-    mbti: 'ESTJ',
-    titleKey: 'pets.ESTJ.title',
-    descriptionKey: 'pets.ESTJ.description',
-    habitatKey: 'pets.ESTJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.ESTJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ESTJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ESTJ.name'),
-  },
-  {
-    id: 'pet-esfj',
-    nameKey: 'pets.ESFJ.name',
-    mbti: 'ESFJ',
-    titleKey: 'pets.ESFJ.title',
-    descriptionKey: 'pets.ESFJ.description',
-    habitatKey: 'pets.ESFJ.habitat',
-    wikiName: getWikiNameByNameKey('pets.ESFJ.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ESFJ.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ESFJ.name'),
-  },
-  {
-    id: 'pet-istp',
-    nameKey: 'pets.ISTP.name',
-    mbti: 'ISTP',
-    titleKey: 'pets.ISTP.title',
-    descriptionKey: 'pets.ISTP.description',
-    habitatKey: 'pets.ISTP.habitat',
-    wikiName: getWikiNameByNameKey('pets.ISTP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ISTP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ISTP.name'),
-  },
-  {
-    id: 'pet-isfp',
-    nameKey: 'pets.ISFP.name',
-    mbti: 'ISFP',
-    titleKey: 'pets.ISFP.title',
-    descriptionKey: 'pets.ISFP.description',
-    habitatKey: 'pets.ISFP.habitat',
-    wikiName: getWikiNameByNameKey('pets.ISFP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ISFP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ISFP.name'),
-  },
-  {
-    id: 'pet-estp',
-    nameKey: 'pets.ESTP.name',
-    mbti: 'ESTP',
-    titleKey: 'pets.ESTP.title',
-    descriptionKey: 'pets.ESTP.description',
-    habitatKey: 'pets.ESTP.habitat',
-    wikiName: getWikiNameByNameKey('pets.ESTP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ESTP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ESTP.name'),
-  },
-  {
-    id: 'pet-esfp',
-    nameKey: 'pets.ESFP.name',
-    mbti: 'ESFP',
-    titleKey: 'pets.ESFP.title',
-    descriptionKey: 'pets.ESFP.description',
-    habitatKey: 'pets.ESFP.habitat',
-    wikiName: getWikiNameByNameKey('pets.ESFP.name'),
-    wikiUrl: getWikiPageUrlByNameKey('pets.ESFP.name'),
-    imageUrl: getWikiPortraitUrlByNameKey('pets.ESFP.name'),
-  },
-]
+export const pets: RocoPet[] = MBTI_LIST.map((mbti) => {
+  const nameKey = MBTI_TO_NAME_KEY[mbti]
+
+  return {
+    id: `pet-${mbti.toLowerCase()}`,
+    nameKey,
+    mbti,
+    titleKey: `pets.${mbti}.title`,
+    descriptionKey: `pets.${mbti}.description`,
+    habitatKey: `pets.${mbti}.habitat`,
+    wikiUrl: getWikiPageUrlByNameKey(nameKey),
+    imageUrl: getLocalPortraitUrlByNameKey(nameKey),
+  }
+})
 
 export const petByMbti = pets.reduce<Record<string, RocoPet>>((accumulator, pet) => {
   accumulator[pet.mbti] = pet

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { Copy, RefreshCcw, Star } from 'lucide-vue-next'
+import { Copy, Info, RefreshCcw, Star } from 'lucide-vue-next'
+import { toast } from 'vue-sonner'
 import { useI18n } from 'vue-i18n'
 
 import { petByMbti, pets } from '@/data/pets'
@@ -16,22 +17,10 @@ const quizStore = useQuizStore()
 const router = useRouter()
 const { t, tm } = useI18n()
 
-const sharedState = ref<'idle' | 'success' | 'failed'>('idle')
 const repositoryUrl = 'https://github.com/Bainianzzz/RBTI'
 
 const resultMbti = computed<string>(() => quizStore.finalMbti)
-const fallbackPet: RocoPet = pets[0] ?? {
-  id: 'pet-fallback',
-  nameKey: 'fallbackPet.name',
-  mbti: 'INTJ',
-  titleKey: 'fallbackPet.title',
-  descriptionKey: 'fallbackPet.description',
-  habitatKey: 'fallbackPet.habitat',
-  wikiName: '星海守望兽',
-  wikiUrl: 'https://wiki.biligame.com/rocom/',
-  imageUrl: 'https://patchwiki.biligame.com/images/rocom/2/25/o64cvcxq1l6tlur77xjqbwx2s4imabd.png',
-}
-const pet = computed<RocoPet>(() => petByMbti[resultMbti.value] ?? fallbackPet)
+const pet = computed<RocoPet>(() => petByMbti[resultMbti.value] ?? pets[0]!)
 const petName = computed<string>(() => t(pet.value.nameKey))
 const petTitle = computed<string>(() => t(pet.value.titleKey))
 const petDescription = computed<string>(() => t(pet.value.descriptionKey))
@@ -52,15 +41,11 @@ const shareText = computed<string>(
 
 const shareToMoments = async (): Promise<void> => {
   try {
-    const shareUrl = `${window.location.origin}/result?mbti=${resultMbti.value}`
+    const shareUrl = `${window.location.origin}`
     await navigator.clipboard.writeText(`${shareText.value} ${shareUrl}`)
-    sharedState.value = 'success'
+    toast.success(t('result.copySuccess'))
   } catch {
-    sharedState.value = 'failed'
-  } finally {
-    window.setTimeout(() => {
-      sharedState.value = 'idle'
-    }, 1800)
+    toast.error(t('result.copyFailed'))
   }
 }
 
@@ -72,14 +57,14 @@ const restart = async (): Promise<void> => {
 
 <template>
   <main
-    class="tw-page-bg min-h-dvh overflow-y-auto px-3 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-4 md:flex md:items-center md:px-8 md:py-10"
+    class="tw-page-bg flex flex-col min-h-dvh items-center justify-center"
   >
     <section
       class="mx-auto max-w-5xl rounded-3xl border border-[#d6cebf] bg-[rgba(243,239,227,0.95)] p-4 shadow-[0_14px_35px_rgba(112,95,67,0.14)] backdrop-blur-xl sm:p-5 md:w-full md:p-8"
     >
       <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p class="mt-1 text-lg font-extrabold tracking-[0.16em] text-[#1f1f1f] md:text-xl md:tracking-[0.2em]">
+          <p class="mt-1 text-2xl font-extrabold tracking-[0.16em] text-[#1f1f1f] md:text-2xl md:tracking-[0.2em]">
             {{ t('result.completed') }}
           </p>
         </div>
@@ -98,6 +83,8 @@ const restart = async (): Promise<void> => {
           <img
             :src="pet.imageUrl"
             :alt="petName"
+            loading="lazy"
+            decoding="async"
             class="mx-auto max-h-72 w-auto max-w-full shrink-0"
           />
           <p class="mt-2 text-center text-xs text-[#3b3832]">{{ t('result.portraitSource') }}</p>
@@ -146,9 +133,11 @@ const restart = async (): Promise<void> => {
             {{ t('result.githubStar') }}
           </a>
         </div>
-        <p v-if="sharedState === 'success'" class="mt-2 text-xs text-[#2f6d28]">{{ t('result.copySuccess') }}</p>
-        <p v-else-if="sharedState === 'failed'" class="mt-2 text-xs text-[#a14f47]">{{ t('result.copyFailed') }}</p>
       </div>
     </section>
+    <p class="flex flex-row gap-1 mt-4 items-center justify-center text-center text-sm text-gray-500">
+      <Info class="h-4 w-4" />
+      {{ t('result.entertainmentNotice') }}
+    </p>
   </main>
 </template>

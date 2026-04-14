@@ -16,7 +16,6 @@ export interface RocoPet {
   titleKey: string
   descriptionKey: string
   habitatKey: string
-  wikiName: string
   wikiUrl: string
   imageUrl: string
 }

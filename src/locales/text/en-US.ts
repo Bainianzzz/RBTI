@@ -14,7 +14,8 @@ const enUSText = {
     githubStar: 'Like it? Give us a Star on GitHub',
     copySuccess: 'Share text and link copied',
     copyFailed: 'Copy failed, please copy the URL manually',
-    shareText: 'I got {mbti} in Roco Personality Mirror, and my spirit partner is {petName}!',
+    entertainmentNotice: 'Questions and personality insights are AI-generated. Results are for entertainment only.',
+    shareText: 'I got {mbti} in Roco Personality Mirror, and my spirit partner is {petName}! Come and try on:',
     personalities: ['Adamant', 'Bold', 'Calm', 'Jolly', 'Relaxed', 'Careful', 'Brave', 'Gentle'],
   },
   fallbackPet: {
@@ -25,9 +26,10 @@ const enUSText = {
   },
   pets: {
     INTJ: {
-      name: 'Nether Dark Sovereign',
+      name: 'Palsas',
       title: 'Architect',
-      description: 'Ruler of the shadow realm. Strategic, independent, and calm with strong big-picture control.',
+      description:
+        "The absolute core of William Castle and Count Dracula's trusted aide. Cold, mysterious, highly rational, and independent, with excellent strategic vision and control.",
       habitat: 'Chatter Plateau',
     },
     INTP: {
@@ -43,9 +45,10 @@ const enUSText = {
       habitat: 'Dex Archive Zone',
     },
     ENTP: {
-      name: 'Gas Dingdang',
+      name: 'Devil Ding',
       title: 'Debater',
-      description: 'Always floating and shifting. Highly agile mind with unpredictable ideas.',
+      description:
+        "A classic early demon-type companion and a signature sidekick for Enzo and the man in black. Curious, mischievous, and unconventional, always breaking norms with clever tricks.",
       habitat: 'Dex Archive Zone',
     },
     INFJ: {
@@ -115,9 +118,10 @@ const enUSText = {
       habitat: 'Dex Archive Zone',
     },
     ESFP: {
-      name: 'Guagua',
+      name: 'Abu',
       title: 'Entertainer',
-      description: 'A carefree martial artist who brings joy and loves self-expression.',
+      description:
+        'Energetic, food-loving, emotionally expressive, and naturally performative. It acts on instinct in adventures and quickly becomes the joyful center of any crowd.',
       habitat: 'Dex Archive Zone',
     },
   },
