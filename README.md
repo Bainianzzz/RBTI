@@ -1,20 +1,18 @@
-# 洛克世界人格镜像（RBTI）
+# 洛克王国：世界本命测试（RBTI）
 
 一个基于 MBTI 维度加权题目的网页测试项目。  
-用户完成测试后，会得到对应的精灵人格镜像结果，并可一键分享结果链接。
+用户完成测试后，会得到对应的精灵人格镜像结果，作为本命精灵，并可一键分享结果链接。
 
-## 在线地址
+## 体验地址
 
 - GitHub Pages: [https://bainianzzz.github.io/RBTI/](https://bainianzzz.github.io/RBTI/)
-- 项目仓库: [https://github.com/Bainianzzz/RBTI](https://github.com/Bainianzzz/RBTI)
 
 ## 功能特性
 
-- 12 道探索场景题，按 MBTI 维度权重实时累积分数。
+- 18 道探索场景题，按 MBTI 维度权重实时累积分数。
 - Pinia 管理答题状态，自动计算最终 MBTI 结果。
-- 结果页根据 MBTI 映射精灵信息、性格标签与 Wiki 跳转。
-- 移动端与桌面端适配，桌面端支持垂直居中展示。
-- 支持复制分享文案与结果链接，含 GitHub Star 引导按钮。
+- 移动端与桌面端适配。
+- 支持复制分享文案与结果链接。
 - GitHub Actions 自动构建并部署到 GitHub Pages。
 
 ## Star 趋势
@@ -23,20 +21,34 @@
 
 ## 技术栈
 
-- Vue 3（`<script setup>`）
-- TypeScript（严格模式）
-- Vite
-- Tailwind CSS
-- Pinia
-- Vue Router
-- Lucide Vue Next
-- VueUse
+- 框架/构建：Vue 3 + Vite
+- 语言：TypeScript
+- 样式：Tailwind CSS
+- 状态/路由：Pinia + Vue Router
+- 国际化：vue-i18n
+- 工具库：@vueuse/core + @headlessui/vue
+- UI/交互：Lucide + vue-sonner
+- 质量/测试：oxlint + ESLint + Vitest
+- 资源处理：sharp (WebP 优化)
 
 ## 项目结构
 
-- `src/types/`：核心类型定义（题目、维度、精灵）
-- `src/data/`：题库与精灵数据
-- `src/stores/`：答题状态管理
-- `src/views/Quiz.vue`：答题页
-- `src/views/Result.vue`：结果页
-- `src/router/`：路由及结果页访问守卫
+```
+RBTI/
+├─ src/
+│  ├─ assets/pets/           # 宠物 webp 静态资源
+│  ├─ components/            # 通用组件（如 AppToaster、图表等）
+│  ├─ data/
+│  │  ├─ questions.ts        # 题目权重与业务数据
+│  │  └─ pets.ts             # MBTI 到宠物信息映射
+│  ├─ i18n/                  # 国际化初始化
+│  ├─ locales/
+│  │  ├─ text/               # 页面文案（zh-CN / en-US）
+│  │  └─ questions/          # 题库文案（zh-CN / en-US）
+│  ├─ router/                # 路由配置
+│  ├─ stores/                # Pinia 状态管理（答题流程/结果）
+│  ├─ types/                 # 类型定义
+└─ └─ views/
+      ├─ Quiz.vue            # 答题页
+      └─ Result.vue          # 结果页（宠物展示、分享、提示）
+```
