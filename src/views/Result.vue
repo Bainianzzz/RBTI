@@ -3,7 +3,6 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Copy, RefreshCcw, Star } from 'lucide-vue-next'
 
-import RadarChart from '@/components/RadarChart.vue'
 import { petByMbti, pets } from '@/data/pets'
 import { useQuizStore } from '@/stores/quiz'
 import type { RocoPet } from '@/types'
@@ -64,18 +63,21 @@ const restart = async (): Promise<void> => {
 </script>
 
 <template>
-  <main class="min-h-screen overflow-y-auto px-4 py-8 md:px-8 md:py-10">
+  <main
+    class="tw-page-bg min-h-dvh overflow-y-auto px-3 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-4 md:flex md:items-center md:px-8 md:py-10"
+  >
     <section
-      class="mx-auto max-w-5xl rounded-3xl border border-[#d7b084]/55 bg-[#151110]/82 p-5 shadow-[0_0_70px_rgba(209,127,49,0.2)] backdrop-blur-xl md:p-8"
+      class="mx-auto max-w-5xl rounded-3xl border border-[#d6cebf] bg-[rgba(243,239,227,0.95)] p-4 shadow-[0_14px_35px_rgba(112,95,67,0.14)] backdrop-blur-xl sm:p-5 md:w-full md:p-8"
     >
       <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p class="text-xs tracking-[0.3em] text-[#efc58f]">鉴定完成</p>
-          <h1 class="mt-2 text-3xl font-bold text-[#f3ebd8] md:text-4xl">{{ resultMbti }}</h1>
+          <p class="mt-1 text-lg font-extrabold tracking-[0.16em] text-[#1f1f1f] md:text-xl md:tracking-[0.2em]">
+            鉴定完成
+          </p>
         </div>
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-xl border border-[#cfa97f]/50 bg-[#241b17]/82 px-4 py-2 text-sm text-[#f3ebd8] transition hover:border-[#e1bc90] hover:bg-[#31241d]"
+          class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#d6cebf] bg-[rgba(243,239,227,0.95)] px-4 py-2 text-sm text-[#1f1f1f] transition hover:border-[#1f1f1f] hover:bg-[#f7f2e7] sm:w-auto"
           @click="restart"
         >
           <RefreshCcw class="h-4 w-4" />
@@ -83,63 +85,61 @@ const restart = async (): Promise<void> => {
         </button>
       </header>
 
-      <div class="grid gap-6 md:grid-cols-[1.2fr_1fr]">
-        <article class="rounded-2xl border border-[#d0a97c]/35 bg-[#1f1714]/74 p-5">
+      <div class="grid gap-4 sm:gap-6 md:grid-cols-[1.2fr_1fr] bg-[#292b2e] rounded-4xl">
+        <aside class="rounded-2xl bg-[#f2f2f2] p-1 sm:p-2">
+          <img
+            :src="pet.imageUrl"
+            :alt="pet.name"
+            class="mx-auto max-h-72 w-auto max-w-full shrink-0"
+          />
+          <p class="mt-2 text-center text-xs text-[#3b3832]">立绘来源：洛克王国世界 WIKI 精灵图鉴词条</p>
+        </aside>
+
+        <article class="rounded-2xl bg-[#292b2e] p-5">
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-            <h2 class="text-2xl font-semibold text-[#f7d8a5]">{{ pet.name }}</h2>
-            <span class="rounded-full bg-[#be7c34]/26 px-3 py-1 text-xs tracking-widest text-[#f1d2ab]">
+            <h2 class="text-2xl font-semibold text-[#f2f2f2]">{{ pet.name }}</h2>
+            <span class="rounded-full border border-[#4a4d52] bg-[#292b2e] px-3 py-1 text-xs tracking-widest text-[#f2f2f2]">
               {{ pet.title }}
             </span>
-            <span class="rounded-full bg-[#7b5b3f]/28 px-3 py-1 text-xs tracking-widest text-[#eddcc0]">
+            <span class="rounded-full border border-[#4a4d52] bg-[#292b2e] px-3 py-1 text-xs tracking-widest text-[#f2f2f2]">
               性格：{{ randomPersonality }}
             </span>
           </div>
-          <p class="mt-4 text-sm leading-7 text-[#eadac0]">{{ pet.description }}</p>
-          <p class="mt-3 text-sm text-[#cfb99a]">栖息地：{{ pet.habitat }}</p>
+          <p class="mt-4 text-sm leading-7 text-[#f2f2f2]">{{ pet.description }}</p>
+          <p class="mt-3 text-sm text-[#f2f2f2]">栖息地：{{ pet.habitat }}</p>
           <a
             :href="pet.wikiUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-4 inline-flex text-sm text-[#f1b569] underline-offset-4 hover:underline"
+            class="mt-4 inline-flex text-sm text-[var(--theme-title)] underline-offset-4 hover:underline"
           >
             查看 Wiki 资料
           </a>
         </article>
-
-        <aside class="rounded-2xl border border-[#d0a97c]/35 bg-[#1f1714]/74 p-5">
-          <img :src="pet.imageUrl" :alt="pet.name" class="h-52 w-full rounded-xl object-contain bg-[#2a201a]/70 p-2 shadow-lg" />
-          <p class="mt-3 text-xs text-[#c9b397]">立绘来源：洛克王国世界 WIKI 精灵图鉴词条</p>
-        </aside>
       </div>
 
-      <div class="mt-6 grid gap-6 md:grid-cols-[1fr_220px]">
-        <article class="rounded-2xl border border-[#d0a97c]/35 bg-[#1f1714]/74 p-4 md:p-6">
-          <h3 class="mb-4 text-lg font-semibold text-[#f4c98f]">六维种族值</h3>
-          <RadarChart :stats="pet.stats" />
-        </article>
-
-        <aside class="rounded-2xl border border-[#d0a97c]/35 bg-[#1f1714]/74 p-4">
-          <h3 class="mb-3 text-sm tracking-widest text-[#f4c98f]">分享结果</h3>
+      <div class="mt-4 p-0 sm:mt-6">
+        <div class="grid gap-3 sm:grid-cols-2">
           <button
             type="button"
-            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#ceaa81]/50 bg-gradient-to-b from-[#be7b35]/35 to-[#8f6237]/25 px-4 py-3 text-sm text-[#f6e7cf] transition hover:border-[#e7be93] hover:from-[#ca8840]/40 active:scale-[0.98]"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#d6cebf] bg-[rgba(243,239,227,0.95)] px-4 py-3.5 text-sm text-[#1f1f1f] transition hover:border-[#1f1f1f] hover:bg-[#f7f2e7] active:scale-[0.98]"
             @click="shareToMoments"
           >
             <Copy class="h-4 w-4" />
             分享到朋友圈（复制链接）
           </button>
-          <p v-if="sharedState === 'success'" class="mt-2 text-xs text-[#9fdd92]">已复制分享文案与链接</p>
-          <p v-else-if="sharedState === 'failed'" class="mt-2 text-xs text-[#f5968f]">复制失败，请手动复制地址栏链接</p>
           <a
             :href="repositoryUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#cfa97f]/50 bg-[#2a1f1a] px-4 py-2 text-xs text-[#f3ebd8] transition hover:border-[#e7be93] hover:bg-[#3a2a22]"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#d6cebf] bg-[rgba(243,239,227,0.95)] px-4 py-3.5 text-sm text-[#8c7232] transition hover:border-[#1f1f1f] hover:bg-[#f7f2e7]"
           >
             <Star class="h-4 w-4" />
             觉得不错？来 GitHub 点个 Star
           </a>
-        </aside>
+        </div>
+        <p v-if="sharedState === 'success'" class="mt-2 text-xs text-[#2f6d28]">已复制分享文案与链接</p>
+        <p v-else-if="sharedState === 'failed'" class="mt-2 text-xs text-[#a14f47]">复制失败，请手动复制地址栏链接</p>
       </div>
     </section>
   </main>

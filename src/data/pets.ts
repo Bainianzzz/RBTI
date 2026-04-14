@@ -1,9 +1,7 @@
 import type { RocoPet } from '@/types'
 
-const dimoPortrait = 'https://patchwiki.biligame.com/images/rocom/2/25/o64cvcxq1l6tlur77xjqbwx2s4imabd.png'
-const juhualiPortrait = 'https://patchwiki.biligame.com/images/rocom/d/db/qitqnhdvjw8gwhnvvapfuqv6g0qgaef.png'
-const lifangrenPortrait = 'https://patchwiki.biligame.com/images/rocom/0/09/fnsx2e888qucax28zooe75tenxxgmkx.png'
-const longyuPortrait = 'https://patchwiki.biligame.com/images/rocom/1/1b/9pwwn6fecfi32vefzwgmfcpftbkfvxi.png'
+const getWikiPortraitUrl = (petName: string): string =>
+  `https://wiki.biligame.com/rocom/index.php?title=Special:FilePath/${encodeURIComponent(`页面_宠物_立绘_${petName}_1.png`)}`
 
 export const pets: RocoPet[] = [
   {
@@ -15,7 +13,7 @@ export const pets: RocoPet[] = [
     description: '图鉴编号 NO001，光系代表精灵，适合作为沉稳策略型人格映射。',
     wikiUrl: 'https://wiki.biligame.com/rocom/迪莫',
     habitat: '叽叽喳喳台地',
-    imageUrl: dimoPortrait,
+    imageUrl: getWikiPortraitUrl('迪莫'),
   },
   {
     id: 'pet-intp',
@@ -26,7 +24,7 @@ export const pets: RocoPet[] = [
     description: '来自精灵图鉴的真实词条，用于表现探索中的分析与推演倾向。',
     wikiUrl: 'https://wiki.biligame.com/rocom/菊花梨',
     habitat: '图鉴记录区域',
-    imageUrl: juhualiPortrait,
+    imageUrl: getWikiPortraitUrl('菊花梨'),
   },
   {
     id: 'pet-entj',
@@ -37,7 +35,7 @@ export const pets: RocoPet[] = [
     description: '图鉴中的经典精灵形象，映射强组织与高执行的队伍领袖风格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/立方人',
     habitat: '图鉴记录区域',
-    imageUrl: lifangrenPortrait,
+    imageUrl: getWikiPortraitUrl('立方人'),
   },
   {
     id: 'pet-entp',
@@ -48,7 +46,7 @@ export const pets: RocoPet[] = [
     description: '精灵图鉴词条中高人气宠物，适配灵活应变和创意驱动人格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/龙鱼',
     habitat: '图鉴记录区域',
-    imageUrl: longyuPortrait,
+    imageUrl: getWikiPortraitUrl('龙鱼'),
   },
   {
     id: 'pet-infj',
@@ -59,7 +57,7 @@ export const pets: RocoPet[] = [
     description: '图鉴收录精灵，多重人格融合感强，适配洞察与共情型人格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/多灵主',
     habitat: '图鉴记录区域',
-    imageUrl: dimoPortrait,
+    imageUrl: getWikiPortraitUrl('多灵主'),
   },
   {
     id: 'pet-infp',
@@ -70,7 +68,7 @@ export const pets: RocoPet[] = [
     description: '来自精灵图鉴的宠物名称，呈现温和而富有想象力的探索方式。',
     wikiUrl: 'https://wiki.biligame.com/rocom/小皮球',
     habitat: '图鉴记录区域',
-    imageUrl: juhualiPortrait,
+    imageUrl: getWikiPortraitUrl('小皮球'),
   },
   {
     id: 'pet-enfj',
@@ -81,7 +79,7 @@ export const pets: RocoPet[] = [
     description: '图鉴中具备鲜明协作氛围的精灵名，映射高同理与引导能力。',
     wikiUrl: 'https://wiki.biligame.com/rocom/健猫教练',
     habitat: '图鉴记录区域',
-    imageUrl: lifangrenPortrait,
+    imageUrl: getWikiPortraitUrl('健猫教练'),
   },
   {
     id: 'pet-enfp',
@@ -92,7 +90,7 @@ export const pets: RocoPet[] = [
     description: '来自图鉴词条，风格张扬灵活，适配高外向与高创造型人格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/酷拉',
     habitat: '图鉴记录区域',
-    imageUrl: longyuPortrait,
+    imageUrl: getWikiPortraitUrl('酷拉'),
   },
   {
     id: 'pet-istj',
@@ -103,7 +101,7 @@ export const pets: RocoPet[] = [
     description: '图鉴精灵名，用于表现流程优先、稳定推进的执行人格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/鳗尾兽',
     habitat: '图鉴记录区域',
-    imageUrl: dimoPortrait,
+    imageUrl: getWikiPortraitUrl('鳗尾兽'),
   },
   {
     id: 'pet-isfj',
@@ -114,7 +112,7 @@ export const pets: RocoPet[] = [
     description: '引用精灵图鉴中的命名，强调稳定、谨慎与持续辅助能力。',
     wikiUrl: 'https://wiki.biligame.com/rocom/闪电鳗鱼',
     habitat: '图鉴记录区域',
-    imageUrl: juhualiPortrait,
+    imageUrl: getWikiPortraitUrl('闪电鳗鱼'),
   },
   {
     id: 'pet-estj',
@@ -125,7 +123,7 @@ export const pets: RocoPet[] = [
     description: '图鉴真实精灵名，映射重目标和高纪律性的决策风格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/彩蝶鲨',
     habitat: '图鉴记录区域',
-    imageUrl: lifangrenPortrait,
+    imageUrl: getWikiPortraitUrl('彩蝶鲨'),
   },
   {
     id: 'pet-esfj',
@@ -136,7 +134,7 @@ export const pets: RocoPet[] = [
     description: '取自精灵图鉴的角色，用于表达高社交和团队情绪连接。',
     wikiUrl: 'https://wiki.biligame.com/rocom/卷毛鸭',
     habitat: '图鉴记录区域',
-    imageUrl: longyuPortrait,
+    imageUrl: getWikiPortraitUrl('卷毛鸭'),
   },
   {
     id: 'pet-istp',
@@ -147,7 +145,7 @@ export const pets: RocoPet[] = [
     description: '图鉴中常见的实战派精灵名，适配快速判断和极简执行。',
     wikiUrl: 'https://wiki.biligame.com/rocom/熔岩布丁',
     habitat: '图鉴记录区域',
-    imageUrl: dimoPortrait,
+    imageUrl: getWikiPortraitUrl('熔岩布丁'),
   },
   {
     id: 'pet-isfp',
@@ -158,7 +156,7 @@ export const pets: RocoPet[] = [
     description: '来自精灵图鉴，映射自由探索与审美驱动的行动偏好。',
     wikiUrl: 'https://wiki.biligame.com/rocom/怒目怂猫',
     habitat: '图鉴记录区域',
-    imageUrl: juhualiPortrait,
+    imageUrl: getWikiPortraitUrl('怒目怂猫'),
   },
   {
     id: 'pet-estp',
@@ -169,7 +167,7 @@ export const pets: RocoPet[] = [
     description: '精灵图鉴命名中的高机动角色，适配强行动和临场突破风格。',
     wikiUrl: 'https://wiki.biligame.com/rocom/海豹船长',
     habitat: '图鉴记录区域',
-    imageUrl: lifangrenPortrait,
+    imageUrl: getWikiPortraitUrl('海豹船长'),
   },
   {
     id: 'pet-esfp',
@@ -180,7 +178,7 @@ export const pets: RocoPet[] = [
     description: '来自精灵图鉴的代表形象，强调表现力和氛围带动能力。',
     wikiUrl: 'https://wiki.biligame.com/rocom/绅士鸡',
     habitat: '图鉴记录区域',
-    imageUrl: longyuPortrait,
+    imageUrl: getWikiPortraitUrl('绅士鸡'),
   },
 ]
 
