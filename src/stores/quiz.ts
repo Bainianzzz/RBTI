@@ -11,7 +11,6 @@ const SHINY_APPEARANCE_RATE = 0.1
 
 type ResultSnapshot = {
   mbti: string
-  isShiny: boolean
 }
 
 const createInitialScores = (): Record<Dimension, number> => ({
@@ -46,13 +45,12 @@ const loadResultSnapshot = (): ResultSnapshot | null => {
     }
 
     const parsed = JSON.parse(raw) as Partial<ResultSnapshot>
-    if (!isValidMbti(parsed.mbti) || typeof parsed.isShiny !== 'boolean') {
+    if (!isValidMbti(parsed.mbti)) {
       return null
     }
 
     return {
       mbti: parsed.mbti,
-      isShiny: parsed.isShiny,
     }
   } catch {
     return null
@@ -84,7 +82,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const scores = ref<Record<Dimension, number>>(createInitialScores())
   const selectedOptions = ref<Array<number>>(createInitialSelectedOptions())
   const savedMbti = ref<string | null>(savedResult?.mbti ?? null)
-  const isShinyResult = ref<boolean>(savedResult?.isShiny ?? false)
+  const isShinyResult = ref<boolean>(savedResult ? rollShinyPet() : false)
 
   const totalQuestions = questions.length
   const currentQuestion = computed<Question | null>(() => questions[currentIndex.value] ?? null)
@@ -151,7 +149,6 @@ export const useQuizStore = defineStore('quiz', () => {
       isShinyResult.value = rollShinyPet()
       persistResultSnapshot({
         mbti: calculatedMbti.value,
-        isShiny: isShinyResult.value,
       })
     }
   }
