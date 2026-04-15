@@ -1,5 +1,7 @@
 # 洛克王国：世界本命测试（RBTI）
 
+[![Pages Visits](https://visitor-badge.laobi.icu/badge?page_id=bainianzzz.rbti-pages&left_text=Pages%20Visits)](https://bainianzzz.github.io/RBTI/)
+
 一个基于 MBTI 维度加权题目的网页测试项目。  
 用户完成测试后，会得到对应的精灵人格镜像结果，作为本命精灵，并可一键分享结果链接。
 
@@ -9,11 +11,11 @@
 
 ## 功能特性
 
-- 18 道探索场景题，按 MBTI 维度权重实时累积分数。
-- Pinia 管理答题状态，自动计算最终 MBTI 结果。
-- 移动端与桌面端适配。
-- 支持复制分享文案与结果链接。
-- GitHub Actions 自动构建并部署到 GitHub Pages。
+- 18 道场景题按 MBTI 维度实时加权，自动生成本命精灵结果。
+- 结果页支持孵蛋动画、打字机标题与 10% 概率异色精灵。
+- 支持分享链接与结果图片导出（移动端下载 / 桌面端弹窗预览）。
+- 中英文双语（`zh-CN` / `en-US`）文案切换。
+- GitHub Pages 自动部署，移动端与桌面端均适配。
 
 ## Star 趋势
 
@@ -21,15 +23,13 @@
 
 ## 技术栈
 
-- 框架/构建：Vue 3 + Vite
-- 语言：TypeScript
-- 样式：Tailwind CSS
-- 状态/路由：Pinia + Vue Router
+- 前端框架：Vue 3 + Vite + TypeScript
+- 状态与路由：Pinia + Vue Router
+- 样式与组件：Tailwind CSS + Reka UI + Headless UI
 - 国际化：vue-i18n
-- 工具库：@vueuse/core + @headlessui/vue
-- UI/交互：Lucide + vue-sonner
-- 质量/测试：oxlint + ESLint + Vitest
-- 资源处理：sharp (WebP 优化)
+- 结果导出：@zumer/snapdom
+- 交互与图标：vue-writer + vue-sonner + lucide-vue-next
+- 代码质量：ESLint + oxlint + Vitest
 
 ## 项目结构
 
