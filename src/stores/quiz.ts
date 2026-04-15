@@ -6,6 +6,13 @@ import { questions } from '@/data/questions'
 import type { Dimension, Question, RocoPet } from '@/types'
 
 const dimensions: Dimension[] = ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P']
+const QUIZ_STORAGE_KEY = 'rbti:quiz-state'
+
+type QuizSnapshot = {
+  currentIndex: number
+  scores: Record<Dimension, number>
+  selectedOptions: Array<number>
+}
 
 const createInitialScores = (): Record<Dimension, number> => ({
   E: 0,
@@ -18,10 +25,79 @@ const createInitialScores = (): Record<Dimension, number> => ({
   P: 0,
 })
 
+const createInitialSelectedOptions = (): Array<number> => questions.map(() => -1)
+
+const isValidScores = (value: unknown): value is Record<Dimension, number> => {
+  if (!value || typeof value !== 'object') {
+    return false
+  }
+
+  return dimensions.every((dimension) => Number.isFinite((value as Record<string, unknown>)[dimension]))
+}
+
+const isValidSelectedOptions = (value: unknown): value is Array<number> => {
+  if (!Array.isArray(value) || value.length !== questions.length) {
+    return false
+  }
+
+  return value.every((optionIndex, index) => {
+    if (!Number.isInteger(optionIndex)) {
+      return false
+    }
+    return optionIndex >= -1 && optionIndex < questions[index]!.options.length
+  })
+}
+
+const loadSnapshot = (): QuizSnapshot | null => {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  try {
+    const raw = localStorage.getItem(QUIZ_STORAGE_KEY)
+    if (!raw) {
+      return null
+    }
+
+    const parsed = JSON.parse(raw) as Partial<QuizSnapshot>
+    if (!Number.isInteger(parsed.currentIndex)) {
+      return null
+    }
+    if (parsed.currentIndex! < 0 || parsed.currentIndex! > questions.length) {
+      return null
+    }
+    if (!isValidScores(parsed.scores) || !isValidSelectedOptions(parsed.selectedOptions)) {
+      return null
+    }
+
+    return {
+      currentIndex: parsed.currentIndex!,
+      scores: parsed.scores,
+      selectedOptions: parsed.selectedOptions,
+    }
+  } catch {
+    return null
+  }
+}
+
 export const useQuizStore = defineStore('quiz', () => {
-  const currentIndex = ref(0)
-  const scores = ref<Record<Dimension, number>>(createInitialScores())
-  const selectedOptions = ref<Array<number>>(questions.map(() => -1))
+  const snapshot = loadSnapshot()
+  const currentIndex = ref(snapshot?.currentIndex ?? 0)
+  const scores = ref<Record<Dimension, number>>(snapshot?.scores ?? createInitialScores())
+  const selectedOptions = ref<Array<number>>(snapshot?.selectedOptions ?? createInitialSelectedOptions())
+
+  const persistSnapshot = (): void => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    const data: QuizSnapshot = {
+      currentIndex: currentIndex.value,
+      scores: scores.value,
+      selectedOptions: selectedOptions.value,
+    }
+    localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(data))
+  }
 
   const totalQuestions = questions.length
   const currentQuestion = computed<Question | null>(() => questions[currentIndex.value] ?? null)
@@ -80,6 +156,7 @@ export const useQuizStore = defineStore('quiz', () => {
     applyWeights(option.weights)
     selectedOptions.value[currentIndex.value] = optionIndex
     currentIndex.value += 1
+    persistSnapshot()
   }
 
   const previousQuestion = (): void => {
@@ -99,12 +176,14 @@ export const useQuizStore = defineStore('quiz', () => {
     }
 
     currentIndex.value = previousIndex
+    persistSnapshot()
   }
 
   const restart = (): void => {
     currentIndex.value = 0
     scores.value = createInitialScores()
-    selectedOptions.value = questions.map(() => -1)
+    selectedOptions.value = createInitialSelectedOptions()
+    persistSnapshot()
   }
 
   return {

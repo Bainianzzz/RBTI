@@ -6,9 +6,10 @@ import { useI18n } from 'vue-i18n'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { useQuizStore } from '@/stores/quiz'
+import { useQuizStore } from '@/stores/quiz.ts'
 
 import ResultShareCard from './ResultShareCard.vue'
+import { downloadResultShareCardImage, RESULT_SHARE_CARD_EXPORT_ID } from './utils'
 
 const quizStore = useQuizStore()
 const { t } = useI18n()
@@ -28,12 +29,25 @@ const shareLink = async (): Promise<void> => {
   }
 }
 
-const downloadShareImage = (): void => {
-  toast.info(t('result.downloadSoon'))
+const downloadShareImage = async (): Promise<void> => {
+  const didDownload = await downloadResultShareCardImage(quizStore.finalMbti)
+  if (didDownload) {
+    toast.success(t('result.downloadSuccess'))
+  } else {
+    toast.error(t('result.downloadFailed'))
+  }
 }
 </script>
 
 <template>
+  <div
+    :id="RESULT_SHARE_CARD_EXPORT_ID"
+    class="pointer-events-none fixed top-0 left-[-10000px] z-[-1] w-[390px]"
+    aria-hidden="true"
+  >
+    <ResultShareCard :export-mode="true" />
+  </div>
+
   <div class="grid w-full gap-3 md:hidden">
     <Button
       type="button"
@@ -70,7 +84,7 @@ const downloadShareImage = (): void => {
 
       <DialogContent
         :show-close-button="true"
-        class="bg-light border-light shadow-warm w-full max-w-[min(92vw,1100px)] space-y-6 rounded-2xl border p-5 md:p-8 lg:p-10"
+        class="bg-light border-light shadow-warm w-[96vw] max-w-[min(96vw,1400px)] max-h-[92vh] space-y-6 overflow-y-auto rounded-2xl border p-5 md:p-10 lg:p-12"
       >
         <DialogHeader>
           <DialogTitle class="text-dark text-lg font-semibold md:text-xl">
@@ -78,7 +92,9 @@ const downloadShareImage = (): void => {
           </DialogTitle>
         </DialogHeader>
 
-        <ResultShareCard />
+        <div class="mx-auto w-full max-w-[1280px]">
+          <ResultShareCard />
+        </div>
 
         <div class="grid w-full gap-3 sm:grid-cols-2">
           <Button

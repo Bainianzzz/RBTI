@@ -5,9 +5,9 @@ import { useI18n } from 'vue-i18n'
 
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { useQuizStore } from '@/stores/quiz'
-import ResultShareCard from '@/views/_components/ResultShareCard.vue'
-import ShareResultDialog from '@/views/_components/ShareResultDialog.vue'
+import { useQuizStore } from '@/stores/quiz.ts'
+import ResultShareCard from '@/views/result/_components/ResultShareCard.vue'
+import ShareResultDialog from '@/views/result/_components/ShareResultDialog.vue'
 
 defineOptions({
   name: 'ResultView',
@@ -49,7 +49,9 @@ const restart = async (): Promise<void> => {
         </Button>
       </header>
 
-      <ResultShareCard />
+      <div id="result-share-card">
+        <ResultShareCard />
+      </div>
 
       <Separator class="bg-[#d8d1c3]" />
 

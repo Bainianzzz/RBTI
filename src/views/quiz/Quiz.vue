@@ -7,8 +7,8 @@ import { useI18n } from 'vue-i18n'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import QuizProgressBar from '@/views/_components/QuizProgressBar.vue'
-import { useQuizStore } from '@/stores/quiz'
+import QuizProgressBar from '@/views/quiz/_components/QuizProgressBar.vue'
+import { useQuizStore } from '@/stores/quiz.ts'
 
 defineOptions({
   name: 'QuizView',
