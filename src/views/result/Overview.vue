@@ -58,7 +58,7 @@ onBeforeRouteLeave((to) => {
     class="bg-light flex min-h-dvh flex-col items-center justify-center px-2.5 py-3 sm:px-4 sm:py-5 md:px-6 md:py-8"
   >
     <section
-      class="bg-light mx-auto w-full max-w-5xl space-y-4 rounded-3xl border border-[#cfc6b4] p-3.5 backdrop-blur-xl sm:space-y-6 sm:p-6 md:space-y-8 md:p-8 md:shadow-warm"
+      class="bg-light mx-auto w-full max-w-5xl space-y-4 rounded-3xl border border-soft p-3.5 backdrop-blur-xl sm:space-y-6 sm:p-6 md:space-y-8 md:p-8 md:shadow-warm"
     >
       <header class="flex flex-wrap items-start justify-between gap-3 sm:items-center">
         <div>
@@ -78,7 +78,7 @@ onBeforeRouteLeave((to) => {
           <Button
             type="button"
             variant="outline"
-            class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm sm:w-auto sm:px-5"
+            class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm sm:w-auto sm:px-5"
             @click="restart"
           >
             <RefreshCcw class="h-4 w-4" />
@@ -99,7 +99,7 @@ onBeforeRouteLeave((to) => {
           <Button
             as-child
             variant="outline"
-            class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition"
+            class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm transition"
           >
             <a
               :href="repositoryUrl"

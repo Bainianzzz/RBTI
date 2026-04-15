@@ -6,13 +6,12 @@ import { questions } from '@/data/questions'
 import type { Dimension, Question, RocoPet } from '@/types'
 
 const dimensions: Dimension[] = ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P']
-const QUIZ_STORAGE_KEY = 'rbti:quiz-state'
+const RESULT_STORAGE_KEY = 'rbti:result-state'
 const SHINY_APPEARANCE_RATE = 0.1
 
-type QuizSnapshot = {
-  currentIndex: number
-  scores: Record<Dimension, number>
-  selectedOptions: Array<number>
+type ResultSnapshot = {
+  mbti: string
+  isShiny: boolean
 }
 
 const createInitialScores = (): Record<Dimension, number> => ({
@@ -28,98 +27,73 @@ const createInitialScores = (): Record<Dimension, number> => ({
 
 const createInitialSelectedOptions = (): Array<number> => questions.map(() => -1)
 
-const isValidScores = (value: unknown): value is Record<Dimension, number> => {
-  if (!value || typeof value !== 'object') {
+const isValidMbti = (value: unknown): value is string => {
+  if (typeof value !== 'string') {
     return false
   }
-
-  return dimensions.every((dimension) =>
-    Number.isFinite((value as Record<string, unknown>)[dimension]),
-  )
+  return /^[EINSFTJP]{4}$/.test(value)
 }
 
-const isValidSelectedOptions = (value: unknown): value is Array<number> => {
-  if (!Array.isArray(value) || value.length !== questions.length) {
-    return false
-  }
-
-  return value.every((optionIndex, index) => {
-    if (!Number.isInteger(optionIndex)) {
-      return false
-    }
-    return optionIndex >= -1 && optionIndex < questions[index]!.options.length
-  })
-}
-
-const loadSnapshot = (): QuizSnapshot | null => {
+const loadResultSnapshot = (): ResultSnapshot | null => {
   if (typeof window === 'undefined') {
     return null
   }
 
   try {
-    const raw = localStorage.getItem(QUIZ_STORAGE_KEY)
+    const raw = localStorage.getItem(RESULT_STORAGE_KEY)
     if (!raw) {
       return null
     }
 
-    const parsed = JSON.parse(raw) as Partial<QuizSnapshot>
-    if (!Number.isInteger(parsed.currentIndex)) {
-      return null
-    }
-    if (parsed.currentIndex! < 0 || parsed.currentIndex! > questions.length) {
-      return null
-    }
-    if (!isValidScores(parsed.scores) || !isValidSelectedOptions(parsed.selectedOptions)) {
+    const parsed = JSON.parse(raw) as Partial<ResultSnapshot>
+    if (!isValidMbti(parsed.mbti) || typeof parsed.isShiny !== 'boolean') {
       return null
     }
 
     return {
-      currentIndex: parsed.currentIndex!,
-      scores: parsed.scores,
-      selectedOptions: parsed.selectedOptions,
+      mbti: parsed.mbti,
+      isShiny: parsed.isShiny,
     }
   } catch {
     return null
   }
 }
 
+const persistResultSnapshot = (snapshot: ResultSnapshot | null): void => {
+  if (typeof window === 'undefined') {
+    return
+  }
+  if (!snapshot) {
+    localStorage.removeItem(RESULT_STORAGE_KEY)
+    return
+  }
+  localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(snapshot))
+}
+
 const rollShinyPet = (): boolean => Math.random() < SHINY_APPEARANCE_RATE
 
+const calculateMbti = (scores: Record<Dimension, number>): string => {
+  const choose = (left: Dimension, right: Dimension): Dimension =>
+    scores[left] >= scores[right] ? left : right
+  return `${choose('E', 'I')}${choose('S', 'N')}${choose('T', 'F')}${choose('J', 'P')}`
+}
+
 export const useQuizStore = defineStore('quiz', () => {
-  const snapshot = loadSnapshot()
-  const currentIndex = ref(snapshot?.currentIndex ?? 0)
-  const scores = ref<Record<Dimension, number>>(snapshot?.scores ?? createInitialScores())
-  const selectedOptions = ref<Array<number>>(
-    snapshot?.selectedOptions ?? createInitialSelectedOptions(),
-  )
-  const isShinyResult = ref<boolean>(
-    (snapshot?.currentIndex ?? 0) >= questions.length && rollShinyPet(),
-  )
-
-  const persistSnapshot = (): void => {
-    if (typeof window === 'undefined') {
-      return
-    }
-
-    const data: QuizSnapshot = {
-      currentIndex: currentIndex.value,
-      scores: scores.value,
-      selectedOptions: selectedOptions.value,
-    }
-    localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(data))
-  }
+  const savedResult = loadResultSnapshot()
+  const currentIndex = ref(0)
+  const scores = ref<Record<Dimension, number>>(createInitialScores())
+  const selectedOptions = ref<Array<number>>(createInitialSelectedOptions())
+  const savedMbti = ref<string | null>(savedResult?.mbti ?? null)
+  const isShinyResult = ref<boolean>(savedResult?.isShiny ?? false)
 
   const totalQuestions = questions.length
   const currentQuestion = computed<Question | null>(() => questions[currentIndex.value] ?? null)
   const isCompleted = computed<boolean>(() => currentIndex.value >= totalQuestions)
+  const hasResult = computed<boolean>(() => savedMbti.value !== null)
   const progress = computed<number>(() => (currentIndex.value / totalQuestions) * 100)
 
-  const finalMbti = computed<string>(() => {
-    const choose = (left: Dimension, right: Dimension): Dimension =>
-      scores.value[left] >= scores.value[right] ? left : right
-
-    return `${choose('E', 'I')}${choose('S', 'N')}${choose('T', 'F')}${choose('J', 'P')}`
-  })
+  const calculatedMbti = computed<string>(() => calculateMbti(scores.value))
+  const finalMbti = computed<string>(() => savedMbti.value ?? calculatedMbti.value)
   const matchedPet = computed<RocoPet>(() => {
     const pet = petByMbti[finalMbti.value] ?? pets[0]!
     return {
@@ -173,14 +147,22 @@ export const useQuizStore = defineStore('quiz', () => {
     selectedOptions.value[currentIndex.value] = optionIndex
     currentIndex.value += 1
     if (currentIndex.value >= totalQuestions) {
+      savedMbti.value = calculatedMbti.value
       isShinyResult.value = rollShinyPet()
+      persistResultSnapshot({
+        mbti: calculatedMbti.value,
+        isShiny: isShinyResult.value,
+      })
     }
-    persistSnapshot()
   }
 
   const previousQuestion = (): void => {
     if (currentIndex.value <= 0) {
       return
+    }
+    if (savedMbti.value) {
+      savedMbti.value = null
+      persistResultSnapshot(null)
     }
 
     const previousIndex = currentIndex.value - 1
@@ -198,15 +180,15 @@ export const useQuizStore = defineStore('quiz', () => {
     if (currentIndex.value < totalQuestions) {
       isShinyResult.value = false
     }
-    persistSnapshot()
   }
 
   const restart = (): void => {
     currentIndex.value = 0
     scores.value = createInitialScores()
     selectedOptions.value = createInitialSelectedOptions()
+    savedMbti.value = null
     isShinyResult.value = false
-    persistSnapshot()
+    persistResultSnapshot(null)
   }
 
   return {
@@ -216,6 +198,7 @@ export const useQuizStore = defineStore('quiz', () => {
     progress,
     scores,
     isCompleted,
+    hasResult,
     isShinyResult,
     finalMbti,
     matchedPet,

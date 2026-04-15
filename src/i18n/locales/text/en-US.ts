@@ -3,6 +3,7 @@ const enUSText = {
     badgeTitle: 'Roco Kingdom Spirit Partner Test',
     progressLabel: 'Question {current} / {total}',
     previous: 'Previous',
+    restart: 'Restart',
   },
   result: {
     completed: 'Assessment Complete',

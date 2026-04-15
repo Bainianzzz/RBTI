@@ -18,14 +18,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.name !== 'result') {
-    return true
+  const quizStore = useQuizStore()
+
+  if (to.name === 'quiz' && quizStore.hasResult) {
+    return { name: 'result' }
   }
 
-  const quizStore = useQuizStore()
-  if (!quizStore.isCompleted) {
+  if (to.name === 'result' && !quizStore.hasResult) {
     return { name: 'quiz' }
   }
+
   return true
 })
 

@@ -13,13 +13,12 @@
   color: var(--color-text-base);
   background-color: rgba(243, 239, 227, 0.95);
   --color-bg-light: rgba(243, 239, 227, 0.95);
-  --color-bg-dark: #292b2e;
   --color-text-accent: #ffc65f;
   --color-border-light: #cbbfa9;
   --color-border-light-muted: #d8d1c3;
+  --color-border-soft: #cfc6b4;
   --color-border-dark-strong: #141414;
   --color-border-dark-muted: #4a4d52;
-  --color-border-accent: #f0cc61;
   --color-bg-light-hover: #f7f2e7;
   --color-text-light: #f2f2f2;
   --color-text-dark: #1f1f1f;
@@ -85,10 +84,6 @@ body {
     background-color: var(--color-bg-light);
   }
 
-  .bg-dark {
-    background-color: var(--color-bg-dark);
-  }
-
   .border-light {
     border-color: var(--color-border-light);
   }
@@ -125,25 +120,16 @@ body {
     box-shadow: var(--shadow-warm-card);
   }
 
-  .panel-light-md {
-    border-color: transparent;
-    box-shadow: none;
-  }
-
   .border-light-muted {
     border-color: var(--color-border-light-muted);
   }
 
+  .border-soft {
+    border-color: var(--color-border-soft);
+  }
+
   .text-dark-muted {
     color: var(--color-text-dark-muted);
-  }
-
-  .border-accent-hover:hover {
-    border-color: var(--color-border-accent);
-  }
-
-  .border-accent-enabled-hover:enabled:hover {
-    border-color: var(--color-border-accent);
   }
 
   .text-dark-strong-enabled-hover:enabled:hover {
@@ -152,13 +138,6 @@ body {
 
   .shadow-warm-glow-active:active {
     box-shadow: var(--shadow-warm-glow);
-  }
-
-  @media (min-width: 768px) {
-    .panel-light-md {
-      border-color: var(--color-border-light-muted);
-      box-shadow: var(--shadow-warm-card);
-    }
   }
 
 }

@@ -52,7 +52,7 @@ const downloadShareImage = async (): Promise<void> => {
     <Button
       type="button"
       variant="outline"
-      class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition"
+      class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm transition"
       @click="downloadShareImage"
     >
       <Download class="h-4 w-4" />
@@ -61,7 +61,7 @@ const downloadShareImage = async (): Promise<void> => {
     <Button
       type="button"
       variant="outline"
-      class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition active:scale-[0.98]"
+      class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm transition active:scale-[0.98]"
       @click="shareLink"
     >
       <Copy class="h-4 w-4" />
@@ -75,7 +75,7 @@ const downloadShareImage = async (): Promise<void> => {
         <Button
           type="button"
           variant="outline"
-          class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition active:scale-[0.98]"
+          class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm transition active:scale-[0.98]"
         >
           <Copy class="h-4 w-4" />
           {{ t('result.shareResultImage') }}
@@ -100,7 +100,7 @@ const downloadShareImage = async (): Promise<void> => {
           <Button
             type="button"
             variant="outline"
-            class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition active:scale-[0.98]"
+            class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm transition active:scale-[0.98]"
             @click="shareLink"
           >
             <Copy class="h-4 w-4" />
@@ -109,7 +109,7 @@ const downloadShareImage = async (): Promise<void> => {
           <Button
             type="button"
             variant="outline"
-            class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition"
+            class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-soft px-4 text-sm transition"
             @click="downloadShareImage"
           >
             <Download class="h-4 w-4" />
