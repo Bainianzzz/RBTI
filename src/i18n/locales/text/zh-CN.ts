@@ -3,6 +3,7 @@ const zhCNText = {
     badgeTitle: '洛克王国本命测试',
     progressLabel: '第 {current} / {total} 题',
     previous: '上一题',
+    restart: '重新答题',
   },
   result: {
     completed: '鉴定完成',

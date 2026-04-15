@@ -3,7 +3,8 @@
 [![Pages Visits](https://visitor-badge.laobi.icu/badge?page_id=bainianzzz.rbti-pages&left_text=Pages%20Visits)](https://bainianzzz.github.io/RBTI/)
 
 一个基于 MBTI 维度加权题目的网页测试项目。  
-用户完成测试后，会得到对应的精灵人格镜像结果，作为本命精灵，并可一键分享结果链接。
+用户完成测试后，会得到对应的精灵人格镜像结果，作为本命精灵，并可一键分享结果链接或者图片。
+每次刷新结果页面，有可能出现自己本命精灵的异色形态。
 
 ## 体验地址
 

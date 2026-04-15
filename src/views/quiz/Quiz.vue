@@ -2,13 +2,13 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTransition } from '@vueuse/core'
-import { ArrowLeft, Sparkles } from 'lucide-vue-next'
+import { ArrowLeft, RefreshCcw, Sparkles } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import QuizProgressBar from '@/views/quiz/_components/QuizProgressBar.vue'
-import { useQuizStore } from '@/stores/quiz.ts'
+import { useQuizStore } from '@/stores/quiz'
 
 defineOptions({
   name: 'QuizView',
@@ -29,6 +29,7 @@ watch(
       void router.push('/result')
     }
   },
+  { immediate: true },
 )
 
 const answer = (optionIndex: number): void => {
@@ -42,6 +43,11 @@ const goToPreviousQuestion = (): void => {
   }
   direction.value = 'prev'
   quizStore.previousQuestion()
+}
+
+const restartQuiz = (): void => {
+  direction.value = 'next'
+  quizStore.restart()
 }
 
 const transitionName = computed<string>(() =>
@@ -61,17 +67,30 @@ const canGoBack = computed<boolean>(() => quizStore.currentIndex > 0)
   >
     <div class="mx-auto flex w-full max-w-5xl flex-col justify-center">
       <div class="bg-light relative rounded-3xl border-0 p-4 shadow-none backdrop-blur-xl sm:p-5 md:border md:border-light-muted md:p-10 md:shadow-[var(--shadow-warm-card)]">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          class="bg-light border-light-muted text-dark-muted border-accent-enabled-hover text-dark-strong-enabled-hover absolute right-4 top-4 z-10 gap-1.5 rounded-full md:right-6 md:top-6"
-          :disabled="!canGoBack"
-          @click="goToPreviousQuestion"
-        >
-          <ArrowLeft aria-hidden="true" class="h-4 w-4" />
-          <span>{{ t('quiz.previous') }}</span>
-        </Button>
+        <div class="absolute right-4 top-3 z-10 flex items-center gap-2 md:right-6 md:top-6">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            class="bg-light text-dark-muted border-dark-hover text-dark-strong-enabled-hover hidden gap-1.5 rounded-full border border-soft bg-light-hover md:inline-flex"
+            :disabled="!canGoBack"
+            @click="restartQuiz"
+          >
+            <RefreshCcw aria-hidden="true" class="h-4 w-4" />
+            <span>{{ t('quiz.restart') }}</span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            class="bg-light text-dark-muted border-dark-hover text-dark-strong-enabled-hover gap-1.5 rounded-full border border-soft bg-light-hover"
+            :disabled="!canGoBack"
+            @click="goToPreviousQuestion"
+          >
+            <ArrowLeft aria-hidden="true" class="h-4 w-4" />
+            <span>{{ t('quiz.previous') }}</span>
+          </Button>
+        </div>
         <div class="pointer-events-none absolute inset-0 hidden rounded-3xl border border-[#ece6d9] md:block" />
 
         <div class="mb-0 space-y-3">
@@ -98,7 +117,7 @@ const canGoBack = computed<boolean>(() => quizStore.currentIndex > 0)
                   :key="option.textKey"
                   type="button"
                   variant="outline"
-                  class="bg-light border-light-muted border-accent-hover shadow-warm-glow-active h-auto w-full justify-start rounded-2xl px-4 py-3.5 text-left text-[0.95rem] whitespace-normal break-words leading-relaxed text-[#2f2f2f] transition duration-150 hover:bg-[#f7f2e7] active:scale-[0.98] sm:px-5 sm:py-4 sm:text-base"
+                  class="bg-light border-dark-hover shadow-warm-glow-active h-auto w-full justify-start rounded-2xl border border-soft px-4 py-3.5 text-left text-[0.95rem] whitespace-normal break-words leading-relaxed text-[#2f2f2f] transition duration-150 bg-light-hover active:scale-[0.98] sm:px-5 sm:py-4 sm:text-base"
                   @click="answer(optionIndex)"
                 >
                   <span class="block font-medium tracking-wide text-inherit">{{ t(option.textKey) }}</span>
