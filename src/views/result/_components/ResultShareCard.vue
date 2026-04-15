@@ -45,12 +45,6 @@ const spiritTitleText = computed<string>(() => `${t('result.spiritPartnerLabel')
         class="mt-2 text-center text-xs text-[#3b3832]">
         {{ t('result.portraitSource') }}
       </p>
-      <p
-        v-if="!props.exportMode"
-        class="mt-1 text-center text-xs text-[#3b3832]"
-      >
-        {{ t('result.shinyHint') }}
-      </p>
     </aside>
 
     <article

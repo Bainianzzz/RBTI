@@ -7,13 +7,13 @@ const enUSText = {
   result: {
     completed: 'Assessment Complete',
     restart: 'Restart Quiz',
+    shinyRefresh: 'Roll for Shiny!',
     portraitSource: 'Artwork source: Roco Kingdom World BiliBili WIKI',
-    shinyHint: 'Tip: refresh multiple times for a chance to encounter a shiny spirit (10% rate).',
     spiritPartnerLabel: 'Spirit Partner',
     personality: 'Nature',
     habitat: 'Habitat',
     viewWiki: 'View Wiki',
-    shareResultImage: 'Share Result Image',
+    shareResultImage: 'Share Result',
     shareLink: 'Share Link',
     downloadImage: 'Download Image',
     downloadSoon: 'Image download will be available soon.',
@@ -27,12 +27,6 @@ const enUSText = {
       'Questions and personality insights are AI-generated. Results are for entertainment only.',
     shareText: 'My spirit partner in Roco Kingdom is {petName}! Try it here:',
     personalities: ['Adamant', 'Bold', 'Calm', 'Jolly', 'Relaxed', 'Careful', 'Brave', 'Gentle'],
-  },
-  fallbackPet: {
-    name: 'Starsea Sentinel',
-    title: 'Default Personality Mirror',
-    description: 'Fallback result data for exceptional cases only.',
-    habitat: 'Starsea Nexus',
   },
   pets: {
     INTJ: {

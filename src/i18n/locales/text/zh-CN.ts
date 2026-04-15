@@ -7,13 +7,13 @@ const zhCNText = {
   result: {
     completed: '鉴定完成',
     restart: '重新测试',
+    shinyRefresh: '我要刷异色！',
     portraitSource: '立绘来源：洛克王国世界 BiliBili WIKI 图鉴',
-    shinyHint: '提示：多次刷新结果，有机会遇到异色精灵（10% 概率）',
     spiritPartnerLabel: '本命精灵',
     personality: '性格',
     habitat: '栖息地',
     viewWiki: '查看 Wiki 资料',
-    shareResultImage: '分享结果图片',
+    shareResultImage: '分享结果',
     shareLink: '分享链接',
     downloadImage: '下载图片',
     downloadSoon: '下载图片功能即将上线',
@@ -26,12 +26,6 @@ const zhCNText = {
     entertainmentNotice: '题目与人格分析皆由AI生成，测试结果仅供娱乐。',
     shareText: '我在洛克王国的本命精灵是 {petName}！你也快来试试吧：',
     personalities: ['固执', '大胆', '冷静', '开朗', '悠闲', '慎重', '勇敢', '温和'],
-  },
-  fallbackPet: {
-    name: '星海守望兽',
-    title: '默认人格镜像',
-    description: '默认结果数据，仅用于异常兜底展示。',
-    habitat: '星海中枢',
   },
   pets: {
     INTJ: {

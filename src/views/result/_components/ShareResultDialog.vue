@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { useQuizStore } from '@/stores/quiz.ts'
+import { useQuizStore } from '@/stores/quiz'
 
 import ResultShareCard from './ResultShareCard.vue'
 import { downloadResultShareCardImage, RESULT_SHARE_CARD_EXPORT_ID } from './utils'
@@ -48,11 +48,11 @@ const downloadShareImage = async (): Promise<void> => {
     <ResultShareCard :export-mode="true" />
   </div>
 
-  <div class="grid w-full gap-3 md:hidden">
+  <div class="grid w-full gap-2.5 md:hidden sm:gap-3">
     <Button
       type="button"
       variant="outline"
-      class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-auto w-full rounded-xl py-3.5 text-sm transition"
+      class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition"
       @click="downloadShareImage"
     >
       <Download class="h-4 w-4" />
@@ -61,7 +61,7 @@ const downloadShareImage = async (): Promise<void> => {
     <Button
       type="button"
       variant="outline"
-      class="border-light bg-light text-dark border-dark-hover bg-light-hover h-auto w-full rounded-xl py-3.5 text-sm transition active:scale-[0.98]"
+      class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition active:scale-[0.98]"
       @click="shareLink"
     >
       <Copy class="h-4 w-4" />
@@ -75,7 +75,7 @@ const downloadShareImage = async (): Promise<void> => {
         <Button
           type="button"
           variant="outline"
-          class="border-light bg-light text-dark border-dark-hover bg-light-hover h-auto w-full rounded-xl py-3.5 text-sm transition active:scale-[0.98]"
+          class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition active:scale-[0.98]"
         >
           <Copy class="h-4 w-4" />
           {{ t('result.shareResultImage') }}
@@ -100,7 +100,7 @@ const downloadShareImage = async (): Promise<void> => {
           <Button
             type="button"
             variant="outline"
-            class="border-light bg-light text-dark border-dark-hover bg-light-hover h-auto w-full rounded-xl py-3.5 text-sm transition active:scale-[0.98]"
+            class="border-light bg-light text-dark border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition active:scale-[0.98]"
             @click="shareLink"
           >
             <Copy class="h-4 w-4" />
@@ -109,7 +109,7 @@ const downloadShareImage = async (): Promise<void> => {
           <Button
             type="button"
             variant="outline"
-            class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-auto w-full rounded-xl py-3.5 text-sm transition"
+            class="border-light bg-light text-accent-warm border-dark-hover bg-light-hover h-11 w-full rounded-xl border border-[#cfc6b4] px-4 text-sm transition"
             @click="downloadShareImage"
           >
             <Download class="h-4 w-4" />
