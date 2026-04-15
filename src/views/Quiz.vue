@@ -5,6 +5,9 @@ import { useTransition } from '@vueuse/core'
 import { ArrowLeft, Sparkles } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import QuizProgressBar from '@/views/_components/QuizProgressBar.vue'
 import { useQuizStore } from '@/stores/quiz'
 
 defineOptions({
@@ -54,60 +57,57 @@ const canGoBack = computed<boolean>(() => quizStore.currentIndex > 0)
 
 <template>
   <main
-    class="tw-page-bg flex min-h-dvh items-center overflow-hidden px-3 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-4 md:px-8 md:py-8"
+    class="bg-light flex min-h-dvh items-center overflow-hidden px-3 py-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:px-4 md:px-8 md:py-8"
   >
     <div class="mx-auto flex w-full max-w-5xl flex-col justify-center">
-      <section
-        class="relative rounded-3xl border border-transparent bg-[rgba(243,239,227,0.95)] p-4 shadow-none backdrop-blur-xl sm:p-5 md:border-[#d8d1c3] md:p-10 md:shadow-[0_14px_35px_rgba(112,95,67,0.14)]"
-      >
-        <button
+      <div class="bg-light relative rounded-3xl border-0 p-4 shadow-none backdrop-blur-xl sm:p-5 md:border md:border-light-muted md:p-10 md:shadow-[var(--shadow-warm-card)]">
+        <Button
           type="button"
-          class="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-[#d8d1c3] bg-[rgba(243,239,227,0.95)] px-3.5 py-2 text-sm font-medium text-[#6a6670] transition enabled:hover:border-[#f0cc61] enabled:hover:text-[#111111] disabled:cursor-not-allowed disabled:opacity-40 md:right-6 md:top-6"
+          variant="outline"
+          size="sm"
+          class="bg-light border-light-muted text-dark-muted border-accent-enabled-hover text-dark-strong-enabled-hover absolute right-4 top-4 z-10 gap-1.5 rounded-full md:right-6 md:top-6"
           :disabled="!canGoBack"
           @click="goToPreviousQuestion"
         >
           <ArrowLeft aria-hidden="true" class="h-4 w-4" />
           <span>{{ t('quiz.previous') }}</span>
-        </button>
+        </Button>
         <div class="pointer-events-none absolute inset-0 hidden rounded-3xl border border-[#ece6d9] md:block" />
-        <header class="mb-5 md:mb-6">
-          <p
-            class="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f2df9f] bg-[#f7e9b8] px-3 py-1 text-xs font-semibold tracking-[0.08em] text-[#8c7232]"
-          >
+
+        <div class="mb-0 space-y-3">
+          <Badge class="w-fit gap-2 border border-[#f2df9f] bg-[#f7e9b8] px-3 py-1 text-xs font-semibold tracking-[0.08em] text-[#8c7232]">
             <Sparkles class="h-4 w-4" />
             {{ t('quiz.badgeTitle') }}
-          </p>
-          <div class="mb-3 h-2 rounded-full bg-[#ddd8cd]">
-            <div
-              class="h-full rounded-full bg-gradient-to-r from-[#f0cc61] via-[#f4d978] to-[#f6e4a6]"
-              :style="{ width: `${animatedProgress}%` }"
-            />
-          </div>
-          <p class="text-sm text-[#6a6670]">
+          </Badge>
+          <QuizProgressBar :value="animatedProgress" />
+          <p class="text-dark-muted text-sm">
             {{ t('quiz.progressLabel', { current: progressCurrent, total: quizStore.totalQuestions }) }}
           </p>
-        </header>
+        </div>
 
-        <Transition :name="transitionName" mode="out-in">
-          <article v-if="quizStore.currentQuestion" :key="quizStore.currentQuestion.id" class="space-y-6">
-            <h1 class="text-xl font-bold leading-relaxed text-[#8c7232] sm:text-2xl md:text-3xl">
-              {{ t(quizStore.currentQuestion.textKey) }}
-            </h1>
+        <div class="pt-5 md:pt-6">
+          <Transition :name="transitionName" mode="out-in">
+            <article v-if="quizStore.currentQuestion" :key="quizStore.currentQuestion.id" class="space-y-6">
+              <h1 class="text-xl font-bold leading-relaxed text-[#8c7232] sm:text-2xl md:text-3xl">
+                {{ t(quizStore.currentQuestion.textKey) }}
+              </h1>
 
-            <div class="space-y-3">
-              <button
-                v-for="(option, optionIndex) in quizStore.currentQuestion.options"
-                :key="option.textKey"
-                type="button"
-                class="answer-option group w-full rounded-2xl border border-[#d8d1c3] bg-[rgba(243,239,227,0.95)] px-4 py-3.5 text-left text-[0.95rem] text-[#2f2f2f] transition duration-150 hover:border-[#f0cc61] hover:bg-[#f7f2e7] active:scale-[0.98] active:shadow-[0_0_14px_rgba(240,204,97,0.3)] sm:px-5 sm:py-4 sm:text-base"
-                @click="answer(optionIndex)"
-              >
-                <span class="answer-option-label block font-medium tracking-wide">{{ t(option.textKey) }}</span>
-              </button>
-            </div>
-          </article>
-        </Transition>
-      </section>
+              <div class="space-y-3">
+                <Button
+                  v-for="(option, optionIndex) in quizStore.currentQuestion.options"
+                  :key="option.textKey"
+                  type="button"
+                  variant="outline"
+                  class="bg-light border-light-muted border-accent-hover shadow-warm-glow-active h-auto w-full justify-start rounded-2xl px-4 py-3.5 text-left text-[0.95rem] whitespace-normal break-words leading-relaxed text-[#2f2f2f] transition duration-150 hover:bg-[#f7f2e7] active:scale-[0.98] sm:px-5 sm:py-4 sm:text-base"
+                  @click="answer(optionIndex)"
+                >
+                  <span class="block font-medium tracking-wide text-inherit">{{ t(option.textKey) }}</span>
+                </Button>
+              </div>
+            </article>
+          </Transition>
+        </div>
+      </div>
     </div>
   </main>
 </template>
@@ -132,8 +132,4 @@ const canGoBack = computed<boolean>(() => quizStore.currentIndex > 0)
   opacity: 0;
 }
 
-.answer-option:hover .answer-option-label,
-.answer-option:active .answer-option-label {
-  color: #111111;
-}
 </style>

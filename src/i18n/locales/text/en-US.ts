@@ -1,13 +1,13 @@
 const enUSText = {
   quiz: {
-    badgeTitle: 'Roco Personality Mirror',
+    badgeTitle: 'Roco Kingdom Spirit Partner Test',
     progressLabel: 'Question {current} / {total}',
     previous: 'Previous',
   },
   result: {
     completed: 'Assessment Complete',
     restart: 'Restart Quiz',
-    portraitSource: 'Artwork source: Roco Kingdom World WIKI Bestiary',
+    portraitSource: 'Artwork source: Roco Kingdom World BiliBili WIKI',
     personality: 'Nature',
     habitat: 'Habitat',
     viewWiki: 'View Wiki',

@@ -1,13 +1,13 @@
 const zhCNText = {
   quiz: {
-    badgeTitle: '洛克世界人格镜像',
+    badgeTitle: '洛克王国本命测试',
     progressLabel: '第 {current} / {total} 题',
     previous: '上一题',
   },
   result: {
     completed: '鉴定完成',
     restart: '重新测试',
-    portraitSource: '立绘来源：洛克王国世界 WIKI 精灵图鉴词条',
+    portraitSource: '立绘来源：洛克王国世界 BiliBili WIKI 图鉴',
     personality: '性格',
     habitat: '栖息地',
     viewWiki: '查看 Wiki 资料',
