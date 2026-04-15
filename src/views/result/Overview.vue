@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Info, RefreshCcw, Star } from 'lucide-vue-next'
+import { Info, RefreshCcw, RotateCw, Star } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 
 import { Button } from '@/components/ui/button'
@@ -18,11 +19,31 @@ const router = useRouter()
 const { t } = useI18n()
 
 const repositoryUrl = 'https://github.com/Bainianzzz/RBTI'
+const visitCounterUrl = 'https://visitor-badge.laobi.icu/badge?page_id=bainianzzz.rbti-pages'
+
+const trackResultVisit = (): void => {
+  if (typeof window === 'undefined') {
+    return
+  }
+  const tracker = new Image()
+  tracker.src = `${visitCounterUrl}&t=${Date.now()}`
+}
 
 const restart = async (): Promise<void> => {
   quizStore.restart()
   await router.push('/')
 }
+
+const refreshPage = (): void => {
+  if (typeof window === 'undefined') {
+    return
+  }
+  window.location.reload()
+}
+
+onMounted(() => {
+  trackResultVisit()
+})
 </script>
 
 <template>
@@ -38,15 +59,26 @@ const restart = async (): Promise<void> => {
             {{ t('result.completed') }}
           </p>
         </div>
-        <Button
-          type="button"
-          variant="outline"
-          class="border-light bg-light text-dark border-dark-hover bg-light-hover w-full rounded-xl text-sm sm:w-auto"
-          @click="restart"
-        >
-          <RefreshCcw class="h-4 w-4" />
-          {{ t('result.restart') }}
-        </Button>
+        <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+          <Button
+            type="button"
+            variant="outline"
+            class="border-light bg-light text-dark border-dark-hover bg-light-hover w-full rounded-xl text-sm sm:w-auto"
+            @click="refreshPage"
+          >
+            <RotateCw class="h-4 w-4" />
+            刷新页面
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            class="border-light bg-light text-dark border-dark-hover bg-light-hover w-full rounded-xl text-sm sm:w-auto"
+            @click="restart"
+          >
+            <RefreshCcw class="h-4 w-4" />
+            {{ t('result.restart') }}
+          </Button>
+        </div>
       </header>
 
       <div id="result-share-card">
