@@ -6,9 +6,7 @@
 用户完成测试后，会得到对应的精灵人格镜像结果，作为本命精灵，并可一键分享结果链接或者图片。
 每次刷新结果页面，有可能出现自己本命精灵的异色形态。
 
-## 体验地址
-
-- GitHub Pages: [https://bainianzzz.github.io/RBTI/](https://bainianzzz.github.io/RBTI/)
+## [体验地址](https://www.rbti-test.fun/)
 
 ## 功能特性
 
