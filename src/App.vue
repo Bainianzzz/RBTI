@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppToaster from '@/components/AppToaster.vue'
+import AppToaster from '@/views/_components/AppToaster.vue'
 </script>
 
 <template>
