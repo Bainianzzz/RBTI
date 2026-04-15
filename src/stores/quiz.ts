@@ -1,8 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
+import { petByMbti, pets } from '@/data/pets'
 import { questions } from '@/data/questions'
-import type { Dimension, Question } from '@/types'
+import type { Dimension, Question, RocoPet } from '@/types'
 
 const dimensions: Dimension[] = ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P']
 
@@ -33,6 +34,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     return `${choose('E', 'I')}${choose('S', 'N')}${choose('T', 'F')}${choose('J', 'P')}`
   })
+  const matchedPet = computed<RocoPet>(() => petByMbti[finalMbti.value] ?? pets[0]!)
 
   const applyWeights = (weights: Partial<Record<Dimension, number>>): void => {
     for (const key of dimensions) {
@@ -113,6 +115,7 @@ export const useQuizStore = defineStore('quiz', () => {
     scores,
     isCompleted,
     finalMbti,
+    matchedPet,
     answerQuestion,
     previousQuestion,
     restart,
