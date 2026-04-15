@@ -2,6 +2,7 @@ const enUSText = {
   quiz: {
     badgeTitle: 'Roco Personality Mirror',
     progressLabel: 'Question {current} / {total}',
+    previous: 'Previous',
   },
   result: {
     completed: 'Assessment Complete',
@@ -15,7 +16,7 @@ const enUSText = {
     copySuccess: 'Share text and link copied.',
     copyFailed: 'Copy failed. Please copy the URL manually.',
     entertainmentNotice: 'Questions and personality insights are AI-generated. Results are for entertainment only.',
-    shareText: 'I got {mbti} in Roco Personality Mirror, and my spirit partner is {petName}! Try it here:',
+    shareText: 'My spirit partner in Roco Kingdom is {petName}! Try it here:',
     personalities: ['Adamant', 'Bold', 'Calm', 'Jolly', 'Relaxed', 'Careful', 'Brave', 'Gentle'],
   },
   fallbackPet: {

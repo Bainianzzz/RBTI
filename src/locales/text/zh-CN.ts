@@ -2,6 +2,7 @@ const zhCNText = {
   quiz: {
     badgeTitle: '洛克世界人格镜像',
     progressLabel: '第 {current} / {total} 题',
+    previous: '上一题',
   },
   result: {
     completed: '鉴定完成',
@@ -15,7 +16,7 @@ const zhCNText = {
     copySuccess: '已复制分享文案与链接',
     copyFailed: '复制失败，请手动复制地址栏链接',
     entertainmentNotice: '题目与人格分析皆由AI生成，测试结果仅供娱乐。',
-    shareText: '我在洛克世界人格镜像测出了 {mbti}，本命精灵是 {petName}！你也快来试试吧：',
+    shareText: '我在洛克王国的本命精灵是 {petName}！你也快来试试吧：',
     personalities: ['固执', '大胆', '冷静', '开朗', '悠闲', '慎重', '勇敢', '温和'],
   },
   fallbackPet: {

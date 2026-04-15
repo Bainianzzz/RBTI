@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTransition } from '@vueuse/core'
-import { Sparkles } from 'lucide-vue-next'
+import { ArrowLeft, Sparkles } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 
 import { useQuizStore } from '@/stores/quiz'
@@ -33,9 +33,23 @@ const answer = (optionIndex: number): void => {
   quizStore.answerQuestion(optionIndex)
 }
 
+const goToPreviousQuestion = (): void => {
+  if (quizStore.currentIndex <= 0) {
+    return
+  }
+  direction.value = 'prev'
+  quizStore.previousQuestion()
+}
+
 const transitionName = computed<string>(() =>
   direction.value === 'next' ? 'slide-forward' : 'slide-backward',
 )
+
+const progressCurrent = computed<number>(() =>
+  Math.min(quizStore.currentIndex + 1, quizStore.totalQuestions),
+)
+
+const canGoBack = computed<boolean>(() => quizStore.currentIndex > 0)
 </script>
 
 <template>
@@ -46,6 +60,15 @@ const transitionName = computed<string>(() =>
       <section
         class="relative rounded-3xl border border-transparent bg-[rgba(243,239,227,0.95)] p-4 shadow-none backdrop-blur-xl sm:p-5 md:border-[#d8d1c3] md:p-10 md:shadow-[0_14px_35px_rgba(112,95,67,0.14)]"
       >
+        <button
+          type="button"
+          class="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full border border-[#d8d1c3] bg-[rgba(243,239,227,0.95)] px-3.5 py-2 text-sm font-medium text-[#6a6670] transition enabled:hover:border-[#f0cc61] enabled:hover:text-[#111111] disabled:cursor-not-allowed disabled:opacity-40 md:right-6 md:top-6"
+          :disabled="!canGoBack"
+          @click="goToPreviousQuestion"
+        >
+          <ArrowLeft aria-hidden="true" class="h-4 w-4" />
+          <span>{{ t('quiz.previous') }}</span>
+        </button>
         <div class="pointer-events-none absolute inset-0 hidden rounded-3xl border border-[#ece6d9] md:block" />
         <header class="mb-5 md:mb-6">
           <p
@@ -61,7 +84,7 @@ const transitionName = computed<string>(() =>
             />
           </div>
           <p class="text-sm text-[#6a6670]">
-            {{ t('quiz.progressLabel', { current: quizStore.currentIndex + 1, total: quizStore.totalQuestions }) }}
+            {{ t('quiz.progressLabel', { current: progressCurrent, total: quizStore.totalQuestions }) }}
           </p>
         </header>
 

@@ -36,7 +36,7 @@ const randomPersonality = computed<string>(() => {
 })
 
 const shareText = computed<string>(
-  () => t('result.shareText', { mbti: resultMbti.value, petName: petName.value }),
+  () => t('result.shareText', { petName: petName.value }),
 )
 
 const shareToMoments = async (): Promise<void> => {
@@ -64,7 +64,7 @@ const restart = async (): Promise<void> => {
     >
       <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p class="mt-1 text-2xl font-extrabold tracking-[0.16em] text-[#1f1f1f] md:text-2xl md:tracking-[0.2em]">
+          <p class="mt-1 text-2xl font-extrabold tracking-[0.16em] text-[#1f1f1f] md:tracking-[0.2em]">
             {{ t('result.completed') }}
           </p>
         </div>
@@ -113,7 +113,7 @@ const restart = async (): Promise<void> => {
         </article>
       </div>
 
-      <div class="mt-4 p-0 sm:mt-6">
+      <div class="mt-4 sm:mt-6">
         <div class="grid gap-3 sm:grid-cols-2">
           <button
             type="button"

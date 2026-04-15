@@ -20,6 +20,7 @@ const createInitialScores = (): Record<Dimension, number> => ({
 export const useQuizStore = defineStore('quiz', () => {
   const currentIndex = ref(0)
   const scores = ref<Record<Dimension, number>>(createInitialScores())
+  const selectedOptions = ref<Array<number>>(questions.map(() => -1))
 
   const totalQuestions = questions.length
   const currentQuestion = computed<Question | null>(() => questions[currentIndex.value] ?? null)
@@ -42,6 +43,15 @@ export const useQuizStore = defineStore('quiz', () => {
     }
   }
 
+  const revertWeights = (weights: Partial<Record<Dimension, number>>): void => {
+    for (const key of dimensions) {
+      const delta = weights[key] ?? 0
+      if (delta !== 0) {
+        scores.value[key] -= delta
+      }
+    }
+  }
+
   const answerQuestion = (optionIndex: number): void => {
     if (isCompleted.value) {
       return
@@ -57,13 +67,42 @@ export const useQuizStore = defineStore('quiz', () => {
       return
     }
 
+    const previousOptionIndex = selectedOptions.value[currentIndex.value] ?? -1
+    if (previousOptionIndex >= 0) {
+      const previousOption = question.options[previousOptionIndex]
+      if (previousOption) {
+        revertWeights(previousOption.weights)
+      }
+    }
+
     applyWeights(option.weights)
+    selectedOptions.value[currentIndex.value] = optionIndex
     currentIndex.value += 1
+  }
+
+  const previousQuestion = (): void => {
+    if (currentIndex.value <= 0) {
+      return
+    }
+
+    const previousIndex = currentIndex.value - 1
+    const question = questions[previousIndex]
+    const selectedOptionIndex = selectedOptions.value[previousIndex] ?? -1
+    if (question && selectedOptionIndex >= 0) {
+      const selectedOption = question.options[selectedOptionIndex]
+      if (selectedOption) {
+        revertWeights(selectedOption.weights)
+      }
+      selectedOptions.value[previousIndex] = -1
+    }
+
+    currentIndex.value = previousIndex
   }
 
   const restart = (): void => {
     currentIndex.value = 0
     scores.value = createInitialScores()
+    selectedOptions.value = questions.map(() => -1)
   }
 
   return {
@@ -75,6 +114,7 @@ export const useQuizStore = defineStore('quiz', () => {
     isCompleted,
     finalMbti,
     answerQuestion,
+    previousQuestion,
     restart,
   }
 })
