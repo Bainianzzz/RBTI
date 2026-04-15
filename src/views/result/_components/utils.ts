@@ -29,7 +29,7 @@ export const downloadResultShareCardImage = async (mbti: string): Promise<boolea
     const fileName = `rbti-result-${mbti.toLowerCase() || 'unknown'}.png`
     const capture = await snapdom(shareCard, { scale: EXPORT_SCALE })
     await capture.download({
-      format: 'png',
+      type: 'png',
       filename: fileName,
     })
     return true

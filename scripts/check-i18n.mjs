@@ -7,13 +7,13 @@ const jiti = createJiti(import.meta.url)
 const LOCALE_PAIRS = [
   {
     name: 'text',
-    zhPath: resolve('src/locales/text/zh-CN.ts'),
-    enPath: resolve('src/locales/text/en-US.ts'),
+    zhPath: resolve('src/i18n/locales/text/zh-CN.ts'),
+    enPath: resolve('src/i18n/locales/text/en-US.ts'),
   },
   {
     name: 'questions',
-    zhPath: resolve('src/locales/questions/zh-CN.ts'),
-    enPath: resolve('src/locales/questions/en-US.ts'),
+    zhPath: resolve('src/i18n/locales/questions/zh-CN.ts'),
+    enPath: resolve('src/i18n/locales/questions/en-US.ts'),
   },
 ]
 
