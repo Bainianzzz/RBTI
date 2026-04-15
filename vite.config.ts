@@ -5,14 +5,9 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 
-const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'RBTI'
-const isGithubActions = process.env.GITHUB_ACTIONS === 'true'
-const isUserPageRepo = repoName.endsWith('.github.io')
-const base = isGithubActions && !isUserPageRepo ? `/${repoName}/` : '/'
-
 // https://vite.dev/config/
 export default defineConfig({
-  base,
+  base: process.env.VITE_BASE_PATH || '/',
   plugins: [vue(), vueDevTools(), tailwindcss()],
   resolve: {
     alias: {
