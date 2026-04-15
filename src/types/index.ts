@@ -18,6 +18,7 @@ export interface RocoPet {
   habitatKey: string
   wikiUrl: string
   imageUrl: string
+  shinyImageUrl: string
 }
 
 export interface Question {

@@ -93,7 +93,7 @@ const downloadShareImage = async (): Promise<void> => {
         </DialogHeader>
 
         <div class="mx-auto w-full max-w-[1280px]">
-          <ResultShareCard />
+          <ResultShareCard :export-mode="true" />
         </div>
 
         <div class="grid w-full gap-3 sm:grid-cols-2">

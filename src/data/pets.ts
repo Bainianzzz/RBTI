@@ -1,39 +1,55 @@
 import type { RocoPet } from '@/types'
 
-import imageAbu from '@/assets/pets/esfp.webp'
-import imageDimo from '@/assets/pets/enfj.webp'
-import imageEnchanterCat from '@/assets/pets/infp.webp'
-import imageEvilDing from '@/assets/pets/entp.webp'
-import imageFireGod from '@/assets/pets/entj.webp'
-import imageFrostDoll from '@/assets/pets/isfp.webp'
-import imageGranBall from '@/assets/pets/esfj.webp'
-import imageGuardDog from '@/assets/pets/isfj.webp'
-import imageHolyWater from '@/assets/pets/infj.webp'
-import imageKula from '@/assets/pets/istp.webp'
-import imageLuoYin from '@/assets/pets/istj.webp'
-import imageMechaCube from '@/assets/pets/intp.webp'
-import imagePalsas from '@/assets/pets/intj.webp'
-import imageRoyalGryphon from '@/assets/pets/estj.webp'
-import imageSonicDog from '@/assets/pets/estp.webp'
-import imageSpringFlower from '@/assets/pets/enfp.webp'
+import normalENFP from '@/assets/pets/normal/ENFP_normal.webp'
+import normalENFJ from '@/assets/pets/normal/ENFJ_normal.webp'
+import normalENTJ from '@/assets/pets/normal/ENTJ_normal.webp'
+import normalENTP from '@/assets/pets/normal/ENTP_normal.webp'
+import normalESFJ from '@/assets/pets/normal/ESFJ_normal.webp'
+import normalESFP from '@/assets/pets/normal/ESFP_normal.webp'
+import normalESTJ from '@/assets/pets/normal/ESTJ_normal.webp'
+import normalESTP from '@/assets/pets/normal/ESTP_normal.webp'
+import normalINFJ from '@/assets/pets/normal/INFJ_normal.webp'
+import normalINFP from '@/assets/pets/normal/INFP_normal.webp'
+import normalINTJ from '@/assets/pets/normal/INTJ_normal.webp'
+import normalINTP from '@/assets/pets/normal/INTP_normal.webp'
+import normalISFJ from '@/assets/pets/normal/ISFJ_normal.webp'
+import normalISFP from '@/assets/pets/normal/ISFP_normal.webp'
+import normalISTJ from '@/assets/pets/normal/ISTJ_normal.webp'
+import normalISTP from '@/assets/pets/normal/ISTP_normal.webp'
+import shinyENFP from '@/assets/pets/shiny/ENFP_shiny.webp'
+import shinyENFJ from '@/assets/pets/shiny/ENFJ_shiny.webp'
+import shinyENTJ from '@/assets/pets/shiny/ENTJ_shiny.webp'
+import shinyENTP from '@/assets/pets/shiny/ENTP_shiny.webp'
+import shinyESFJ from '@/assets/pets/shiny/ESFJ_shiny.webp'
+import shinyESFP from '@/assets/pets/shiny/ESFP_shiny.webp'
+import shinyESTJ from '@/assets/pets/shiny/ESTJ_shiny.webp'
+import shinyESTP from '@/assets/pets/shiny/ESTP_shiny.webp'
+import shinyINFJ from '@/assets/pets/shiny/INFJ_shiny.webp'
+import shinyINFP from '@/assets/pets/shiny/INFP_shiny.webp'
+import shinyINTJ from '@/assets/pets/shiny/INTJ_shiny.webp'
+import shinyINTP from '@/assets/pets/shiny/INTP_shiny.webp'
+import shinyISFJ from '@/assets/pets/shiny/ISFJ_shiny.webp'
+import shinyISFP from '@/assets/pets/shiny/ISFP_shiny.webp'
+import shinyISTJ from '@/assets/pets/shiny/ISTJ_shiny.webp'
+import shinyISTP from '@/assets/pets/shiny/ISTP_shiny.webp'
 
 const PET_NAME = {
-  'pets.INTJ.name': '帕尔萨斯',
+  'pets.INTJ.name': '夜枭',
   'pets.INTP.name': '机械方方',
-  'pets.ENTJ.name': '烈火战神',
-  'pets.ENTP.name': '恶魔叮',
-  'pets.INFJ.name': '圣水守护',
-  'pets.INFP.name': '魔力猫',
-  'pets.ENFJ.name': '迪莫',
-  'pets.ENFP.name': '蹦蹦花',
-  'pets.ISTJ.name': '罗隐',
-  'pets.ISFJ.name': '护主犬',
-  'pets.ESTJ.name': '皇家狮鹫',
+  'pets.ENTJ.name': '恶魔狼',
+  'pets.ENTP.name': '红纹十字',
+  'pets.INFJ.name': '利灯鱼',
+  'pets.INFP.name': '奇丽花',
+  'pets.ENFJ.name': '小皮球',
+  'pets.ENFP.name': '粉星仔',
+  'pets.ISTJ.name': '獠牙猪',
+  'pets.ISFJ.name': '贝古斯',
+  'pets.ESTJ.name': '窃光蚁',
   'pets.ESFJ.name': '格兰球',
   'pets.ISTP.name': '酷拉',
   'pets.ISFP.name': '雪影娃娃',
-  'pets.ESTP.name': '音速犬',
-  'pets.ESFP.name': '阿布',
+  'pets.ESTP.name': '炫爵虫',
+  'pets.ESFP.name': '月牙雪熊',
 } as const
 
 const MBTI_LIST = [
@@ -78,22 +94,41 @@ const MBTI_TO_NAME_KEY: Record<MbtiType, PetNameKey> = {
 }
 
 const PET_IMAGE_URL: Record<PetNameKey, string> = {
-  'pets.INTJ.name': imagePalsas,
-  'pets.INTP.name': imageMechaCube,
-  'pets.ENTJ.name': imageFireGod,
-  'pets.ENTP.name': imageEvilDing,
-  'pets.INFJ.name': imageHolyWater,
-  'pets.INFP.name': imageEnchanterCat,
-  'pets.ENFJ.name': imageDimo,
-  'pets.ENFP.name': imageSpringFlower,
-  'pets.ISTJ.name': imageLuoYin,
-  'pets.ISFJ.name': imageGuardDog,
-  'pets.ESTJ.name': imageRoyalGryphon,
-  'pets.ESFJ.name': imageGranBall,
-  'pets.ISTP.name': imageKula,
-  'pets.ISFP.name': imageFrostDoll,
-  'pets.ESTP.name': imageSonicDog,
-  'pets.ESFP.name': imageAbu,
+  'pets.INTJ.name': normalINTJ,
+  'pets.INTP.name': normalINTP,
+  'pets.ENTJ.name': normalENTJ,
+  'pets.ENTP.name': normalENTP,
+  'pets.INFJ.name': normalINFJ,
+  'pets.INFP.name': normalINFP,
+  'pets.ENFJ.name': normalENFJ,
+  'pets.ENFP.name': normalENFP,
+  'pets.ISTJ.name': normalISTJ,
+  'pets.ISFJ.name': normalISFJ,
+  'pets.ESTJ.name': normalESTJ,
+  'pets.ESFJ.name': normalESFJ,
+  'pets.ISTP.name': normalISTP,
+  'pets.ISFP.name': normalISFP,
+  'pets.ESTP.name': normalESTP,
+  'pets.ESFP.name': normalESFP,
+}
+
+const SHINY_PET_IMAGE_URL: Record<PetNameKey, string> = {
+  'pets.INTJ.name': shinyINTJ,
+  'pets.INTP.name': shinyINTP,
+  'pets.ENTJ.name': shinyENTJ,
+  'pets.ENTP.name': shinyENTP,
+  'pets.INFJ.name': shinyINFJ,
+  'pets.INFP.name': shinyINFP,
+  'pets.ENFJ.name': shinyENFJ,
+  'pets.ENFP.name': shinyENFP,
+  'pets.ISTJ.name': shinyISTJ,
+  'pets.ISFJ.name': shinyISFJ,
+  'pets.ESTJ.name': shinyESTJ,
+  'pets.ESFJ.name': shinyESFJ,
+  'pets.ISTP.name': shinyISTP,
+  'pets.ISFP.name': shinyISFP,
+  'pets.ESTP.name': shinyESTP,
+  'pets.ESFP.name': shinyESFP,
 }
 
 const getWikiNameByNameKey = (nameKey: PetNameKey): string => PET_NAME[nameKey]
@@ -102,6 +137,8 @@ const getWikiPageUrlByNameKey = (nameKey: PetNameKey): string =>
   `https://wiki.biligame.com/rocom/${encodeURIComponent(getWikiNameByNameKey(nameKey))}`
 
 const getLocalPortraitUrlByNameKey = (nameKey: PetNameKey): string => PET_IMAGE_URL[nameKey]
+const getLocalShinyPortraitUrlByNameKey = (nameKey: PetNameKey): string =>
+  SHINY_PET_IMAGE_URL[nameKey]
 
 export const pets: RocoPet[] = MBTI_LIST.map((mbti) => {
   const nameKey = MBTI_TO_NAME_KEY[mbti]
@@ -115,6 +152,7 @@ export const pets: RocoPet[] = MBTI_LIST.map((mbti) => {
     habitatKey: `pets.${mbti}.habitat`,
     wikiUrl: getWikiPageUrlByNameKey(nameKey),
     imageUrl: getLocalPortraitUrlByNameKey(nameKey),
+    shinyImageUrl: getLocalShinyPortraitUrlByNameKey(nameKey),
   }
 })
 
