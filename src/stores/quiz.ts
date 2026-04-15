@@ -7,6 +7,7 @@ import type { Dimension, Question, RocoPet } from '@/types'
 
 const dimensions: Dimension[] = ['E', 'I', 'S', 'N', 'T', 'F', 'J', 'P']
 const QUIZ_STORAGE_KEY = 'rbti:quiz-state'
+const SHINY_APPEARANCE_RATE = 0.1
 
 type QuizSnapshot = {
   currentIndex: number
@@ -32,7 +33,9 @@ const isValidScores = (value: unknown): value is Record<Dimension, number> => {
     return false
   }
 
-  return dimensions.every((dimension) => Number.isFinite((value as Record<string, unknown>)[dimension]))
+  return dimensions.every((dimension) =>
+    Number.isFinite((value as Record<string, unknown>)[dimension]),
+  )
 }
 
 const isValidSelectedOptions = (value: unknown): value is Array<number> => {
@@ -80,11 +83,18 @@ const loadSnapshot = (): QuizSnapshot | null => {
   }
 }
 
+const rollShinyPet = (): boolean => Math.random() < SHINY_APPEARANCE_RATE
+
 export const useQuizStore = defineStore('quiz', () => {
   const snapshot = loadSnapshot()
   const currentIndex = ref(snapshot?.currentIndex ?? 0)
   const scores = ref<Record<Dimension, number>>(snapshot?.scores ?? createInitialScores())
-  const selectedOptions = ref<Array<number>>(snapshot?.selectedOptions ?? createInitialSelectedOptions())
+  const selectedOptions = ref<Array<number>>(
+    snapshot?.selectedOptions ?? createInitialSelectedOptions(),
+  )
+  const isShinyResult = ref<boolean>(
+    (snapshot?.currentIndex ?? 0) >= questions.length && rollShinyPet(),
+  )
 
   const persistSnapshot = (): void => {
     if (typeof window === 'undefined') {
@@ -110,7 +120,13 @@ export const useQuizStore = defineStore('quiz', () => {
 
     return `${choose('E', 'I')}${choose('S', 'N')}${choose('T', 'F')}${choose('J', 'P')}`
   })
-  const matchedPet = computed<RocoPet>(() => petByMbti[finalMbti.value] ?? pets[0]!)
+  const matchedPet = computed<RocoPet>(() => {
+    const pet = petByMbti[finalMbti.value] ?? pets[0]!
+    return {
+      ...pet,
+      imageUrl: isShinyResult.value ? pet.shinyImageUrl : pet.imageUrl,
+    }
+  })
 
   const applyWeights = (weights: Partial<Record<Dimension, number>>): void => {
     for (const key of dimensions) {
@@ -156,6 +172,9 @@ export const useQuizStore = defineStore('quiz', () => {
     applyWeights(option.weights)
     selectedOptions.value[currentIndex.value] = optionIndex
     currentIndex.value += 1
+    if (currentIndex.value >= totalQuestions) {
+      isShinyResult.value = rollShinyPet()
+    }
     persistSnapshot()
   }
 
@@ -176,6 +195,9 @@ export const useQuizStore = defineStore('quiz', () => {
     }
 
     currentIndex.value = previousIndex
+    if (currentIndex.value < totalQuestions) {
+      isShinyResult.value = false
+    }
     persistSnapshot()
   }
 
@@ -183,6 +205,7 @@ export const useQuizStore = defineStore('quiz', () => {
     currentIndex.value = 0
     scores.value = createInitialScores()
     selectedOptions.value = createInitialSelectedOptions()
+    isShinyResult.value = false
     persistSnapshot()
   }
 
@@ -193,6 +216,7 @@ export const useQuizStore = defineStore('quiz', () => {
     progress,
     scores,
     isCompleted,
+    isShinyResult,
     finalMbti,
     matchedPet,
     answerQuestion,

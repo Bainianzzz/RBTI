@@ -8,6 +8,7 @@ const enUSText = {
     completed: 'Assessment Complete',
     restart: 'Restart Quiz',
     portraitSource: 'Artwork source: Roco Kingdom World BiliBili WIKI',
+    shinyHint: 'Tip: refresh multiple times for a chance to encounter a shiny spirit (10% rate).',
     spiritPartnerLabel: 'Spirit Partner',
     personality: 'Nature',
     habitat: 'Habitat',
@@ -22,7 +23,8 @@ const enUSText = {
     githubStar: 'Enjoyed it? Give us a Star on GitHub',
     copySuccess: 'Share text and link copied.',
     copyFailed: 'Copy failed. Please copy the URL manually.',
-    entertainmentNotice: 'Questions and personality insights are AI-generated. Results are for entertainment only.',
+    entertainmentNotice:
+      'Questions and personality insights are AI-generated. Results are for entertainment only.',
     shareText: 'My spirit partner in Roco Kingdom is {petName}! Try it here:',
     personalities: ['Adamant', 'Bold', 'Calm', 'Jolly', 'Relaxed', 'Careful', 'Brave', 'Gentle'],
   },
@@ -34,102 +36,115 @@ const enUSText = {
   },
   pets: {
     INTJ: {
-      name: 'Palsas',
+      name: 'Night Owl',
       title: 'Architect',
       description:
-        "The key figure of William Castle and Count Dracula's trusted aide. Cold, mysterious, highly rational, and fiercely independent, with exceptional strategic vision and control.",
+        'Perched high above the canopy, it hunts in silence with razor-sharp night vision. Every move feels deliberate, as if each wingbeat was planned long before takeoff.',
       habitat: 'Chatter Plateau',
     },
     INTP: {
-      name: 'Mecha Cubic',
+      name: 'Mecha Fangfang',
       title: 'Logician',
-      description: 'Brimming with a technical spirit. Obsessed with underlying mechanisms, rational, focused, and highly creative.',
+      description:
+        'A machine-born lifeform of gears and cores, obsessed with elegant, efficient systems. Even when still, it is quietly running calculations for a cleaner solution.',
       habitat: 'Dex Archive Zone',
     },
     ENTJ: {
-      name: 'Blazing War Deity',
+      name: 'Demon Wolf',
       title: 'Commander',
-      description: 'A blazing war deity. A born leader with power, confidence, and decisive execution.',
+      description:
+        'It patrols the forest edge with commanding presence and zero hesitation. Once a target is set, it drives the whole pack forward in a clean, relentless line.',
       habitat: 'Dex Archive Zone',
     },
     ENTP: {
-      name: 'Devil Ding',
+      name: 'Crimson Plush Cross',
       title: 'Debater',
       description:
-        "A classic early demon-type spirit and a signature sidekick of Enzo and the man in black. Curious, mischievous, and unconventional, always breaking norms with clever tricks.",
+        'Its crimson markings look like symbols that refuse to stay fixed in one meaning. It constantly tests boundaries, especially the rules everyone else accepts without question.',
       habitat: 'Dex Archive Zone',
     },
     INFJ: {
-      name: 'Sacred Water Guardian',
+      name: 'Lure Lanternfish',
       title: 'Advocate',
-      description: 'The embodiment of pure water. Deep-minded, principled, and quietly healing to those around it.',
+      description:
+        'In the deep sea current, it carries a gentle light that steadies the lost. Quiet and restrained, it changes the mood of the whole waterscape without needing to shout.',
       habitat: 'Dex Archive Zone',
     },
     INFP: {
-      name: 'Magic Cat',
+      name: 'Qili Flower',
       title: 'Mediator',
-      description: 'A beloved child of the forest. Gentle and free-spirited, with a dreamy and richly imaginative inner world.',
+      description:
+        'Its petals respond to breeze and emotion alike, shifting with the faintest change in the forest. It prefers healing soft fractures over forcing loud victories.',
       habitat: 'Dex Archive Zone',
     },
     ENFJ: {
-      name: 'Dimo',
+      name: 'Little Ball',
       title: 'Protagonist',
-      description: 'An icon of light. Warm, inspiring, and often the emotional backbone of the team.',
+      description:
+        'It is always the first to leap into the crowd and raise everyone’s energy. Warm and magnetic, it turns hesitation into momentum for the whole team.',
       habitat: 'Dex Archive Zone',
     },
     ENFP: {
-      name: 'Bouncy Bloom',
+      name: 'Pink Starlet',
       title: 'Campaigner',
-      description: 'Always bouncing with energy. Curious, enthusiastic, and naturally charismatic.',
+      description:
+        'Like a breathing pink comet, it darts toward whatever is new and unexplored. Every detour becomes an adventure, and every encounter becomes a story.',
       habitat: 'Dex Archive Zone',
     },
     ISTJ: {
-      name: 'Luo Yin',
+      name: 'Tusk Boar',
       title: 'Logistician',
-      description: 'Solid as a rock. Reliable, practical, and unwavering when it comes to order and rules.',
+      description:
+        'It advances through earth and stone with dependable, measured steps. Not flashy, but in long battles it is the one that never slips out of rhythm.',
       habitat: 'Dex Archive Zone',
     },
     ISFJ: {
-      name: 'Guardian Hound',
+      name: 'Beigusi',
       title: 'Defender',
-      description: 'Absolutely loyal. Warm, caring, and quietly dependable in every situation.',
+      description:
+        'Its heavy frame works like a moving fortress, always shielding allies first. It takes the hardest hits quietly and keeps the line from breaking.',
       habitat: 'Dex Archive Zone',
     },
     ESTJ: {
-      name: 'Royal Gryphon',
+      name: 'Light-Stealing Mosquito',
       title: 'Executive',
-      description: 'A majestic royal mount. Highly disciplined, tradition-driven, and exceptionally effective in execution.',
+      description:
+        'Its colony runs on strict roles and immediate response to every signal. No theatrics, just disciplined execution that turns plans into finished outcomes.',
       habitat: 'Dex Archive Zone',
     },
     ESFJ: {
       name: 'Gran Ball',
       title: 'Consul',
-      description: 'A top-tier support spirit. Warm-hearted and always dedicated to helping teammates.',
+      description:
+        'It circles the formation, spotting who is hurt or falling behind before anyone asks. Even in conflict, it keeps the group connected and cared for.',
       habitat: 'Dex Archive Zone',
     },
     ISTP: {
       name: 'Kula',
       title: 'Virtuoso',
-      description: 'A lone electric mage. Cool-headed, agile, pragmatic, and calm under pressure.',
+      description:
+        'Electric arcs flicker from its hands with almost no warning. It favors practical, precise action, and seems calmest when everyone else is panicking.',
       habitat: 'Dex Archive Zone',
     },
     ISFP: {
-      name: 'Snowshade Doll',
+      name: 'Snowshadow Doll',
       title: 'Adventurer',
-      description: 'A spirit of ice and snow. Cool on the outside, warm within, with a strong artistic and free spirit.',
+      description:
+        'It moves like a snowflake with intention, quiet but unmistakably graceful. In frozen landscapes, it leaves behind beauty instead of noise.',
       habitat: 'Dex Archive Zone',
     },
     ESTP: {
-      name: 'Sonic Hound',
+      name: 'Kindling Beetle',
       title: 'Entrepreneur',
-      description: 'Fast as lightning. Action-driven, challenge-seeking, and thrives in real combat.',
+      description:
+        'Once battle starts, it explodes into motion and chains attacks at full speed. It treats risk like fuel, thriving in split-second decisions and bold momentum.',
       habitat: 'Dex Archive Zone',
     },
     ESFP: {
-      name: 'Abu',
+      name: 'Crescent Snow Bear',
       title: 'Entertainer',
       description:
-        'Energetic, food-loving, emotionally expressive, and naturally performative. It follows instinct in adventure and quickly becomes the cheerful center of any crowd.',
+        'With a spin and a playful roar, it can turn any snowy clearing into a stage. Its joy is contagious, and crowds naturally gather wherever it performs.',
       habitat: 'Dex Archive Zone',
     },
   },
