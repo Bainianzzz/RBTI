@@ -9,6 +9,7 @@ definePageMeta({ layout: false })
 
 function rollAndGo() {
   const pet = pets[Math.floor(Math.random() * pets.length)]
+  if (!pet) return // 空数组保护，不会触达
   const verdict: Verdict = {
     petId: pet.id,
     verdict: `（预览判词）根据你在这段旅程中的选择与独白，圣泉最终将波纹指向了${pet.name}。它的内核与你的心性遥相呼应——${pet.personality}`,
