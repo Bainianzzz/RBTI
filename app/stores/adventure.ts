@@ -8,7 +8,7 @@
 // 失败时记录失败点，retry() 从断点续行。
 
 import type { AdventureEvent, EventPool, EventSeed, Verdict } from '~/types'
-import { generateNextEvent, generateVerdict, type NextEventResult } from '~/lib/llm'
+import { generateNextEvent, generateVerdict, HARD_CAP, type NextEventResult } from '~/lib/llm'
 import { dailySeeds, peakSeeds } from '~/data/eventSeeds'
 
 // 当前正在作答的事件（events[] 里存的是已答完的历史）
@@ -104,6 +104,12 @@ export const useAdventureStore = defineStore('adventure', {
 
     async fetchNextEvent() {
       if (!this.opening || !this.climax) return
+      // 硬上限：已答满 HARD_CAP 题后不再请求 LLM 生成新事件，直接收尾裁决。
+      // 这是软提示之外的强制门，保证冒险长度不超过目标上限。
+      if (this.events.length >= HARD_CAP) {
+        await this.conclude()
+        return
+      }
       this.phase = 'generating'
       this.error = ''
       this.failedOp = 'next'
@@ -114,7 +120,7 @@ export const useAdventureStore = defineStore('adventure', {
           this.climax,
           this.storySummary,
         )
-        // 无硬上下限：完全尊重 LLM 的判断
+        // 软提示已让 LLM 倾向收尾，这里仍尊重它提前返回的 conclude
         if (result.nextAction.type === 'conclude') {
           await this.conclude()
           return

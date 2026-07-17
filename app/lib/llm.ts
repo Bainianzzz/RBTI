@@ -10,6 +10,9 @@ import type { LlmProxyResponse } from '#shared/types/llm'
 
 type ChatMessage = { role: 'system' | 'user' | 'assistant'; content: string }
 
+// 转发节奏阈值，供 store 做硬上限门控
+export { HARD_CAP }
+
 // 基础调用：转发给 server/api/llm.post.ts
 async function callLlm(
   messages: ChatMessage[],
