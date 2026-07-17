@@ -48,6 +48,9 @@ __screenshots__/
 # Playwright CLI artifacts (local browser-test snapshots)
 .playwright-cli/
 
+# Local-only Nuxt preview routes (must never be deployed)
+app/pages/dev/
+
 # Local secrets (never commit)
 .env
 .env.*
