@@ -1,31 +1,89 @@
-export type Dimension = 'E' | 'I' | 'S' | 'N' | 'T' | 'F' | 'J' | 'P'
+// 精灵属性类型（以《洛克王国：世界》为准，建库时按 wiki 核对）
+export type PetElement =
+  | '火'
+  | '水'
+  | '草'
+  | '电'
+  | '土'
+  | '飞行'
+  | '虫'
+  | '龙'
+  | '幽灵'
+  | '冰'
+  | '光'
+  | '暗'
+  | '普通'
+  | '机械'
+  | '恶'
 
-export interface PetStats {
-  hp: number
-  atk: number
-  def: number
-  spAtk: number
-  spDef: number
-  speed: number
-}
+// 精灵稀有度
+export type PetRarity = '常见' | '少见' | '稀有' | '神宠'
 
-export interface RocoPet {
+// 精灵契约库中的单只精灵
+export interface Pet {
   id: string
-  nameKey: string
-  mbti: string
-  titleKey: string
-  descriptionKey: string
-  habitatKey: string
+  name: string
+  element: PetElement
+  rarity: PetRarity
+  // 招牌气质：一句话，如"孤高的火山巡夜者"
+  archetype: string
+  // 性格标签：3-5 个，用于语义匹配
+  traits: string[]
+  // 栖息地/活动场景
+  habitat: string
+  // 性格内核：一段给 LLM 匹配用的描述文本（约 40-80 字）
+  personality: string
+  // wiki 链接
   wikiUrl: string
-  imageUrl: string
-  shinyImageUrl: string
+  // 立绘（可选，无则结果页用属性色卡占位）
+  image?: string
 }
 
-export interface Question {
-  id: number
-  textKey: string
-  options: {
-    textKey: string
-    weights: Partial<Record<Dimension, number>>
-  }[]
+// 事件池分类：日常 / 高潮
+export type EventPool = 'daily' | 'peak'
+
+// 事件种子：用户每局冒险会从中抽取，LLM 展开成具体情境
+export interface EventSeed {
+  id: string
+  pool: EventPool
+  // 短标题，如"图书馆夜读"，供 LLM 识别
+  title: string
+  // 一句话设定，给 LLM 展开的种子
+  seedText: string
+}
+
+// 一次具体生成的冒险事件（LLM 产出）
+export interface AdventureEvent {
+  seedId: string
+  pool: EventPool
+  // LLM 生成的情境描述，≤60 字
+  narrative: string
+  // 旁白过场，1-2 句
+  interlude: string
+  // 3-4 个选项
+  options: string[]
+  // 用户最终提交的答案：选中的选项文本（二选一可为空，纯打字）
+  chosenOption: string | null
+  // 用户的自由输入文字（可选）
+  freeInput: string
+}
+
+// LLM 在生成下一个事件时的决策动作
+export type NextAction =
+  | { type: 'event'; seedId: string; pool: EventPool }
+  | { type: 'conclude' }
+
+// 最终精灵裁决结果
+export interface Verdict {
+  petId: string
+  // 判词：为什么是这只精灵（约 80-120 字）
+  verdict: string
+  // 共鸣点：用户旅程中的某个瞬间如何呼应这只精灵（可选，1-2 句）
+  resonance?: string
+}
+
+// 一次完整的冒险状态
+export interface AdventureSnapshot {
+  events: AdventureEvent[]
+  verdict: Verdict | null
 }

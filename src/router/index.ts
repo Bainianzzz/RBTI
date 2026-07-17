@@ -1,34 +1,24 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useQuizStore } from '@/stores/quiz'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'quiz',
-      component: () => import('@/views/quiz/Quiz.vue'),
+      name: 'intro',
+      component: () => import('@/views/intro/Intro.vue'),
+    },
+    {
+      path: '/adventure',
+      name: 'adventure',
+      component: () => import('@/views/adventure/Adventure.vue'),
     },
     {
       path: '/result',
       name: 'result',
-      component: () => import('@/views/result/Overview.vue'),
+      component: () => import('@/views/result/Result.vue'),
     },
   ],
-})
-
-router.beforeEach((to) => {
-  const quizStore = useQuizStore()
-
-  if (to.name === 'quiz' && quizStore.hasResult) {
-    return { name: 'result' }
-  }
-
-  if (to.name === 'result' && !quizStore.hasResult) {
-    return { name: 'quiz' }
-  }
-
-  return true
 })
 
 export default router

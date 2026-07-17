@@ -37,3 +37,6 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Playwright CLI artifacts (local browser-test snapshots)
+.playwright-cli/
