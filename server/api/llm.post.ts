@@ -1,20 +1,10 @@
 import { defineEventHandler, readBody, createError } from 'h3'
 
+import type { LlmRequestBody } from '#shared/types/llm'
+
 // 统一 DeepSeek 代理：前端 POST { messages, responseFormat, temperature }
 // 服务端注入 API key，转发给 DeepSeek，返回结构化结果。
 // 这样 key 永不暴露给浏览器。
-interface DeepSeekMessage {
-  role: 'system' | 'user' | 'assistant'
-  content: string
-}
-
-interface LlmRequestBody {
-  messages: DeepSeekMessage[]
-  responseFormat?: 'text' | 'json_object'
-  temperature?: number
-  maxTokens?: number
-}
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const body = await readBody<LlmRequestBody>(event)

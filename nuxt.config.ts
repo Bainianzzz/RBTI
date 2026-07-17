@@ -3,16 +3,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
 
-  // 全局 alias：让 @/ 指向 app/，兼容从旧 Vue 项目搬来的导入路径
-  alias: {
-    '@': '~~/app',
-  },
-
-  // shadcn-vue 组件目录走显式 import（import { Button } from '~/components/ui/button'），
-  // 排除 ui/ 子目录避免 Nuxt 把 Badge.vue 和 index.ts 同时自动导入造成命名冲突。
-  components: [
-    { path: '~/components', pathPrefix: false, ignore: ['**/ui/**'] },
-  ],
+  // 纯客户端交互应用：无 SSR 预取内容，关掉 SSR 消除 hydration 风险，
+  // typed.js 等 browser-only 依赖也天然安全。server/api 仍在 Nitro 运行。
+  ssr: false,
 
   // Tailwind v4（通过 PostCSS 插件）
   postcss: {

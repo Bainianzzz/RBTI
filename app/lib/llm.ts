@@ -7,9 +7,7 @@ import { NARRATOR_SYSTEM, VERDICT_SYSTEM } from '~/lib/prompts'
 import { allSeeds } from '~/data/eventSeeds'
 import { pets } from '~/data/pets'
 
-interface LlmProxyResponse {
-  content: string
-}
+import type { LlmProxyResponse } from '#shared/types/llm'
 
 // 基础调用：转发给 server/api/llm.post.ts
 async function callLlm(

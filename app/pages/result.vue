@@ -4,8 +4,6 @@ import { useAdventureStore } from '~/stores/adventure'
 import { petById } from '~/data/pets'
 import { getElementTheme } from '~/data/elementTheme'
 
-definePageMeta({ layout: false })
-
 const store = useAdventureStore()
 const { verdict, phase } = storeToRefs(store)
 

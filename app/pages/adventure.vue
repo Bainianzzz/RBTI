@@ -2,8 +2,6 @@
 import { storeToRefs } from 'pinia'
 import { useAdventureStore, FLOOR, CEILING } from '~/stores/adventure'
 
-definePageMeta({ layout: false })
-
 const store = useAdventureStore()
 const { phase, active, events, error } = storeToRefs(store)
 
