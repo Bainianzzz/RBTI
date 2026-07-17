@@ -71,7 +71,7 @@ function replay() {
     <div v-else-if="pet && theme" class="mx-auto w-full max-w-2xl">
       <Transition name="reveal" appear>
         <article>
-          <p class="mb-2 text-center text-base uppercase tracking-[0.3em] text-gold">你的本命精灵</p>
+          <p class="mb-2 text-center text-2xl font-bold uppercase tracking-[0.3em] text-gold">你的本命精灵</p>
 
           <!-- 精灵卡 -->
           <div class="overflow-hidden rounded-2xl border border-gold/20 bg-linear-to-br shadow-2xl" :class="[theme.from, theme.to]">
@@ -105,7 +105,7 @@ function replay() {
 
           <!-- 判词 -->
           <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <p class="mb-3 text-base uppercase tracking-[0.2em] text-amber-300/80">契约判词</p>
+            <p class="mb-3 text-base font-bold uppercase tracking-[0.2em] text-amber-300/80">契约判词</p>
             <p class="text-base leading-relaxed text-ink">{{ verdict!.verdict }}</p>
             <p v-if="verdict!.resonance" class="mt-3 border-l-2 border-gold/50 pl-3 text-sm italic leading-relaxed text-ink-dim">{{ verdict!.resonance }}</p>
           </div>
