@@ -1,20 +1,23 @@
-// 精灵属性类型（以《洛克王国：世界》为准，建库时按 wiki 核对）
+// 精灵属性类型（以《洛克王国：世界》手游实际属性体系为准，共 18 种）
 export type PetElement =
   | '火'
   | '水'
   | '草'
   | '电'
-  | '土'
-  | '飞行'
+  | '地'
+  | '翼'
   | '虫'
   | '龙'
-  | '幽灵'
+  | '幽'
   | '冰'
   | '光'
-  | '暗'
+  | '幻'
+  | '萌'
+  | '武'
   | '普通'
   | '机械'
   | '恶'
+  | '毒'
 
 // 精灵稀有度
 export type PetRarity = '常见' | '少见' | '稀有' | '神宠'
@@ -33,6 +36,8 @@ export interface Pet {
   habitat: string
   // 性格内核：一段给 LLM 匹配用的描述文本（约 40-80 字）
   personality: string
+  // wiki 原始描述（图鉴正文，供结果页展示）
+  wikiDescription: string
   // wiki 链接
   wikiUrl: string
   // 立绘（可选，无则结果页用属性色卡占位）
