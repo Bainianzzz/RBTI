@@ -86,7 +86,7 @@ watch(
 </script>
 
 <template>
-  <main class="starfield relative min-h-dvh bg-linear-to-b from-night via-night-2 to-night px-5 py-8 text-ink">
+  <main class="starfield relative flex min-h-dvh flex-col justify-center bg-linear-to-b from-night via-night-2 to-night px-5 py-8 text-ink">
     <div class="mx-auto w-full max-w-2xl">
       <!-- 进度条 -->
       <div class="mb-8 flex items-center gap-3">

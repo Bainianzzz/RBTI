@@ -47,7 +47,7 @@ function replay() {
 </script>
 
 <template>
-  <main class="starfield min-h-dvh bg-linear-to-b from-night via-night to-black px-5 py-10 text-ink">
+  <main class="starfield flex min-h-dvh flex-col justify-center bg-linear-to-b from-night via-night to-black px-5 py-10 text-ink">
     <!-- 无结果：引导回首页 -->
     <div v-if="noResult" class="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-5 text-center">
       <p class="text-lg font-medium">精灵圣泉尚未显影</p>
@@ -66,7 +66,7 @@ function replay() {
     </div>
 
     <!-- 揭卡 -->
-    <div v-else-if="pet && theme" class="mx-auto max-w-2xl">
+    <div v-else-if="pet && theme" class="mx-auto w-full max-w-2xl">
       <Transition name="reveal" appear>
         <article>
           <p class="mb-2 text-center text-xs uppercase tracking-[0.3em] text-gold">你的本命精灵</p>
