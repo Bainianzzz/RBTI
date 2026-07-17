@@ -74,8 +74,8 @@ function replay() {
 
           <!-- 精灵大卡：左侧立绘（100% 高度） + 右侧内容（含判词，同一容器） -->
           <div class="flex flex-col overflow-hidden rounded-2xl border border-gold/20 shadow-2xl md:flex-row">
-            <!-- 左：精灵立绘 -->
-            <div class="relative flex shrink-0 items-center justify-center bg-linear-to-br md:w-2/5" :class="[theme.from, theme.to]">
+           <!-- 左：精灵立绘 -->
+            <div class="relative flex shrink-0 items-center justify-center bg-night-2/70 backdrop-blur md:w-2/5">
               <img
                 v-if="imgUrl"
                 :src="imgUrl"
