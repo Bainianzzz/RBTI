@@ -40,9 +40,12 @@ import { ArrowRight } from 'lucide-vue-next'
     </a>
 
     <!-- 出处标注 -->
-    <p class="fade-in absolute inset-x-0 bottom-5 px-6 text-center text-xs leading-relaxed text-ink/35">
-      世界观 © 《洛克王国：世界》腾讯魔方工作室群 · 图鉴数据见 wiki.biligame.com/rocom
-    </p>
+    <div class="fade-in absolute inset-x-0 bottom-4 flex flex-col items-center gap-1.5 px-6 text-center">
+      <AiContentNotice text="本测试的剧情与裁决由 AI 实时生成，仅供娱乐参考" />
+      <p class="text-xs leading-relaxed text-ink/35">
+        世界观 © 《洛克王国：世界》腾讯魔方工作室群 · 图鉴数据见 wiki.biligame.com/rocom
+      </p>
+    </div>
   </main>
 </template>
 

@@ -75,7 +75,7 @@ export interface AdventureEvent {
 
 // LLM 在生成下一个事件时的决策动作
 export type NextAction =
-  | { type: 'event'; seedId: string; pool: EventPool }
+  | { type: 'event' }
   | { type: 'conclude' }
 
 // 最终精灵裁决结果

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
-import { useAdventureStore, FLOOR, CEILING } from '~/stores/adventure'
+import { useAdventureStore } from '~/stores/adventure'
 
 const store = useAdventureStore()
 const { phase, active, events, error } = storeToRefs(store)
@@ -88,20 +88,6 @@ watch(
 <template>
   <main class="page-vignette starfield relative flex min-h-dvh flex-col justify-center px-5 py-10 text-ink sm:px-8">
     <div class="mx-auto w-full max-w-3xl">
-      <!-- 进度条 -->
-      <div class="coal-bar mb-5 flex items-center gap-4 rounded-xl px-4 py-3 sm:px-5">
-        <span class="shrink-0 text-sm font-black tracking-wide text-gold">
-          精灵契约之日 · 第 {{ Math.min(events.length + 1, CEILING) }} 幕
-        </span>
-        <div class="h-2 flex-1 overflow-hidden rounded-full bg-black/40 ring-1 ring-white/10">
-          <div
-            class="h-full rounded-full bg-linear-to-r from-gold-soft to-gold transition-[width] duration-500"
-            :style="{ width: `${(Math.min(events.length + 1, CEILING) / CEILING) * 100}%` }"
-          />
-        </div>
-        <span class="shrink-0 text-sm font-bold tabular-nums text-ink-dim">{{ events.length + 1 }}/{{ CEILING }}</span>
-      </div>
-
       <!-- 生成中 -->
       <div v-if="phase === 'generating' || phase === 'idle'" class="paper-panel rounded-3xl px-6 py-24 text-center">
         <div class="mx-auto mb-6 size-12 rounded-full border-4 border-paper-soft border-t-gold motion-safe:animate-spin" />
@@ -188,16 +174,14 @@ watch(
                 <textarea
                   v-model="freeInput"
                   rows="3"
-                 placeholder="用一句话说说你会怎么做、心里在想什么…"
-                  class="w-full resize-none rounded-lg border-2 border-paper-ink/12 bg-white/55 px-4 py-3 text-base leading-7 text-paper-ink placeholder:text-paper-ink/35 focus:border-sun focus:outline-hidden focus:ring-gold/25"
+                  placeholder="用一句话说说你会怎么做、心里在想什么…"
+                  class="w-full resize-none rounded-lg border-2 border-paper-ink/12 bg-white/55 px-4 py-3 text-base leading-7 text-paper-ink placeholder:text-paper-ink/35 focus:border-sun focus:outline-hidden"
                 />
               </div>
 
               <div class="mt-6 flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
                 <span class="text-sm font-medium text-paper-ink/50">
-                  <template v-if="!store.canSubmit">选一个选项，或写下你的答案</template>
-                  <template v-else-if="events.length + 1 >= FLOOR">可继续旅程，也可见证本命精灵</template>
-                  <template v-else>至少还有 {{ FLOOR - (events.length + 1) }} 幕才会收尾</template>
+                  {{ store.canSubmit ? '你的选择将塑造接下来的旅程' : '选一个选项，或写下你的答案' }}
                 </span>
                 <button
                   class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-lg border-2 border-gold bg-coal px-7 text-base font-black text-gold transition-colors hover:bg-coal-soft disabled:cursor-not-allowed disabled:border-paper-ink/15 disabled:text-ink disabled:opacity-40"
@@ -213,8 +197,11 @@ watch(
 
           <p v-if="anyTyping" class="mt-6 text-sm font-medium text-paper-ink/40">轻触或按空格跳过 ›</p>
           <div class="gold-rule mt-6" />
-        </article>
+       </article>
       </div>
+    </div>
+    <div class="absolute inset-x-0 bottom-0 px-6 py-4 text-center">
+      <AiContentNotice text="本页剧情与选项由 AI 实时生成，仅供娱乐参考" />
     </div>
   </main>
 </template>

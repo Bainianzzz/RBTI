@@ -46,7 +46,7 @@ function replay() {
 
 <template>
   <main
-    class="page-vignette starfield flex min-h-dvh flex-col justify-center px-5 py-10 font-display text-ink sm:px-8"
+    class="page-vignette starfield relative flex min-h-dvh flex-col justify-center px-5 py-10 font-display text-ink sm:px-8"
   >
     <!-- 无结果：引导回首页 -->
     <div
@@ -176,6 +176,9 @@ function replay() {
           </div>
         </article>
       </Transition>
+    </div>
+    <div class="absolute inset-x-0 bottom-0 px-6 py-4 text-center">
+      <AiContentNotice text="本页判词与裁决由 AI 实时生成，仅供娱乐参考" />
     </div>
   </main>
 </template>

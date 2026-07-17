@@ -20,9 +20,10 @@ export default defineNuxtConfig({
 
   // 服务端私有配置：DeepSeek API key（仅 server/ 可见）
   runtimeConfig: {
-    deepseekApiKey: '',
-    deepseekBaseUrl: 'https://api.deepseek.com',
-    deepseekModel: 'deepseek-chat',
+    // 从 .env 读取；未配置时回退到 DeepSeek 默认值
+    apiKey: process.env.API_KEY ?? '',
+    apiUrl: process.env.API_URL ?? 'https://api.deepseek.com',
+    apiModel: process.env.API_MODEL ?? 'deepseek-chat',
   },
 
   app: {

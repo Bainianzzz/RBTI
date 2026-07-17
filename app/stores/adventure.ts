@@ -1,9 +1,15 @@
-// 冒险状态机：管理事件流（生成 -> 作答 -> 生成 / 裁决）。
-// 地板 4 / 天花板 10：不足 4 幕禁止裁决，满 10 幕强制裁决。
+// 冒险状态机：管理事件流（生成 → 作答 → 摘要 → 生成 / 裁决）。
+//
+// 叙事模型（弧线制 + 滚动摘要，无硬上下限）：
+// 开局随机抽一个日常种子作为"开端"，再随机抽一个高潮种子作为"导向目标"。
+// 每轮：LLM 生成事件（同一请求内顺带更新故事摘要）→ 用户作答 → 下一轮生成。
+// 摘要作为压缩记忆传给下一轮叙事引擎，替代回放完整多轮历史。
+// 每次请求都顺带判断"高潮是否已被用户的抉择解决"，是则收尾裁决。
 // 失败时记录失败点，retry() 从断点续行。
 
-import type { AdventureEvent, EventPool, Verdict } from '~/types'
+import type { AdventureEvent, EventPool, EventSeed, Verdict } from '~/types'
 import { generateNextEvent, generateVerdict, type NextEventResult } from '~/lib/llm'
+import { dailySeeds, peakSeeds } from '~/data/eventSeeds'
 
 // 当前正在作答的事件（events[] 里存的是已答完的历史）
 export interface ActiveEvent {
@@ -18,7 +24,7 @@ export interface ActiveEvent {
 
 export type AdventurePhase =
   | 'idle' // 未开始
-  | 'generating' // 拉取下一事件中
+  | 'generating' // 拉取下一事件 / 更新摘要中
   | 'answering' // 展示事件、等待作答
   | 'concluding' // 拉取裁决结果中
   | 'done' // 裁决完成
@@ -26,8 +32,9 @@ export type AdventurePhase =
 
 type FailedOp = 'next' | 'conclude' | null
 
-export const FLOOR = 4
-export const CEILING = 10
+function pick<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]!
+}
 
 export const useAdventureStore = defineStore('adventure', {
   state: () => ({
@@ -37,12 +44,18 @@ export const useAdventureStore = defineStore('adventure', {
     verdict: null as Verdict | null,
     error: '' as string,
     failedOp: null as FailedOp,
+    // 滚动故事摘要：每轮作答后由 LLM 更新，传给下一轮叙事引擎
+    storySummary: '' as string,
+    // 本局弧线种子
+    openingSeedId: '' as string,
+    climaxSeedId: '' as string,
   }),
 
   getters: {
-    answeredCount: (s) => s.events.length,
-    // 已答完 + 正在答的进度
-    progress: (s) => s.events.length + (s.active ? 1 : 0),
+    opening: (s): EventSeed | undefined =>
+      dailySeeds.find((x) => x.id === s.openingSeedId),
+    climax: (s): EventSeed | undefined =>
+      peakSeeds.find((x) => x.id === s.climaxSeedId),
     canSubmit: (s) => {
       if (!s.active || s.phase !== 'answering') return false
       return !!s.active.chosenOption || s.active.freeInput.trim().length > 0
@@ -58,14 +71,20 @@ export const useAdventureStore = defineStore('adventure', {
       this.verdict = null
       this.error = ''
       this.failedOp = null
+      this.storySummary = ''
+      this.openingSeedId = ''
+      this.climaxSeedId = ''
     },
 
     async start() {
       this.reset()
+      // 开端：日常池随机一个；导向：高潮池随机一个
+      this.openingSeedId = pick(dailySeeds).id
+      this.climaxSeedId = pick(peakSeeds).id
       await this.fetchNextEvent()
     },
 
-    // 提交当前作答，推进到下一事件或裁决
+    // 提交当前作答，更新摘要，推进到下一事件或裁决
     async submitAnswer(option: string | null, freeInput: string) {
       if (!this.active || this.phase !== 'answering') return
       const answered: AdventureEvent = {
@@ -79,38 +98,27 @@ export const useAdventureStore = defineStore('adventure', {
       }
       this.events.push(answered)
       this.active = null
-
-      // 天花板：满 10 幕强制裁决
-      if (this.events.length >= CEILING) {
-        await this.conclude()
-        return
-      }
+      this.phase = 'generating'
       await this.fetchNextEvent()
     },
 
     async fetchNextEvent() {
+      if (!this.opening || !this.climax) return
       this.phase = 'generating'
       this.error = ''
       this.failedOp = 'next'
       try {
-        const result = await generateNextEvent(this.events)
-
+        const result = await generateNextEvent(
+          this.events,
+          this.opening,
+          this.climax,
+          this.storySummary,
+        )
+        // 无硬上下限：完全尊重 LLM 的判断
         if (result.nextAction.type === 'conclude') {
-          // 地板保护：不足 4 幕，禁止裁决，重试一次拉事件
-          if (this.events.length < FLOOR) {
-            const forced = await generateNextEvent(this.events)
-            if (forced.nextAction.type === 'conclude') {
-              // 仍坚持收尾——极罕见，尊重裁决以免死循环
-              await this.conclude()
-              return
-            }
-            this.applyEvent(forced)
-            return
-          }
           await this.conclude()
           return
         }
-
         this.applyEvent(result)
       } catch (e) {
         this.fail(e)
@@ -118,9 +126,17 @@ export const useAdventureStore = defineStore('adventure', {
     },
 
     applyEvent(result: NextEventResult) {
+      const isFirst = this.events.length === 0
+      const pool: EventPool = result.pool ?? (isFirst ? 'daily' : 'daily')
+      // 第一个事件贴开端种子；高潮事件贴高潮种子；中间事件自由（无种子）
+      const seedId = isFirst
+        ? this.openingSeedId
+        : pool === 'peak'
+          ? this.climaxSeedId
+          : ''
       this.active = {
-        seedId: result.seedId ?? '',
-        pool: result.pool ?? 'daily',
+        seedId,
+        pool,
         narrative: result.narrative,
         interlude: result.interlude,
         options: result.options,
@@ -129,6 +145,8 @@ export const useAdventureStore = defineStore('adventure', {
       }
       this.phase = 'answering'
       this.failedOp = null
+      // 摘要由 LLM 在同一次生成请求里一并更新，这里直接落库
+      if (result.storySummary) this.storySummary = result.storySummary
     },
 
     async conclude() {
