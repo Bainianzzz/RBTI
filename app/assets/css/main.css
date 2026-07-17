@@ -1,10 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  font-family: 'Microsoft YaHei', 'PingFang SC', 'Segoe UI', sans-serif;
+/* ── 洛克王国：世界 视觉体系 ──────────────────────────────
+   配色取样自官网 rocom.qq.com（暖白 #F4EEE1 / 金 #FFC65F / 灰 #C3C1B4），
+   主字体取官网 FZLTYJT 的圆体形态，用系统圆体安全回退。
+   全站深色奇幻基调：深夜空 + 暖白文字 + 金色强调 + 羊皮纸答题卡。
+   ─────────────────────────────────────────────────────── */
+
+@theme {
+  /* 官网取样色 */
+  --color-ink: #f4eee1;        /* 暖白：主文字 */
+  --color-ink-dim: #c3c1b4;    /* 灰：次要文字 */
+  --color-gold: #ffc65f;       /* 金：强调、激活、进度 */
+  --color-gold-deep: #d99e2f;  /* 深金：描边、hover */
+  --color-gold-soft: #ffe3a8;  /* 浅金：高光 */
+  /* 深色基调（非纯黑，带蓝绿调的夜空，避免单调） */
+  --color-night: #14202b;      /* 主背景 */
+  --color-night-2: #1c2b39;    /* 卡片底 */
+  --color-night-3: #26384a;    /* 描边/分割 */
+  /* 羊皮纸：答题卡、判词（暖白偏黄，与深色背景形成层次） */
+  --color-parch: #ece2c8;      /* 羊皮纸面 */
+  --color-parch-ink: #3a3120;  /* 羊皮纸上的字 */
+  --color-parch-edge: #c9b988; /* 羊皮纸描边 */
+
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  background-color: var(--color-night);
 }
 
 body {
-  background-color: rgba(243, 239, 227, 0.95);
-  color: #1f1f1f;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background-color: var(--color-night);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 自定义工具类：用 @utility 注册，才能配合 hover:/disabled: 等变体。
+   Tailwind v4 推荐方式（见 v3→v4 迁移：@layer utilities 已弃用）。 */
+
+/* 全站微弱星点底纹（深色氛围，极淡，不喧宾夺主） */
+@utility starfield {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 230, 170, 0.35), transparent 50%),
+    radial-gradient(1px 1px at 70% 60%, rgba(255, 230, 170, 0.25), transparent 50%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255, 230, 170, 0.2), transparent 50%),
+    radial-gradient(1.5px 1.5px at 85% 20%, rgba(255, 230, 170, 0.3), transparent 50%);
+}
+
+/* 金色描边按钮基底 */
+@utility btn-gold {
+  background-image: linear-gradient(180deg, var(--color-gold-soft), var(--color-gold));
+  color: #3a2a08;
+  border: 1px solid var(--color-gold-deep);
+  box-shadow: 0 0 0 1px rgba(255, 198, 95, 0.15), 0 8px 24px -8px rgba(255, 198, 95, 0.4);
+}
+
+/* 细金线分隔（仪式感） */
+@utility gold-rule {
+  height: 1px;
+  background-image: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
+/* 文字微光（仅用于仪式性标题，勿滥用） */
+@utility text-glow {
+  text-shadow: 0 0 18px rgba(255, 198, 95, 0.35);
 }
