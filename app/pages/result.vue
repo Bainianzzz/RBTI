@@ -66,47 +66,49 @@ function replay() {
       <p class="text-lg font-medium tracking-wide">圣泉泛起微光，你的本命精灵正在显现…</p>
     </div>
 
-    <!-- 揭卡 -->
-    <div v-else-if="pet && theme" class="mx-auto w-full max-w-2xl">
+   <!-- 揭卡 -->
+    <div v-else-if="pet && theme" class="mx-auto w-full max-w-4xl">
       <Transition name="reveal" appear>
         <article>
-          <p class="mb-2 text-center text-2xl font-bold uppercase tracking-[0.3em] text-gold">你的本命精灵</p>
+          <p class="mb-3 text-center text-2xl font-bold uppercase tracking-[0.3em] text-gold">你的本命精灵</p>
 
-          <!-- 精灵卡 -->
-          <div class="overflow-hidden rounded-2xl border border-gold/20 bg-linear-to-br shadow-2xl" :class="[theme.from, theme.to]">
-            <div class="relative px-6 pt-6 pb-5">
-              <div class="mb-5 flex items-center justify-between gap-4">
-                <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-black/20 backdrop-blur-sm">
-                  <img
-                    v-if="imgUrl"
-                    :src="imgUrl"
-                    :alt="pet.name"
-                    class="h-full w-full object-contain"
-                    loading="lazy"
-                    @error="(e: Event) => (e.target as HTMLImageElement).style.display = 'none'"
-                  />
-                  <span v-else class="text-4xl font-bold text-white/90">{{ pet.name.charAt(0) }}</span>
-                </div>
-                <div class="flex flex-col items-end gap-1.5 text-right">
-                  <span class="inline-flex items-center gap-1 rounded-full bg-black/25 px-3 py-1 text-sm font-medium text-white">{{ pet.element }}属性</span>
-                  <span class="rounded-full bg-black/25 px-3 py-1 text-sm text-white/80">{{ pet.rarity }}</span>
-                </div>
-              </div>
-
-              <h1 class="text-4xl font-bold text-white drop-shadow">{{ pet.name }}</h1>
-              <p class="mt-1 text-base text-white/80">「{{ pet.archetype }}」</p>
-
-              <div class="mt-4 flex flex-wrap gap-1.5">
-                <span v-for="t in pet.traits" :key="t" class="rounded-md bg-white/15 px-2.5 py-1 text-sm text-white/90 backdrop-blur-sm">{{ t }}</span>
+          <!-- 精灵大卡：左侧立绘（100% 高度） + 右侧内容（含判词，同一容器） -->
+          <div class="flex flex-col overflow-hidden rounded-2xl border border-gold/20 shadow-2xl md:flex-row">
+            <!-- 左：精灵立绘 -->
+            <div class="relative flex shrink-0 items-center justify-center bg-linear-to-br md:w-2/5" :class="[theme.from, theme.to]">
+              <img
+                v-if="imgUrl"
+                :src="imgUrl"
+                :alt="pet.name"
+                class="h-full max-h-[300px] w-full object-contain p-5 md:max-h-none"
+                loading="lazy"
+                @error="(e: Event) => (e.target as HTMLImageElement).style.display = 'none'"
+              />
+              <span v-else class="text-6xl font-bold text-white/90">{{ pet.name.charAt(0) }}</span>
+              <!-- 属性 / 稀有度：浮在图上 -->
+              <div class="absolute right-3 top-3 flex flex-col items-end gap-1.5">
+                <span class="rounded-full bg-black/30 px-3 py-1 text-sm font-medium text-white backdrop-blur-sm">{{ pet.element }}属性</span>
+                <span class="rounded-full bg-black/30 px-3 py-1 text-sm text-white/85 backdrop-blur-sm">{{ pet.rarity }}</span>
               </div>
             </div>
-          </div>
 
-          <!-- 判词 -->
-          <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <p class="mb-3 text-base font-bold uppercase tracking-[0.2em] text-amber-300/80">契约判词</p>
-            <p class="text-base leading-relaxed text-ink">{{ verdict!.verdict }}</p>
-            <p v-if="verdict!.resonance" class="mt-3 border-l-2 border-gold/50 pl-3 text-sm italic leading-relaxed text-ink-dim">{{ verdict!.resonance }}</p>
+            <!-- 右：名称 + 标签 + 判词 -->
+            <div class="flex flex-1 flex-col gap-4 bg-night-2/70 p-6 backdrop-blur md:p-8">
+              <div>
+                <h1 class="text-4xl font-bold text-white drop-shadow">{{ pet.name }}</h1>
+                <p class="mt-1 text-base text-ink-dim">「{{ pet.archetype }}」</p>
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  <span v-for="t in pet.traits" :key="t" class="rounded-md bg-white/10 px-2.5 py-1 text-sm text-ink">{{ t }}</span>
+                </div>
+              </div>
+
+              <!-- 判词（与精灵图同一个大容器） -->
+              <div class="border-t border-white/10 pt-4">
+                <p class="mb-2 text-base font-bold uppercase tracking-[0.2em] text-amber-300/80">契约判词</p>
+                <p class="text-base leading-relaxed text-ink">{{ verdict!.verdict }}</p>
+                <p v-if="verdict!.resonance" class="mt-3 border-l-2 border-gold/50 pl-3 text-sm italic leading-relaxed text-ink-dim">{{ verdict!.resonance }}</p>
+              </div>
+            </div>
           </div>
 
           <!-- 性格内核 -->
