@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useAdventureStore, FLOOR, CEILING } from '~/stores/adventure'
-import { useTypedText } from '~/composables/useTypedText'
 
 definePageMeta({ layout: false })
 
