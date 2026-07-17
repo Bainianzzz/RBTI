@@ -2,7 +2,6 @@
 // 地板 4 / 天花板 10：不足 4 幕禁止裁决，满 10 幕强制裁决。
 // 失败时记录失败点，retry() 从断点续行。
 
-import { defineStore } from 'pinia'
 import type { AdventureEvent, EventPool, Verdict } from '~/types'
 import { generateNextEvent, generateVerdict, type NextEventResult } from '~/lib/llm'
 

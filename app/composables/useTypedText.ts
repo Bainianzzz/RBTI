@@ -8,7 +8,6 @@
 //   t.onComplete(() => {})   // 打完回调
 
 import Typed from 'typed.js'
-import type { Ref } from 'vue'
 
 export interface TypedRunOptions {
   typeSpeed?: number

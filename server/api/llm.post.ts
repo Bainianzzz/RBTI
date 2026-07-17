@@ -1,5 +1,3 @@
-import { defineEventHandler, readBody, createError } from 'h3'
-
 import type { LlmRequestBody } from '#shared/types/llm'
 
 // 统一 DeepSeek 代理：前端 POST { messages, responseFormat, temperature }

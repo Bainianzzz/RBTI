@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useAdventureStore } from '~/stores/adventure'
 import { petById } from '~/data/pets'
 import { getElementTheme } from '~/data/elementTheme'

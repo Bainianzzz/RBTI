@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useAdventureStore, FLOOR, CEILING } from '~/stores/adventure'
 
 const store = useAdventureStore()

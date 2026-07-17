@@ -1,6 +1,6 @@
 // 18 属性的主题色映射：用于结果页精灵卡等需要按属性着色的地方。
 // 取每个属性最具识别度的色相，避免全站单一色调。
-import type { PetElement } from '@/types'
+import type { PetElement } from '~/types'
 
 export const elementTheme: Record<PetElement, { name: string; from: string; to: string; ring: string; text: string }> = {
   火: { name: '火', from: 'from-orange-500', to: 'to-red-600', ring: 'ring-orange-400/40', text: 'text-orange-600' },

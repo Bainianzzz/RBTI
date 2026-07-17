@@ -1,4 +1,4 @@
-import type { EventSeed } from '@/types'
+import type { EventSeed } from '~/types'
 
 // 事件池种子：每局冒险会从中抽取，由 LLM 展开成具体情境。
 // 种子只给一句话设定 + 标题，不锁死剧情，给 LLM 充分的生成空间。

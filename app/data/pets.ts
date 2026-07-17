@@ -1,4 +1,4 @@
-import type { Pet, PetRarity } from '@/types'
+import type { Pet, PetRarity } from '~/types'
 
 // 精灵契约库：50 只《洛克王国：世界》真实精灵，覆盖全部 18 种属性。
 // 数据来源：wiki.biligame.com/rocom ；性格标签与内核由项目人工提炼。
