@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useAdventureStore } from '~/stores/adventure'
 import { petById } from '~/data/pets'
 import { getElementTheme } from '~/data/elementTheme'
+import { petImageUrl } from '~/data/petImages'
 
 const store = useAdventureStore()
 const { verdict, phase } = storeToRefs(store)
@@ -12,6 +13,7 @@ const noResult = computed(() => !verdict.value || phase.value !== 'done')
 
 const pet = computed(() => (verdict.value ? petById[verdict.value.petId] : undefined))
 const theme = computed(() => (pet.value ? getElementTheme(pet.value.element) : null))
+const imgUrl = computed(() => (pet.value ? petImageUrl(pet.value.name) : undefined))
 
 // 仪式阶段：先显影，再揭卡
 const ritual = ref<'summoning' | 'revealed'>('summoning')
@@ -75,7 +77,17 @@ function replay() {
           <div class="overflow-hidden rounded-2xl border border-gold/20 bg-linear-to-br shadow-2xl" :class="[theme.from, theme.to]">
             <div class="relative px-6 pt-6 pb-5">
               <div class="mb-5 flex items-center justify-between gap-4">
-                <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-black/20 text-3xl font-bold text-white/90 backdrop-blur-sm">{{ pet.name.charAt(0) }}</div>
+                <div class="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-black/20 backdrop-blur-sm">
+                  <img
+                    v-if="imgUrl"
+                    :src="imgUrl"
+                    :alt="pet.name"
+                    class="h-full w-full object-contain"
+                    loading="lazy"
+                    @error="(e: Event) => (e.target as HTMLImageElement).style.display = 'none'"
+                  />
+                  <span v-else class="text-3xl font-bold text-white/90">{{ pet.name.charAt(0) }}</span>
+                </div>
                 <div class="flex flex-col items-end gap-1.5 text-right">
                   <span class="inline-flex items-center gap-1 rounded-full bg-black/25 px-3 py-1 text-xs font-medium text-white">{{ pet.element }}属性</span>
                   <span class="rounded-full bg-black/25 px-3 py-1 text-xs text-white/80">{{ pet.rarity }}</span>
