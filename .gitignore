@@ -55,3 +55,4 @@ app/pages/result/dev/
 .env
 .env.*
 !.env.example
+.vercel

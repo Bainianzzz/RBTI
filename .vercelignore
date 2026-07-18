@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.nuxt
+.output
+.data
+.nitro
+.cache
+.playwright-cli
+app/pages/result/dev
+coverage
+logs
+*.log
