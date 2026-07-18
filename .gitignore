@@ -49,7 +49,7 @@ __screenshots__/
 .playwright-cli/
 
 # Local-only Nuxt preview routes (must never be deployed)
-app/pages/dev/
+app/pages/result/dev/
 
 # Local secrets (never commit)
 .env

@@ -1,0 +1,4 @@
+# Exclude page-private component directories from the route scanner.
+# These contain UI fragments used by specific pages, not standalone routes.
+**/pages/**/_components/**
+**/pages/**/_partials/**
