@@ -8,8 +8,16 @@
 // 失败时记录失败点，retry() 从断点续行。
 
 import type { AdventureEvent, EventPool, EventSeed, Verdict } from '~/types'
-import { generateNextEvent, generateVerdict, HARD_CAP, type NextEventResult } from '~/lib/llm'
+import {
+  generateNextEvent,
+  generateVerdict,
+  HARD_CAP,
+  type NextEventResult,
+  type PartialEventFields,
+  type PartialVerdictFields,
+} from '~/lib/llm'
 import { dailySeeds, peakSeeds } from '~/data/eventSeeds'
+import { pickRandom } from '~/lib/utils'
 
 // 当前正在作答的事件（events[] 里存的是已答完的历史）
 export interface ActiveEvent {
@@ -32,10 +40,6 @@ export type AdventurePhase =
 
 type FailedOp = 'next' | 'conclude' | null
 
-function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)]!
-}
-
 // Setup Store（组合式）：state 用 ref、getters 用 computed、actions 用普通函数。
 // 通过 store 实例访问时 ref/computed 自动解包，调用方无需改动。
 export const useAdventureStore = defineStore('adventure', () => {
@@ -46,6 +50,7 @@ export const useAdventureStore = defineStore('adventure', () => {
   const verdict = ref<Verdict | null>(null)
   const error = ref('')
   const failedOp = ref<FailedOp>(null)
+  const isStreaming = ref(false)
   // 滚动故事摘要：每轮作答后由 LLM 更新，传给下一轮叙事引擎
   const storySummary = ref('')
   // 本局弧线种子
@@ -60,7 +65,7 @@ export const useAdventureStore = defineStore('adventure', () => {
     peakSeeds.find((x) => x.id === climaxSeedId.value),
   )
   const canSubmit = computed(() => {
-    if (!active.value || phase.value !== 'answering') return false
+    if (!active.value || phase.value !== 'answering' || isStreaming.value) return false
     return !!active.value.chosenOption || active.value.freeInput.trim().length > 0
   })
   const isFinished = computed(() => phase.value === 'done' && !!verdict.value)
@@ -73,6 +78,7 @@ export const useAdventureStore = defineStore('adventure', () => {
     verdict.value = null
     error.value = ''
     failedOp.value = null
+    isStreaming.value = false
     storySummary.value = ''
     openingSeedId.value = ''
     climaxSeedId.value = ''
@@ -81,14 +87,14 @@ export const useAdventureStore = defineStore('adventure', () => {
   async function start() {
     reset()
     // 开端：日常池随机一个；导向：高潮池随机一个
-    openingSeedId.value = pick(dailySeeds).id
-    climaxSeedId.value = pick(peakSeeds).id
+    openingSeedId.value = pickRandom(dailySeeds).id
+    climaxSeedId.value = pickRandom(peakSeeds).id
     await fetchNextEvent()
   }
 
   // 提交当前作答，更新摘要，推进到下一事件或裁决
   async function submitAnswer(option: string | null, freeInput: string) {
-    if (!active.value || phase.value !== 'answering') return
+    if (!active.value || phase.value !== 'answering' || isStreaming.value) return
     const answered: AdventureEvent = {
       seedId: active.value.seedId,
       pool: active.value.pool,
@@ -115,12 +121,15 @@ export const useAdventureStore = defineStore('adventure', () => {
     phase.value = 'generating'
     error.value = ''
     failedOp.value = 'next'
+    active.value = null
+    isStreaming.value = true
     try {
       const result = await generateNextEvent(
         events.value,
         opening.value,
         climax.value,
         storySummary.value,
+        applyPartialEvent,
       )
       // 软提示已让 LLM 倾向收尾，这里仍尊重它提前返回的 conclude
       if (result.nextAction.type === 'conclude') {
@@ -130,6 +139,27 @@ export const useAdventureStore = defineStore('adventure', () => {
       applyEvent(result)
     } catch (e) {
       fail(e)
+    }
+  }
+
+  function applyPartialEvent(partial: PartialEventFields) {
+    if (!active.value) {
+      active.value = {
+        seedId: events.value.length === 0 ? openingSeedId.value : '',
+        pool: 'daily',
+        narrative: '',
+        interlude: '',
+        options: [],
+        chosenOption: null,
+        freeInput: '',
+      }
+    }
+    if (partial.interlude !== undefined) active.value.interlude = partial.interlude
+    if (partial.narrative !== undefined) active.value.narrative = partial.narrative
+    if (partial.options !== undefined) active.value.options = partial.options
+    // 首个可见字段到达后立即从加载态切到答题卡；流结束前控件保持禁用。
+    if (partial.interlude || partial.narrative || partial.options?.length) {
+      phase.value = 'answering'
     }
   }
 
@@ -151,6 +181,7 @@ export const useAdventureStore = defineStore('adventure', () => {
       chosenOption: null,
       freeInput: '',
     }
+    isStreaming.value = false
     phase.value = 'answering'
     failedOp.value = null
     // 摘要由 LLM 在同一次生成请求里一并更新，这里直接落库
@@ -158,16 +189,29 @@ export const useAdventureStore = defineStore('adventure', () => {
   }
 
   async function conclude() {
+    active.value = null
+    verdict.value = null
+    isStreaming.value = true
     phase.value = 'concluding'
     error.value = ''
     failedOp.value = 'conclude'
     try {
-      verdict.value = await generateVerdict(events.value)
+      verdict.value = await generateVerdict(events.value, applyPartialVerdict)
+      isStreaming.value = false
       phase.value = 'done'
       failedOp.value = null
     } catch (e) {
       fail(e)
     }
+  }
+
+  function applyPartialVerdict(partial: PartialVerdictFields) {
+    if (!verdict.value) {
+      verdict.value = { petId: partial.petId, verdict: partial.verdict }
+      return
+    }
+    verdict.value.petId = partial.petId
+    verdict.value.verdict = partial.verdict
   }
 
   async function retry() {
@@ -191,6 +235,7 @@ export const useAdventureStore = defineStore('adventure', () => {
   }
 
   function fail(e: unknown) {
+    isStreaming.value = false
     phase.value = 'error'
     error.value = e instanceof Error ? e.message : String(e)
   }
@@ -203,6 +248,7 @@ export const useAdventureStore = defineStore('adventure', () => {
     verdict,
     error,
     failedOp,
+    isStreaming,
     storySummary,
     openingSeedId,
     climaxSeedId,
@@ -217,6 +263,8 @@ export const useAdventureStore = defineStore('adventure', () => {
     submitAnswer,
     fetchNextEvent,
     applyEvent,
+    applyPartialEvent,
+    applyPartialVerdict,
     conclude,
     retry,
     selectOption,
