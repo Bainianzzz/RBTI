@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     // 从 .env 读取；未配置时回退到 DeepSeek 默认值
     apiKey: process.env.API_KEY ?? '',
     apiUrl: process.env.API_URL ?? 'https://api.deepseek.com',
-    apiModel: process.env.API_MODEL ?? 'deepseek-chat',
+    apiModel: process.env.API_MODEL ?? 'deepseek-v4-flash',
   },
 
   app: {

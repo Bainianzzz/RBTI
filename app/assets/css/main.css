@@ -146,8 +146,7 @@ button,
 .btn-gold:focus-visible,
 .btn-coal:focus-visible,
 button:focus-visible,
-a:focus-visible,
-textarea:focus-visible {
+a:focus-visible {
   outline: 3px solid var(--color-gold-soft);
   outline-offset: 3px;
 }
