@@ -28,5 +28,4 @@ export interface NextEventResult {
   narrative: string
   interlude: string
   options: string[]
-  pool: 'daily' | 'peak' | null
 }

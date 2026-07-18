@@ -588,7 +588,7 @@ export const pets: Pet[] = [
     archetype: '水之灵',
     traits: ['神圣', '守护', '水之圣', '神宠'],
     habitat: '行踪神秘',
-    personality: '水之圣灵的守护者，神圣而威严，守护着水之圣泉的古老神宠。',
+    personality: '水之圣灵的守护者，神圣而威严，身影存在于雨滴、湖泊与万千水脉之中。',
     wikiDescription: '“无论是云中落下的一滴水，还是湖面中微风吹起的一道涟漪，都有她的身影。”',
     wikiUrl: 'https://wiki.biligame.com/rocom/圣水守护',
   },

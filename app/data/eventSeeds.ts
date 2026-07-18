@@ -1,127 +1,92 @@
 import type { EventSeed } from '~/types'
 
-// 事件池种子：每局冒险会从中抽取，由 LLM 展开成具体情境。
-// 种子只给一句话设定 + 标题，不锁死剧情，给 LLM 充分的生成空间。
-//
-// 日常池：偏轻松的魔法学院/野外日常，节奏舒缓、塑造角色。
-// 高潮池：能让玩家兴奋的捕捉/首领/竞技场/黑魔法师事件，节奏紧凑、制造张力。
+// 副本资料来源：《洛克王国：世界》手游 BWIKI「副本图鉴」。
+// 每局冒险随机选择一个副本，LLM 在该副本内展开完整探索。
+export const DUNGEON_WIKI_URL = 'https://wiki.biligame.com/rocom/副本图鉴'
 
-export const dailySeeds: EventSeed[] = [
+export const eventSeeds: EventSeed[] = [
   {
-    id: 'guild_register',
-    pool: 'daily',
-    title: '冒险者公会登记',
-    seedText: '你来到洛克王国的冒险者公会登记成为见习魔法师，柜台前排着形形色色的新人和他们的搭档精灵。',
+    id: 'island_green_web',
+    title: '海岛绿网',
+    seedText: '在湖中的小岛上，那座充满绿色织网的遗迹给了我们很多希望。当找不到前路的时候，寻找那片绿色的希冀吧！',
   },
   {
-    id: 'herb_class',
-    pool: 'daily',
-    title: '魔法药草课',
-    seedText: '学院的第一堂魔法药草课，老师让大家在温室里辨认一株会害羞的药草。',
+    id: 'windborne_sparks',
+    title: '风起的星火',
+    seedText: '一场关于飞行的考验，指引向前的火炬照亮着勇者的征途。和精灵一起学习飞行技巧，随风起伏，点燃那些守护古老秘密的火炬吧！',
   },
   {
-    id: 'cafeteria_lunch',
-    pool: 'daily',
-    title: '精灵食堂的午餐',
-    seedText: '午休时间，精灵食堂里各种属性的精灵因为食物偏好吵成了一团。',
+    id: 'sea_cliff',
+    title: '望海崖壁',
+    seedText: '在繁华的商店街周边躲藏着黑巫团的成员，提升战斗技巧然后向他们发起挑战吧！',
   },
   {
-    id: 'library_study',
-    pool: 'daily',
-    title: '图书馆夜读',
-    seedText: '夜深了，你独自留在魔法学院图书馆查资料，书架深处传来奇怪的翻书声。',
+    id: 'ruins_twin_witches',
+    title: '遗迹双巫团',
+    seedText: '聆风镇附近的黑巫团将自己隐藏得很好，提升战斗技巧，向他们发起挑战吧！',
   },
   {
-    id: 'training_ground',
-    pool: 'daily',
-    title: '训练场陪练',
-    seedText: '训练场上，一位高年级学姐邀请你和她的精灵进行一场友好的陪练对战。',
+    id: 'royal_twin_witches',
+    title: '皇家双巫团',
+    seedText: '在皇家办事处后的林地中躲藏着黑巫团的成员，提升战斗技巧然后向他们发起挑战吧！',
   },
   {
-    id: 'market_shopping',
-    pool: 'daily',
-    title: '王国集市采购',
-    seedText: '热闹的王国集市上，你在给即将到来的探险采购补给，一个奇怪的小摊吸引了你。',
+    id: 'obestan_lakeside_dream',
+    title: '奥贝斯坦湖边的童梦',
+    seedText: '去奥贝斯坦湖边看看吧，去体验踢石子的快乐！',
   },
   {
-    id: 'night_patrol',
-    pool: 'daily',
-    title: '校园夜巡',
-    seedText: '轮到你和同学组队进行校园夜巡，月光下的学院和白天完全不一样。',
+    id: 'spirit_king_gift',
+    title: '精灵王的馈赠',
+    seedText: '来自远古精灵王的赠予……似乎可以直达地下？',
   },
   {
-    id: 'egg_incubator',
-    pool: 'daily',
-    title: '孵蛋室的意外',
-    seedText: '你被分配去照看学院的精灵孵蛋室，其中一颗蛋似乎对你格外有反应。',
+    id: 'wind_spirit_water_witch',
+    title: '风灵水巫',
+    seedText: '在挽风屏障周边躲藏着黑巫团的成员，提升战斗技巧然后向他们发起挑战吧！',
   },
   {
-    id: 'forest_edge_stroll',
-    pool: 'daily',
-    title: '森林边缘散步',
-    seedText: '课后你和同学去学院外的森林边缘散步，偶遇一只受伤的野生小精灵。',
+    id: 'floating_valley',
+    title: '浮落幽谷',
+    seedText: '地宫深潭的谷底藏匿着远古的遗留，等待着有心人的探索……带上自己的精灵，想办法到达水底开启被封藏的宝物吧！',
   },
   {
-    id: 'fortune_teller',
-    pool: 'daily',
-    title: '占卜师的帐篷',
-    seedText: '集市角落有一顶神秘的占卜帐篷，里面据说能窥见你和精灵的前世缘分。',
+    id: 'dune_earth_witch',
+    title: '沙丘地巫',
+    seedText: '在叽叽喳喳台地附近躲藏着黑巫团的成员，提升战斗技巧然后向他们发起挑战吧！',
+  },
+  {
+    id: 'windbreak_valley',
+    title: '破风山谷',
+    seedText: '冰封的岚语峰上有一个高高的圣所，所有洛克都想飞往圣所最高处。带上飞行精灵和迎风逐浪的勇气，破空飞行吧！',
+  },
+  {
+    id: 'windrest_sanctuary',
+    title: '风眠圣所',
+    seedText: '大灾变之后，传说中的光之精灵在战斗中陨落，化为一枚特殊的光茧，被精灵王带进风眠圣所。借助圣所内强大的魔力，光之精灵迪莫即将完成重生！',
+  },
+  {
+    id: 'portal_mirror',
+    title: '传送魔镜',
+    seedText: '传送门呀传送门，请您告诉我：哪扇门可以指引我解开地宫的奥秘？',
+  },
+  {
+    id: 'snowy_mountain_cabin',
+    title: '雪山暖屋',
+    seedText: '在那风雪崖壁之上，有一座孤零零的雪屋，雪屋中有一位孤零零的……',
+  },
+  {
+    id: 'warm_fire_snowland',
+    title: '暖火雪境',
+    seedText: '在寒冷的雪顶峰顶，有一座雪封的地城。传说只要在里面寻找到火光，就能解锁上古留下来的宝藏！开启寻火之旅吧！',
+  },
+  {
+    id: 'starfrost_ice_witch',
+    title: '星雪冰巫',
+    seedText: '在星霜雪峰有一座神秘的魔法门，探索门后的奥秘吧！',
   },
 ]
-
-export const peakSeeds: EventSeed[] = [
-  {
-    id: 'wild_boss_encounter',
-    pool: 'peak',
-    title: '秘境首领精灵',
-    seedText: '深入秘境时，一只强大的首领级野生精灵挡住了去路，周围空气都凝固了。',
-  },
-  {
-    id: 'arena_tournament',
-    pool: 'peak',
-    title: '竞技场擂台赛',
-    seedText: '王国竞技场正在举办新魔法师擂台赛，观众席爆满，你被推上了擂台。',
-  },
-  {
-    id: 'dark_mage_attack',
-    pool: 'peak',
-    title: '黑魔法师突袭',
-    seedText: '夜幕降临，一股黑魔法能量笼罩了学院，黑魔法师带着被腐蚀的精灵发起了突袭。',
-  },
-  {
-    id: 'ancient_seal_break',
-    pool: 'peak',
-    title: '远古封印松动',
-    seedText: '遗迹深处，一道封印亿万年的远古之力开始松动，大地在震颤。',
-  },
-  {
-    id: 'poacher_confront',
-    pool: 'peak',
-    title: '精灵盗猎者',
-    seedText: '你在野外撞见了一伙正在盗猎稀有精灵的不法之徒，他们发现了你。',
-  },
-  {
-    id: 'berserk_spirit',
-    pool: 'peak',
-    title: '暴走精灵事件',
-    seedText: '一只原本温顺的精灵突然暴走，能量失控威胁到了周围所有人。',
-  },
-  {
-    id: 'contract_trial',
-    pool: 'peak',
-    title: '契约试炼降临',
-    seedText: '精灵圣泉显灵，你被选中接受一场古老而神圣的契约试炼。',
-  },
-  {
-    id: 'starlight_fate',
-    pool: 'peak',
-    title: '星空下的命运抉择',
-    seedText: '流星雨之夜，一个关于你与本命精灵命运的重大抉择摆在了面前。',
-  },
-]
-
-export const allSeeds: EventSeed[] = [...dailySeeds, ...peakSeeds]
 
 export const seedById: Record<string, EventSeed> = Object.fromEntries(
-  allSeeds.map((s) => [s.id, s]),
+  eventSeeds.map((seed) => [seed.id, seed]),
 )

@@ -10,6 +10,6 @@
     <p class="text-base font-bold text-paper-ink">
       命运之轮缓缓转动<span class="inline-block animate-pulse">…</span>
     </p>
-    <p class="mt-2 text-sm text-paper-ink/55">精灵圣泉正在为你编织下一段奇遇</p>
+    <p class="mt-2 text-sm text-paper-ink/55">正在为你编织下一段奇遇</p>
   </div>
 </template>

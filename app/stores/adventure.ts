@@ -1,13 +1,13 @@
 // 冒险状态机：管理事件流（生成 → 作答 → 摘要 → 生成 / 裁决）。
 //
-// 叙事模型（弧线制 + 滚动摘要，无硬上下限）：
-// 开局随机抽一个日常种子作为"开端"，再随机抽一个高潮种子作为"导向目标"。
-// 每轮：LLM 生成事件（同一请求内顺带更新故事摘要）→ 用户作答 → 下一轮生成。
+// 叙事模型（副本探索 + 滚动摘要）：
+// 开局随机抽一个副本种子，整局围绕该副本探索。
+// 每轮：LLM 生成事件（同一请求内顺带更新故事摘要）→ 用户作答 → 深入副本或完成探索。
 // 摘要作为压缩记忆传给下一轮叙事引擎，替代回放完整多轮历史。
-// 每次请求都顺带判断"高潮是否已被用户的抉择解决"，是则收尾裁决。
+// 每次请求都顺带判断"副本目标是否已完成"，是则收尾裁决。
 // 失败时记录失败点，retry() 从断点续行。
 
-import type { AdventureEvent, EventPool, EventSeed, Verdict } from '~/types'
+import type { AdventureEvent, EventSeed, Verdict } from '~/types'
 import {
   generateNextEvent,
   generateVerdict,
@@ -16,13 +16,12 @@ import {
   type PartialEventFields,
   type PartialVerdictFields,
 } from '~/lib/llm'
-import { dailySeeds, peakSeeds } from '~/data/eventSeeds'
+import { eventSeeds } from '~/data/eventSeeds'
 import { pickRandom } from '~/lib/utils'
 
 // 当前正在作答的事件（events[] 里存的是已答完的历史）
 export interface ActiveEvent {
   seedId: string
-  pool: EventPool
   narrative: string
   interlude: string
   options: string[]
@@ -53,16 +52,12 @@ export const useAdventureStore = defineStore('adventure', () => {
   const isStreaming = ref(false)
   // 滚动故事摘要：每轮作答后由 LLM 更新，传给下一轮叙事引擎
   const storySummary = ref('')
-  // 本局弧线种子
-  const openingSeedId = ref('')
-  const climaxSeedId = ref('')
+  // 本局唯一的副本种子
+  const dungeonSeedId = ref('')
 
   // ── getters ──────────────────────────────────────────────
-  const opening = computed<EventSeed | undefined>(() =>
-    dailySeeds.find((x) => x.id === openingSeedId.value),
-  )
-  const climax = computed<EventSeed | undefined>(() =>
-    peakSeeds.find((x) => x.id === climaxSeedId.value),
+  const dungeon = computed<EventSeed | undefined>(() =>
+    eventSeeds.find((seed) => seed.id === dungeonSeedId.value),
   )
   const canSubmit = computed(() => {
     if (!active.value || phase.value !== 'answering' || isStreaming.value) return false
@@ -80,15 +75,12 @@ export const useAdventureStore = defineStore('adventure', () => {
     failedOp.value = null
     isStreaming.value = false
     storySummary.value = ''
-    openingSeedId.value = ''
-    climaxSeedId.value = ''
+    dungeonSeedId.value = ''
   }
 
   async function start() {
     reset()
-    // 开端：日常池随机一个；导向：高潮池随机一个
-    openingSeedId.value = pickRandom(dailySeeds).id
-    climaxSeedId.value = pickRandom(peakSeeds).id
+    dungeonSeedId.value = pickRandom(eventSeeds).id
     await fetchNextEvent()
   }
 
@@ -97,7 +89,6 @@ export const useAdventureStore = defineStore('adventure', () => {
     if (!active.value || phase.value !== 'answering' || isStreaming.value) return
     const answered: AdventureEvent = {
       seedId: active.value.seedId,
-      pool: active.value.pool,
       narrative: active.value.narrative,
       interlude: active.value.interlude,
       options: active.value.options,
@@ -111,7 +102,7 @@ export const useAdventureStore = defineStore('adventure', () => {
   }
 
   async function fetchNextEvent() {
-    if (!opening.value || !climax.value) return
+    if (!dungeon.value) return
     // 硬上限：已答满 HARD_CAP 题后不再请求 LLM 生成新事件，直接收尾裁决。
     // 这是软提示之外的强制门，保证冒险长度不超过目标上限。
     if (events.value.length >= HARD_CAP) {
@@ -126,8 +117,7 @@ export const useAdventureStore = defineStore('adventure', () => {
     try {
       const result = await generateNextEvent(
         events.value,
-        opening.value,
-        climax.value,
+        dungeon.value,
         storySummary.value,
         applyPartialEvent,
       )
@@ -145,8 +135,7 @@ export const useAdventureStore = defineStore('adventure', () => {
   function applyPartialEvent(partial: PartialEventFields) {
     if (!active.value) {
       active.value = {
-        seedId: events.value.length === 0 ? openingSeedId.value : '',
-        pool: 'daily',
+        seedId: dungeonSeedId.value,
         narrative: '',
         interlude: '',
         options: [],
@@ -164,17 +153,8 @@ export const useAdventureStore = defineStore('adventure', () => {
   }
 
   function applyEvent(result: NextEventResult) {
-    const isFirst = events.value.length === 0
-    const pool: EventPool = result.pool ?? (isFirst ? 'daily' : 'daily')
-    // 第一个事件贴开端种子；高潮事件贴高潮种子；中间事件自由（无种子）
-    const seedId = isFirst
-      ? openingSeedId.value
-      : pool === 'peak'
-        ? climaxSeedId.value
-        : ''
     active.value = {
-      seedId,
-      pool,
+      seedId: dungeonSeedId.value,
       narrative: result.narrative,
       interlude: result.interlude,
       options: result.options,
@@ -250,11 +230,9 @@ export const useAdventureStore = defineStore('adventure', () => {
     failedOp,
     isStreaming,
     storySummary,
-    openingSeedId,
-    climaxSeedId,
+    dungeonSeedId,
     // getters
-    opening,
-    climax,
+    dungeon,
     canSubmit,
     isFinished,
     // actions

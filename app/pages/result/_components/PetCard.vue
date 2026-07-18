@@ -102,7 +102,7 @@ function replay() {
         </div>
 
         <p v-if="fallbackMismatch" class="mt-4 text-center text-base text-amber-400/70">
-          （注：圣泉显影出现偏差，已回退展示。）
+          （注：契约出现偏差，已回退展示。）
         </p>
 
         <!-- 操作 -->

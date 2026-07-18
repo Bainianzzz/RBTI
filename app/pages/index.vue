@@ -15,8 +15,8 @@ import '~/assets/css/index/hero.css'
     </h1>
 
     <p class="fade-in mt-7 max-w-xl text-base font-medium leading-8 text-ink/75 md:text-lg">
-      精灵契约之日，你将走过一整天的奇遇。<br />
-      每一次选择与心声，都会指引你的本命精灵在黄昏显现。
+      踏入未知副本，与精灵伙伴一同探索秘境。<br />
+      每一次选择与心声，都会让你的本命精灵回应契约。
     </p>
 
     <ContractButton

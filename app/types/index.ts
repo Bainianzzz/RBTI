@@ -44,23 +44,18 @@ export interface Pet {
   image?: string
 }
 
-// 事件池分类：日常 / 高潮
-export type EventPool = 'daily' | 'peak'
-
-// 事件种子：用户每局冒险会从中抽取，LLM 展开成具体情境
+// 副本种子：用户每局冒险会从中抽取一个，LLM 在其中展开完整探索
 export interface EventSeed {
   id: string
-  pool: EventPool
-  // 短标题，如"图书馆夜读"，供 LLM 识别
+  // Wiki 中的副本名称
   title: string
-  // 一句话设定，给 LLM 展开的种子
+  // Wiki 中的副本简介，给 LLM 展开探索
   seedText: string
 }
 
 // 一次具体生成的冒险事件（LLM 产出）
 export interface AdventureEvent {
   seedId: string
-  pool: EventPool
   // LLM 生成的情境描述，≤60 字
   narrative: string
   // 旁白过场，1-2 句
