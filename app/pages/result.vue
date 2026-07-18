@@ -3,6 +3,7 @@ import { ExternalLink, RotateCcw } from 'lucide-vue-next'
 import { useAdventureStore } from '~/stores/adventure'
 import { petById } from '~/data/pets'
 import { petImageUrl } from '~/data/petImages'
+import '~/assets/css/result/reveal.css'
 
 const store = useAdventureStore()
 const { verdict, phase } = storeToRefs(store)
@@ -169,15 +170,3 @@ function replay() {
     </div>
   </PageShell>
 </template>
-
-<style scoped>
-.reveal-enter-active {
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-.reveal-enter-from {
-  opacity: 0;
-  transform: translateY(16px) scale(0.98);
-}
-</style>

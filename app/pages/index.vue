@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
+import '~/assets/css/index/hero.css'
 
 // 首页：保持无背景图，以官网 nav 的炭黑/暖金语言组织入口。
 </script>
@@ -46,13 +47,3 @@ import { ArrowRight } from 'lucide-vue-next'
     </div>
   </PageShell>
 </template>
-
-<style scoped>
-.fade-in { animation: fadein 0.7s ease both; }
-.fade-in:nth-child(2) { animation-delay: 80ms; }
-.fade-in:nth-child(3) { animation-delay: 160ms; }
-.fade-in:nth-child(4) { animation-delay: 240ms; }
-.fade-in:nth-child(5) { animation-delay: 320ms; }
-.fade-in:nth-child(6) { animation-delay: 400ms; }
-@keyframes fadein { from { opacity: 0; translate: 0 12px } to { opacity: 1; translate: none } }
-</style>

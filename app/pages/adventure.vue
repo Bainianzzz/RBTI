@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
 import { useAdventureStore } from '~/stores/adventure'
+import '~/assets/css/adventure/card.css'
 
 const store = useAdventureStore()
 const { phase, active, events, error } = storeToRefs(store)
@@ -192,13 +193,3 @@ watch(
     </div>
   </PageShell>
 </template>
-
-<style scoped>
-.rise-enter-active {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.rise-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-</style>
