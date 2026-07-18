@@ -3,9 +3,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
 
-  // 纯客户端交互应用：无 SSR 预取内容，关掉 SSR 消除 hydration 风险，
-  // typed.js 等 browser-only 依赖也天然安全。server/api 仍在 Nitro 运行。
-  ssr: false,
+  // 页面由服务端渲染；冒险页在客户端水合后再发起流式 LLM 请求。
+  ssr: true,
 
   // Tailwind v4（通过 PostCSS 插件）
   postcss: {

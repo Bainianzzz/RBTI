@@ -7,7 +7,7 @@
 - Tailwind CSS v4
 - DeepSeek OpenAI 兼容接口
 - Fetch API、ReadableStream、Server-Sent Events
-- lucide-vue-next、typed.js
+- lucide-vue-next
 
 ## 环境要求
 
@@ -54,7 +54,7 @@ npm run build
 npm run preview
 ```
 
-项目虽然以 SPA 方式渲染页面，但依赖 Nitro 服务端路由隐藏 API Key 并代理 LLM 请求，因此部署环境必须支持 Nuxt/Nitro 服务端，不能只托管静态文件。
+项目使用 Nuxt SSR，并通过 Nitro 服务端路由隐藏 API Key、代理 LLM 请求，因此部署环境必须支持 Nuxt/Nitro 服务端，不能只托管静态文件。冒险页会在客户端水合后发起流式 LLM 请求，再将增量内容写入页面。
 
 ## 项目结构
 
