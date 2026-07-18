@@ -37,3 +37,22 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Nuxt build artifacts (generated at dev/build time, never commit)
+.nuxt
+.output
+.data
+.nitro
+.cache
+
+# Playwright CLI artifacts (local browser-test snapshots)
+.playwright-cli/
+
+# Local-only Nuxt preview routes (must never be deployed)
+app/pages/result/dev/
+
+# Local secrets (never commit)
+.env
+.env.*
+!.env.example
+.vercel

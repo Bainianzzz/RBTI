@@ -1,0 +1,23 @@
+/* 答题页专属：羊皮纸卡片底部金线分隔 + 选项/输入区入场过渡。
+   由 AnswerCard.vue 引入，供答题卡及 card/ 子组件使用。
+   注：GoldRule 组件用的是内联渐变 class，与此处 .gold-rule 无关。 */
+
+/* 卡片底部细金线（仪式感收束） */
+.gold-rule {
+  height: 1px;
+  background-image: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
+/* 选项本身已有状态边框，不叠加全局按钮的浅金色焦点外圈。 */
+.answer-option:focus-visible {
+  outline: none;
+}
+
+/* 情境打字完成后，选项与输入框上浮淡入 */
+.rise-enter-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.rise-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}

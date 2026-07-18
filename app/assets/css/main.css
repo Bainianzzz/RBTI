@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Roco Display";
+  src: url("/font/MIANFEIZITI.ttf") format("truetype");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 900;
+}
+
+/* ── 洛克王国：世界 视觉体系 ──────────────────────────────
+   配色取样自官网 rocom.qq.com（暖白 #F4EEE1 / 金 #FFC65F / 灰 #C3C1B4），
+   主字体取官网 FZLTYJT 的圆体形态，用系统圆体安全回退。
+   全站深色奇幻基调：深夜空 + 暖白文字 + 金色强调 + 羊皮纸答题卡。
+   ─────────────────────────────────────────────────────── */
+
+@theme {
+  /* 官网取样色 */
+  --color-ink: #f4eee1;        /* 暖白：主文字 */
+  --color-ink-dim: #c3c1b4;    /* 灰：次要文字 */
+  --color-gold: #ffc65f;       /* 金：强调、激活、进度 */
+  --color-gold-deep: #d99e2f;  /* 深金：描边、hover */
+  --color-gold-soft: #ffe3a8;  /* 浅金：高光 */
+  /* 深色基调（非纯黑，带蓝绿调的夜空，避免单调） */
+  --color-night: #14202b;      /* 主背景 */
+  --color-night-2: #1c2b39;    /* 卡片底 */
+  --color-night-3: #26384a;    /* 描边/分割 */
+  /* 羊皮纸：答题卡、判词（暖白偏黄，与深色背景形成层次） */
+  --color-parch: #ece2c8;      /* 羊皮纸面 */
+  --color-parch-ink: #3a3120;  /* 羊皮纸上的字 */
+  --color-parch-edge: #c9b988; /* 羊皮纸描边 */
+  --color-coal: #1b1a19;       /* 官网导航：炭黑 */
+  --color-coal-soft: #282624;  /* 导航 hover / 深色面板 */
+  --color-paper: #f3efe3;      /* WIKI 内容盒：暖白纸面 */
+  --color-paper-soft: #e8e0cc; /* 纸面次级区域 */
+  --color-paper-ink: #34302a;  /* 纸面主文字 */
+  --color-sun: #ffb83e;        /* WIKI 金橙描边 */
+
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Roco Display", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+html {
+  background-color: var(--color-night);
+}
+
+body {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  background-color: var(--color-night);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 全局默认使用契约字体；仅 14px 以下的小字回退到无衬线，保持可读性 */
+.text-xs,
+.text-\[10px\],
+.text-\[11px\],
+.text-\[12px\],
+.text-\[13px\] {
+  font-family: var(--font-sans);
+}
+
+button,
+a,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  box-shadow: none;
+}
+
+button,
+.btn-gold,
+.btn-coal {
+  font-family: var(--font-display);
+}
+
+/* 自定义工具类：用 @utility 注册，才能配合 hover:/disabled: 等变体。
+   Tailwind v4 推荐方式（见 v3→v4 迁移：@layer utilities 已弃用）。 */
+
+/* 全站微弱星点底纹（深色氛围，极淡，不喧宾夺主） */
+@utility starfield {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgb(255 230 170 / 0.3), transparent 55%),
+    radial-gradient(1px 1px at 70% 60%, rgb(255 230 170 / 0.2), transparent 55%),
+    radial-gradient(1px 1px at 40% 80%, rgb(255 230 170 / 0.16), transparent 55%),
+    radial-gradient(1.5px 1.5px at 85% 20%, rgb(255 230 170 / 0.24), transparent 55%);
+}
+
+/* 金色描边按钮基底 */
+@utility btn-gold {
+  background-image: linear-gradient(180deg, #ffd982, var(--color-gold));
+  color: #3a2a08;
+  border: 2px solid #3a2a08;
+}
+
+@utility paper-panel {
+  color: var(--color-paper-ink);
+  background-color: rgb(243 239 227 / 0.98);
+  border: 2px solid rgb(255 184 62 / 0.8);
+  box-shadow: 0 22px 60px -28px rgb(0 0 0 / 0.8), 0 6px 12px rgb(0 0 0 / 0.18);
+}
+
+@utility btn-coal {
+  color: var(--color-ink);
+  background: linear-gradient(180deg, var(--color-coal-soft), var(--color-coal));
+  border: 2px solid rgb(255 198 95 / 0.55);
+}
+
+@utility coal-bar {
+  color: var(--color-ink);
+  background:
+    linear-gradient(90deg, rgb(255 255 255 / 0.025) 1px, transparent 1px) 0 0 / 36px 36px,
+    linear-gradient(180deg, #242321, var(--color-coal));
+  border: 1px solid rgb(255 255 255 / 0.08);
+  box-shadow: 0 10px 24px -16px rgb(0 0 0 / 0.9);
+}
+
+@utility page-vignette {
+  background:
+    radial-gradient(circle at 50% 20%, rgb(255 198 95 / 0.08), transparent 34rem),
+    linear-gradient(180deg, var(--color-coal) 0%, var(--color-night) 52%, #10171d 100%);
+}
+
+/* gold-rule 与 text-glow 仅被单个页面使用，已移至页面同名文件夹：
+   adventure/card.css（.gold-rule）、index/hero.css（.text-glow） */
+
+.btn-gold,
+.btn-coal {
+  transition: translate 160ms ease, filter 160ms ease;
+}
+
+.btn-gold:hover,
+.btn-coal:hover {
+  filter: brightness(1.05);
+  translate: 0 -1px;
+}
+
+.btn-gold:active,
+.btn-coal:active {
+  translate: 0 3px;
+}
+
+.btn-gold:focus-visible,
+.btn-coal:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--color-gold-soft);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

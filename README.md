@@ -1,53 +1,40 @@
-# 洛克王国：世界本命测试（RBTI）
+# RBTI · 本命精灵契约测试
 
-[![Pages Visits](https://visitor-badge.laobi.icu/badge?page_id=bainianzzz.rbti-pages&left_text=Pages%20Visits)](https://bainianzzz.github.io/RBTI/)
+一个基于《洛克王国：世界》手游世界观的 AI 性格测试。
 
-一个基于 MBTI 维度加权题目的网页测试项目。  
-用户完成测试后，会得到对应的精灵人格镜像结果，作为本命精灵，并可一键分享结果链接或者图片。
-每次刷新结果页面，有可能出现自己本命精灵的异色形态。
+体验地址：https://www.rbti-test.fun
 
-## [体验地址](https://www.rbti-test.fun/)
+系统会随机选择一个真实副本作为本局舞台，由 DeepSeek 根据玩家的每次选择实时续写探索剧情。冒险结束后，模型会分析整段旅程中体现出的性格倾向，从精灵库中选出唯一一只最契合的本命精灵，并生成契约判词。
 
-## 功能特性
+> 本项目数据和资源来自 洛克王国：世界 BWIKI，承诺不用于商业用途，仅用于娱乐和学习
+> 内容由 AI 生成，仅供娱乐
 
-- 18 道场景题按 MBTI 维度实时加权，自动生成本命精灵结果。
-- 结果页支持孵蛋动画、打字机标题与 10% 概率异色精灵。
-- 支持分享链接与结果图片导出（移动端下载 / 桌面端弹窗预览）。
-- 中英文双语（`zh-CN` / `en-US`）文案切换。
-- GitHub Pages 自动部署，移动端与桌面端均适配。
+## 主要功能
 
-## Star 趋势
+- **随机副本探索**：每局从 BWIKI 收录的副本中随机选择一个，整段故事围绕该副本展开。
+- **AI 动态叙事**：玩家的选择会影响路线、谜题、遭遇和战斗，下一幕由 DeepSeek 实时生成。
+- **选项与自由回答**：每题提供 3-4 个选项，同时允许玩家输入自己的行动或想法。
+- **流式内容展示**：通过 Fetch API、ReadableStream 和 SSE 流式接收模型内容，减少等待感。
+- **滚动故事记忆**：每轮更新故事摘要，在保持剧情连贯的同时控制请求长度。
+- **本命精灵匹配**：根据整段冒险中的回答，从约 50 只、覆盖全部属性的精灵中匹配唯一结果。
+- **契约结果页**：展示精灵图片、属性、特征、性格介绍和 AI 生成的契约判词。
+- **无账号与持久化**：不需要登录，回答和结果仅保存在当前页面会话中。
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Bainianzzz/RBTI&type=Date)](https://www.star-history.com/#Bainianzzz/RBTI&Date)
+## 数据与素材来源
 
-## 技术栈
+- 《洛克王国：世界》官网：<https://rocom.qq.com/>
+- 《洛克王国：世界》BWIKI：<https://wiki.biligame.com/rocom/首页>
+- 副本资料：<https://wiki.biligame.com/rocom/副本图鉴>
+- 精灵图鉴图片由 BWIKI/patchwiki 提供，相关页面链接记录在项目数据文件中。
 
-- 前端框架：Vue 3 + Vite + TypeScript
-- 状态与路由：Pinia + Vue Router
-- 样式与组件：Tailwind CSS + Reka UI + Headless UI
-- 国际化：vue-i18n
-- 结果导出：@zumer/snapdom
-- 交互与图标：vue-writer + vue-sonner + lucide-vue-next
-- 代码质量：ESLint + oxlint + Vitest
+游戏名称、世界观、角色及美术素材版权归其各自权利方所有。
 
-## 项目结构
+## 工作流程
 
-```
-RBTI/
-├─ src/
-│  ├─ assets/pets/           # 宠物 webp 静态资源
-│  ├─ components/            # 通用组件（如 AppToaster、图表等）
-│  ├─ data/
-│  │  ├─ questions.ts        # 题目权重与业务数据
-│  │  └─ pets.ts             # MBTI 到宠物信息映射
-│  ├─ i18n/                  # 国际化初始化
-│  ├─ locales/
-│  │  ├─ text/               # 页面文案（zh-CN / en-US）
-│  │  └─ questions/          # 题库文案（zh-CN / en-US）
-│  ├─ router/                # 路由配置
-│  ├─ stores/                # Pinia 状态管理（答题流程/结果）
-│  ├─ types/                 # 类型定义
-└─ └─ views/
-      ├─ Quiz.vue            # 答题页
-      └─ Result.vue          # 结果页（宠物展示、分享、提示）
-```
+1. 玩家从首页开始契约。
+2. 应用随机抽取一个副本 seed，并请求 DeepSeek 生成第一幕。
+3. 玩家选择预设行动，也可以补充自己的回答。
+4. 模型结合副本背景、故事摘要和最新回答生成下一幕，并判断副本是否已经完成。
+5. 副本结束后，模型根据全部回答匹配本命精灵并生成判词。
+
+更多详细信息请查看[开发文档](docs/development.md)

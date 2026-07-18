@@ -1,0 +1,21 @@
+/* 首页 hero 区专属：元素逐级淡入 + 标题金色微光。
+   仅 app/pages/index.vue 引用，不放入全局 main.css。 */
+
+.fade-in {
+  animation: fadein 0.7s ease both;
+}
+.fade-in:nth-child(2) { animation-delay: 80ms; }
+.fade-in:nth-child(3) { animation-delay: 160ms; }
+.fade-in:nth-child(4) { animation-delay: 240ms; }
+.fade-in:nth-child(5) { animation-delay: 320ms; }
+.fade-in:nth-child(6) { animation-delay: 400ms; }
+
+@keyframes fadein {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: none; }
+}
+
+/* 仪式性标题微光：仅首页 H1 使用，勿滥用 */
+.text-glow {
+  text-shadow: 0 0 18px rgb(255 198 95 / 0.35);
+}
