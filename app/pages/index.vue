@@ -5,12 +5,8 @@ import { ArrowRight } from 'lucide-vue-next'
 </script>
 
 <template>
-  <main class="page-vignette starfield relative flex min-h-dvh w-full flex-col items-center justify-center overflow-hidden px-6 py-16 text-center font-display">
-    <div class="fade-in mb-6 flex items-center gap-4" aria-hidden="true">
-      <span class="h-0.5 w-10 bg-gold/70" />
-      <span class="size-2 rotate-45 border border-gold bg-coal" />
-      <span class="h-0.5 w-10 bg-gold/70" />
-    </div>
+  <PageShell centered class="py-16">
+    <GoldRule diamond="hollow" class="fade-in mb-6" />
 
     <p class="fade-in font-display text-base font-black tracking-[0.22em] text-ink">洛克王国：世界</p>
     <h1 class="fade-in text-glow mt-3 font-display text-4xl font-black tracking-wide text-gold sm:text-5xl md:text-6xl">
@@ -22,13 +18,15 @@ import { ArrowRight } from 'lucide-vue-next'
       每一次选择与心声，都会指引你的本命精灵在黄昏显现。
     </p>
 
-    <NuxtLink
+    <ContractButton
       to="/adventure"
-      class="btn-gold fade-in group mt-10 inline-flex min-h-14 items-center gap-3 rounded-lg px-10 text-base font-black tracking-wide"
+      variant="gold"
+      size="lg"
+      :icon="ArrowRight"
+      class="fade-in group mt-10"
     >
       开始契约
-      <ArrowRight class="size-5 transition-transform group-hover:translate-x-0.5" :stroke-width="2.5" aria-hidden="true" />
-    </NuxtLink>
+    </ContractButton>
 
     <a
       href="https://rocom.qq.com/"
@@ -46,7 +44,7 @@ import { ArrowRight } from 'lucide-vue-next'
         世界观 © 《洛克王国：世界》腾讯魔方工作室群 · 图鉴数据见 wiki.biligame.com/rocom
       </p>
     </div>
-  </main>
+  </PageShell>
 </template>
 
 <style scoped>

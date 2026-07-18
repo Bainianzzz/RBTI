@@ -86,7 +86,7 @@ watch(
 </script>
 
 <template>
-  <main class="page-vignette starfield relative flex min-h-dvh flex-col justify-center px-5 py-10 text-ink sm:px-8">
+  <PageShell>
     <div class="mx-auto w-full max-w-3xl">
       <!-- 生成中 -->
       <div v-if="phase === 'generating' || phase === 'idle'" class="paper-panel rounded-3xl px-6 py-24 text-center">
@@ -99,11 +99,7 @@ watch(
 
       <!-- 收尾中 -->
       <div v-else-if="phase === 'concluding'" class="paper-panel rounded-3xl px-6 py-24 text-center">
-        <div class="relative mx-auto mb-8 flex size-24 items-center justify-center">
-          <span class="absolute size-full rounded-full bg-gold/20 motion-safe:animate-ping" />
-          <span class="absolute size-14 rounded-full bg-gold-soft/40 blur-sm motion-safe:animate-pulse" />
-          <span class="size-9 rounded-full bg-gold-soft/60" />
-        </div>
+        <SummonHalo size="md" class="mx-auto mb-8" />
         <p class="text-lg font-black text-gold-deep">黄昏降临，精灵圣泉泛起微光</p>
         <p class="mt-2 text-base text-paper-ink/60">
           你的本命精灵正在显现<span class="inline-block animate-pulse">…</span>
@@ -114,12 +110,7 @@ watch(
       <div v-else-if="phase === 'error'" class="paper-panel rounded-3xl px-6 py-20 text-center">
         <p class="text-base font-black text-rose-700">旅途中遇到了一点意外</p>
         <p class="mx-auto mt-2 max-w-md break-all text-sm text-paper-ink/55">{{ error }}</p>
-                <button
-                  class="mt-6 min-h-12 rounded-lg border-2 border-gold bg-coal px-6 text-base font-black text-gold transition-colors hover:bg-coal-soft"
-                  @click="store.retry()"
-                >
-                  再试一次
-                </button>
+        <ContractButton size="sm" class="mt-6" @click="store.retry()">再试一次</ContractButton>
       </div>
 
       <!-- 答题：羊皮纸卡片 -->
@@ -130,12 +121,7 @@ watch(
         @click="anyTyping ? skipAll() : undefined"
       >
         <article class="paper-panel relative rounded-3xl p-6 md:p-9">
-          <!-- 卡片顶部金线装饰 -->
-          <div class="mb-6 flex items-center gap-3" aria-hidden="true">
-            <span class="h-px flex-1 bg-linear-to-r from-transparent to-sun" />
-            <span class="size-2 rotate-45 bg-sun" />
-            <span class="h-px flex-1 bg-linear-to-l from-transparent to-sun" />
-          </div>
+          <GoldRule layout="full" diamond="solid" class="mb-6" />
 
           <p
             v-if="active.interlude"
@@ -183,14 +169,15 @@ watch(
                 <span class="text-sm font-medium text-paper-ink/50">
                   {{ store.canSubmit ? '你的选择将塑造接下来的旅程' : '选一个选项，或写下你的答案' }}
                 </span>
-                <button
-                  class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-lg border-2 border-gold bg-coal px-7 text-base font-black text-gold transition-colors hover:bg-coal-soft disabled:cursor-not-allowed disabled:border-paper-ink/15 disabled:text-ink disabled:opacity-40"
-                  :disabled="!store.canSubmit || submitting"
+                <ContractButton
+                  :disabled="!store.canSubmit"
+                  :loading="submitting"
+                  loading-text="记录中…"
+                  :icon="ArrowRight"
                   @click="onSubmit"
                 >
-                  {{ submitting ? '记录中…' : '继续旅程' }}
-                  <ArrowRight v-if="!submitting" class="size-4" :stroke-width="2.5" aria-hidden="true" />
-                </button>
+                  继续旅程
+                </ContractButton>
               </div>
             </div>
           </Transition>
@@ -203,7 +190,7 @@ watch(
     <div class="absolute inset-x-0 bottom-0 px-6 py-4 text-center">
       <AiContentNotice text="本页剧情与选项由 AI 实时生成，仅供娱乐参考" />
     </div>
-  </main>
+  </PageShell>
 </template>
 
 <style scoped>

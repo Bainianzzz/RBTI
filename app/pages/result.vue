@@ -45,9 +45,7 @@ function replay() {
 </script>
 
 <template>
-  <main
-    class="page-vignette starfield relative flex min-h-dvh flex-col justify-center px-5 py-10 font-display text-ink sm:px-8"
-  >
+  <PageShell>
     <!-- 无结果：引导回首页 -->
     <div
       v-if="noResult"
@@ -55,11 +53,7 @@ function replay() {
     >
       <p class="text-2xl font-black text-paper-ink">精灵圣泉尚未显影</p>
       <p class="text-lg text-paper-ink/60">裁决结果已随这次旅程消散，请重新启程。</p>
-      <NuxtLink
-        to="/"
-        class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-gold bg-coal px-7 text-base font-black text-gold transition-colors hover:bg-coal-soft"
-        >返回入口</NuxtLink
-      >
+      <ContractButton to="/">返回入口</ContractButton>
     </div>
 
     <!-- 仪式中：召唤 -->
@@ -67,24 +61,18 @@ function replay() {
       v-else-if="ritual === 'summoning'"
       class="flex min-h-dvh flex-col items-center justify-center text-center"
     >
-      <div class="relative mb-8 flex h-40 w-40 items-center justify-center">
-        <span class="absolute h-full w-full animate-ping rounded-full bg-amber-400/30" />
-        <span class="absolute h-24 w-24 animate-pulse rounded-full bg-amber-300/40 blur-md" />
-        <span class="absolute h-16 w-16 rounded-full bg-amber-200/60" />
-      </div>
+      <SummonHalo size="lg" class="mb-8" />
     </div>
 
     <!-- 揭卡 -->
     <div v-else-if="pet" class="mx-auto w-full max-w-5xl">
       <Transition name="reveal" appear>
         <article>
-          <div class="mb-5 flex items-center justify-center gap-4">
-            <span class="h-px w-12 bg-gold/60 sm:w-24" aria-hidden="true" />
+          <GoldRule diamond="none" class="mb-5">
             <p class="text-center font-display text-3xl font-black tracking-[0.18em] text-gold">
               你的本命精灵
             </p>
-            <span class="h-px w-12 bg-gold/60 sm:w-24" aria-hidden="true" />
-          </div>
+          </GoldRule>
 
           <!-- 精灵大卡：左侧立绘（100% 高度） + 右侧内容（含判词，同一容器） -->
           <div class="paper-panel flex flex-col overflow-hidden rounded-3xl md:flex-row">
@@ -156,23 +144,22 @@ function replay() {
             （注：圣泉显影出现偏差，已回退展示。）
           </p>
 
-          <!-- 操作 -->
-          <div
-            class="mt-8 flex flex-col-reverse items-stretch justify-center gap-4 sm:flex-row sm:items-center"
+         <!-- 操作 -->
+         <div
+           class="mt-8 flex flex-col-reverse items-stretch justify-center gap-4 sm:flex-row sm:items-center"
           >
-            <a
+            <ContractButton
               :href="pet.wikiUrl"
+              :icon="ExternalLink"
               target="_blank"
               rel="noopener"
-              class="inline-flex min-h-13 items-center justify-center gap-2 rounded-lg border-2 border-gold bg-coal px-6 text-lg font-black text-gold transition-colors hover:bg-coal-soft"
-              >查看图鉴<ExternalLink class="size-5" :stroke-width="2" aria-hidden="true"
-            /></a>
-            <button
-              class="inline-flex min-h-13 items-center justify-center gap-2 rounded-lg border-2 border-gold bg-coal px-7 text-lg font-black text-gold transition-colors hover:bg-coal-soft"
-              @click="replay"
+              class="text-lg"
             >
-              再启新旅程<RotateCcw class="size-5" :stroke-width="2.5" aria-hidden="true" />
-            </button>
+              查看图鉴
+            </ContractButton>
+            <ContractButton :icon="RotateCcw" class="text-lg" @click="replay">
+              再启新旅程
+            </ContractButton>
           </div>
         </article>
       </Transition>
@@ -180,7 +167,7 @@ function replay() {
     <div class="absolute inset-x-0 bottom-0 px-6 py-4 text-center">
       <AiContentNotice text="本页判词与裁决由 AI 实时生成，仅供娱乐参考" />
     </div>
-  </main>
+  </PageShell>
 </template>
 
 <style scoped>
