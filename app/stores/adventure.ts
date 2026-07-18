@@ -36,161 +36,191 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)]!
 }
 
-export const useAdventureStore = defineStore('adventure', {
-  state: () => ({
-    phase: 'idle' as AdventurePhase,
-    events: [] as AdventureEvent[],
-    active: null as ActiveEvent | null,
-    verdict: null as Verdict | null,
-    error: '' as string,
-    failedOp: null as FailedOp,
-    // 滚动故事摘要：每轮作答后由 LLM 更新，传给下一轮叙事引擎
-    storySummary: '' as string,
-    // 本局弧线种子
-    openingSeedId: '' as string,
-    climaxSeedId: '' as string,
-  }),
+// Setup Store（组合式）：state 用 ref、getters 用 computed、actions 用普通函数。
+// 通过 store 实例访问时 ref/computed 自动解包，调用方无需改动。
+export const useAdventureStore = defineStore('adventure', () => {
+  // ── state ────────────────────────────────────────────────
+  const phase = ref<AdventurePhase>('idle')
+  const events = ref<AdventureEvent[]>([])
+  const active = ref<ActiveEvent | null>(null)
+  const verdict = ref<Verdict | null>(null)
+  const error = ref('')
+  const failedOp = ref<FailedOp>(null)
+  // 滚动故事摘要：每轮作答后由 LLM 更新，传给下一轮叙事引擎
+  const storySummary = ref('')
+  // 本局弧线种子
+  const openingSeedId = ref('')
+  const climaxSeedId = ref('')
 
-  getters: {
-    opening: (s): EventSeed | undefined =>
-      dailySeeds.find((x) => x.id === s.openingSeedId),
-    climax: (s): EventSeed | undefined =>
-      peakSeeds.find((x) => x.id === s.climaxSeedId),
-    canSubmit: (s) => {
-      if (!s.active || s.phase !== 'answering') return false
-      return !!s.active.chosenOption || s.active.freeInput.trim().length > 0
-    },
-    isFinished: (s) => s.phase === 'done' && !!s.verdict,
-  },
+  // ── getters ──────────────────────────────────────────────
+  const opening = computed<EventSeed | undefined>(() =>
+    dailySeeds.find((x) => x.id === openingSeedId.value),
+  )
+  const climax = computed<EventSeed | undefined>(() =>
+    peakSeeds.find((x) => x.id === climaxSeedId.value),
+  )
+  const canSubmit = computed(() => {
+    if (!active.value || phase.value !== 'answering') return false
+    return !!active.value.chosenOption || active.value.freeInput.trim().length > 0
+  })
+  const isFinished = computed(() => phase.value === 'done' && !!verdict.value)
 
-  actions: {
-    reset() {
-      this.phase = 'idle'
-      this.events = []
-      this.active = null
-      this.verdict = null
-      this.error = ''
-      this.failedOp = null
-      this.storySummary = ''
-      this.openingSeedId = ''
-      this.climaxSeedId = ''
-    },
+  // ── actions ──────────────────────────────────────────────
+  function reset() {
+    phase.value = 'idle'
+    events.value = []
+    active.value = null
+    verdict.value = null
+    error.value = ''
+    failedOp.value = null
+    storySummary.value = ''
+    openingSeedId.value = ''
+    climaxSeedId.value = ''
+  }
 
-    async start() {
-      this.reset()
-      // 开端：日常池随机一个；导向：高潮池随机一个
-      this.openingSeedId = pick(dailySeeds).id
-      this.climaxSeedId = pick(peakSeeds).id
-      await this.fetchNextEvent()
-    },
+  async function start() {
+    reset()
+    // 开端：日常池随机一个；导向：高潮池随机一个
+    openingSeedId.value = pick(dailySeeds).id
+    climaxSeedId.value = pick(peakSeeds).id
+    await fetchNextEvent()
+  }
 
-    // 提交当前作答，更新摘要，推进到下一事件或裁决
-    async submitAnswer(option: string | null, freeInput: string) {
-      if (!this.active || this.phase !== 'answering') return
-      const answered: AdventureEvent = {
-        seedId: this.active.seedId,
-        pool: this.active.pool,
-        narrative: this.active.narrative,
-        interlude: this.active.interlude,
-        options: this.active.options,
-        chosenOption: option,
-        freeInput: freeInput.trim(),
-      }
-      this.events.push(answered)
-      this.active = null
-      this.phase = 'generating'
-      await this.fetchNextEvent()
-    },
+  // 提交当前作答，更新摘要，推进到下一事件或裁决
+  async function submitAnswer(option: string | null, freeInput: string) {
+    if (!active.value || phase.value !== 'answering') return
+    const answered: AdventureEvent = {
+      seedId: active.value.seedId,
+      pool: active.value.pool,
+      narrative: active.value.narrative,
+      interlude: active.value.interlude,
+      options: active.value.options,
+      chosenOption: option,
+      freeInput: freeInput.trim(),
+    }
+    events.value.push(answered)
+    active.value = null
+    phase.value = 'generating'
+    await fetchNextEvent()
+  }
 
-    async fetchNextEvent() {
-      if (!this.opening || !this.climax) return
-      // 硬上限：已答满 HARD_CAP 题后不再请求 LLM 生成新事件，直接收尾裁决。
-      // 这是软提示之外的强制门，保证冒险长度不超过目标上限。
-      if (this.events.length >= HARD_CAP) {
-        await this.conclude()
+  async function fetchNextEvent() {
+    if (!opening.value || !climax.value) return
+    // 硬上限：已答满 HARD_CAP 题后不再请求 LLM 生成新事件，直接收尾裁决。
+    // 这是软提示之外的强制门，保证冒险长度不超过目标上限。
+    if (events.value.length >= HARD_CAP) {
+      await conclude()
+      return
+    }
+    phase.value = 'generating'
+    error.value = ''
+    failedOp.value = 'next'
+    try {
+      const result = await generateNextEvent(
+        events.value,
+        opening.value,
+        climax.value,
+        storySummary.value,
+      )
+      // 软提示已让 LLM 倾向收尾，这里仍尊重它提前返回的 conclude
+      if (result.nextAction.type === 'conclude') {
+        await conclude()
         return
       }
-      this.phase = 'generating'
-      this.error = ''
-      this.failedOp = 'next'
-      try {
-        const result = await generateNextEvent(
-          this.events,
-          this.opening,
-          this.climax,
-          this.storySummary,
-        )
-        // 软提示已让 LLM 倾向收尾，这里仍尊重它提前返回的 conclude
-        if (result.nextAction.type === 'conclude') {
-          await this.conclude()
-          return
-        }
-        this.applyEvent(result)
-      } catch (e) {
-        this.fail(e)
-      }
-    },
+      applyEvent(result)
+    } catch (e) {
+      fail(e)
+    }
+  }
 
-    applyEvent(result: NextEventResult) {
-      const isFirst = this.events.length === 0
-      const pool: EventPool = result.pool ?? (isFirst ? 'daily' : 'daily')
-      // 第一个事件贴开端种子；高潮事件贴高潮种子；中间事件自由（无种子）
-      const seedId = isFirst
-        ? this.openingSeedId
-        : pool === 'peak'
-          ? this.climaxSeedId
-          : ''
-      this.active = {
-        seedId,
-        pool,
-        narrative: result.narrative,
-        interlude: result.interlude,
-        options: result.options,
-        chosenOption: null,
-        freeInput: '',
-      }
-      this.phase = 'answering'
-      this.failedOp = null
-      // 摘要由 LLM 在同一次生成请求里一并更新，这里直接落库
-      if (result.storySummary) this.storySummary = result.storySummary
-    },
+  function applyEvent(result: NextEventResult) {
+    const isFirst = events.value.length === 0
+    const pool: EventPool = result.pool ?? (isFirst ? 'daily' : 'daily')
+    // 第一个事件贴开端种子；高潮事件贴高潮种子；中间事件自由（无种子）
+    const seedId = isFirst
+      ? openingSeedId.value
+      : pool === 'peak'
+        ? climaxSeedId.value
+        : ''
+    active.value = {
+      seedId,
+      pool,
+      narrative: result.narrative,
+      interlude: result.interlude,
+      options: result.options,
+      chosenOption: null,
+      freeInput: '',
+    }
+    phase.value = 'answering'
+    failedOp.value = null
+    // 摘要由 LLM 在同一次生成请求里一并更新，这里直接落库
+    if (result.storySummary) storySummary.value = result.storySummary
+  }
 
-    async conclude() {
-      this.phase = 'concluding'
-      this.error = ''
-      this.failedOp = 'conclude'
-      try {
-        this.verdict = await generateVerdict(this.events)
-        this.phase = 'done'
-        this.failedOp = null
-      } catch (e) {
-        this.fail(e)
-      }
-    },
+  async function conclude() {
+    phase.value = 'concluding'
+    error.value = ''
+    failedOp.value = 'conclude'
+    try {
+      verdict.value = await generateVerdict(events.value)
+      phase.value = 'done'
+      failedOp.value = null
+    } catch (e) {
+      fail(e)
+    }
+  }
 
-    async retry() {
-      if (this.phase !== 'error') return
-      if (this.failedOp === 'conclude') {
-        await this.conclude()
-      } else {
-        await this.fetchNextEvent()
-      }
-    },
+  async function retry() {
+    if (phase.value !== 'error') return
+    if (failedOp.value === 'conclude') {
+      await conclude()
+    } else {
+      await fetchNextEvent()
+    }
+  }
 
-    selectOption(option: string) {
-      if (!this.active) return
-      this.active.chosenOption =
-        this.active.chosenOption === option ? null : option
-    },
+  function selectOption(option: string) {
+    if (!active.value) return
+    active.value.chosenOption =
+      active.value.chosenOption === option ? null : option
+  }
 
-    setFreeInput(text: string) {
-      if (!this.active) return
-      this.active.freeInput = text
-    },
+  function setFreeInput(text: string) {
+    if (!active.value) return
+    active.value.freeInput = text
+  }
 
-    fail(e: unknown) {
-      this.phase = 'error'
-      this.error = e instanceof Error ? e.message : String(e)
-    },
-  },
+  function fail(e: unknown) {
+    phase.value = 'error'
+    error.value = e instanceof Error ? e.message : String(e)
+  }
+
+  return {
+    // state
+    phase,
+    events,
+    active,
+    verdict,
+    error,
+    failedOp,
+    storySummary,
+    openingSeedId,
+    climaxSeedId,
+    // getters
+    opening,
+    climax,
+    canSubmit,
+    isFinished,
+    // actions
+    reset,
+    start,
+    submitAnswer,
+    fetchNextEvent,
+    applyEvent,
+    conclude,
+    retry,
+    selectOption,
+    setFreeInput,
+    fail,
+  }
 })
