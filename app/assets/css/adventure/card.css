@@ -1,5 +1,5 @@
 /* 答题页专属：羊皮纸卡片底部金线分隔 + 选项/输入区入场过渡。
-   仅 app/pages/adventure.vue 引用。
+   仅 app/pages/adventure/_components/AnswerCard.vue 引用。
    注：GoldRule 组件用的是内联渐变 class，与此处 .gold-rule 无关。 */
 
 /* 卡片底部细金线（仪式感收束） */

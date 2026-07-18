@@ -1,4 +1,4 @@
-/* 结果页专属：本命精灵揭卡过渡。仅 app/pages/result.vue 引用。 */
+/* 结果页专属：本命精灵揭卡过渡。仅 app/pages/result/_components/PetCard.vue 引用。 */
 
 .reveal-enter-active {
   transition:
