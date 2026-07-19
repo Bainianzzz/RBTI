@@ -1,0 +1,4 @@
+interface:
+  display_name: "RBTI PR Reviewer"
+  short_description: "Review RBTI code quality and security risks"
+  default_prompt: "Use $pr-review-rbti to review this RBTI pull request for code quality and security vulnerabilities."
