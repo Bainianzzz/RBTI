@@ -14,19 +14,21 @@ const noResult = computed(() => !verdict.value || phase.value !== 'done')
 const ritual = ref<'summoning' | 'revealed'>('summoning')
 let ritualTimer: ReturnType<typeof setTimeout> | null = null
 
-watch(
-  () => verdict.value,
-  (v) => {
-    if (v) {
-      ritual.value = 'summoning'
-      if (ritualTimer) clearTimeout(ritualTimer)
-      ritualTimer = setTimeout(() => {
-        ritual.value = 'revealed'
-      }, 2200)
-    }
-  },
-  { immediate: true },
-)
+onMounted(() => {
+  watch(
+    () => verdict.value,
+    (v) => {
+      if (v) {
+        ritual.value = 'summoning'
+        if (ritualTimer) clearTimeout(ritualTimer)
+        ritualTimer = setTimeout(() => {
+          ritual.value = 'revealed'
+        }, 2200)
+      }
+    },
+    { immediate: true },
+  )
+})
 
 onBeforeUnmount(() => {
   if (ritualTimer) clearTimeout(ritualTimer)
